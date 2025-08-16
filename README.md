@@ -13,16 +13,16 @@ Sistema de clínica médica: Sistema em linguagem C desenvolvido para a discipli
 - Remover produtos do estoque
   
 # Funcionários
--Cadastrar funcionários
--Pesquisar funcionários
--Alterar funcionários
--Excluir funcionários
+- Cadastrar funcionários
+- Pesquisar funcionários
+- Alterar funcionários
+- Excluir funcionários
 
 # Clientes
--Cadastrar clientes
--Pesquisar clientes
--Alterar clientes
--Excluir clientes
+- Cadastrar clientes
+- Pesquisar clientes
+- Alterar clientes
+- Excluir clientes
 
 # Como executar
 1. Baixe ou clone o repositório.
