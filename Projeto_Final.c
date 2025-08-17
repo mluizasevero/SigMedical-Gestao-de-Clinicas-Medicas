@@ -1,6 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+void TelaMenuPrincipal() {
+    system("cls");
+    printf("----------------------------------------\n");
+    printf("///           MENU PRINCIPAL         ///\n");
+    printf("----------------------------------------\n");
+    printf("///                                    ///\n");
+    printf("///     1. Módulo Clientes             ///\n");
+    printf("///     2. Módulo Funcionários         ///\n");
+    printf("///     3. Módulo Consultas            ///\n");
+    printf("///     4. Módulo Estoque              ///\n");
+    printf("///     0. Sair                        ///\n");
+    printf("///                                    ///\n");
+    printf("----------------------------------------\n");
+    printf(">>> Escolha a opção desejada: ");
+}
+
 void TelaMenuFuncionarios() {
     system("cls");
     printf("----------------------------------------\n");
@@ -163,4 +179,168 @@ void TelaConfirmarExclusaoCliente() {
     printf("///                                  ///\n");
     printf("----------------------------------------\n");
     printf(">>> Escolha a opção desejada: ");
+}
+
+// funções para o Módulo de Consultas
+
+void TelaMenuConsultas() {
+    system("cls");
+    printf("----------------------------------------\n");
+    printf("///           Módulo Consultas         ///\n");
+    printf("----------------------------------------\n");
+    printf("///                                    ///\n");
+    printf("///     1. Agendar Nova Consulta       ///\n");
+    printf("///     2. Pesquisar Consultas         ///\n");
+    printf("///     3. Gerenciar Agendamentos      ///\n");
+    printf("///     4. Gerar Relatórios            ///\n");
+    printf("///     0. Voltar ao Menu Principal    ///\n");
+    printf("///                                    ///\n");
+    printf("----------------------------------------\n");
+    printf(">>> Escolha a opção desejada: ");
+}
+
+void TelaAgendarNovaConsulta() {
+    system("cls");
+    printf("----------------------------------------\n");
+    printf("///       Agendar Nova Consulta      ///\n");
+    printf("----------------------------------------\n");
+    printf("///                                    ///\n");
+    printf("///    Nome do Paciente:               ///\n");
+    printf("///    CPF do Paciente:                ///\n");
+    printf("///    Data (dd/mm/aaaa):              ///\n");
+    printf("///    Hora (hh:mm):                   ///\n");
+    printf("///    Nome do Medico:                 ///\n");
+    printf("///    Especialidade:                  ///\n");
+    printf("///                                    ///\n");
+    printf("----------------------------------------\n");
+    printf("\n");
+}
+
+void TelaGerenciarAgendamentos() {
+    system("cls");
+    printf("----------------------------------------\n");
+    printf("///     Gerenciar Agendamentos       ///\n");
+    printf("----------------------------------------\n");
+    printf("///                                    ///\n");
+    printf("///    1. Alterar Consulta Agendada    ///\n");
+    printf("///    2. Cancelar Consulta            ///\n");
+    printf("///    3. Confirmar Presença           ///\n");
+    printf("///    0. Voltar                       ///\n");
+    printf("///                                    ///\n");
+    printf("----------------------------------------\n");
+    printf(">>> Escolha a opção desejada: ");
+}
+
+void TelaGerarRelatorios() {
+    system("cls");
+    printf("----------------------------------------\n");
+    printf("///        Gerar Relatórios          ///\n");
+    printf("----------------------------------------\n");
+    printf("///                                    ///\n");
+    printf("///    1. Consultas por Médico         ///\n");
+    printf("///    2. Consultas por Período        ///\n");
+    printf("///    3. Consultas Agendadas          ///\n");
+    printf("///    4. Consultas Canceladas         ///\n");
+    printf("///    0. Voltar                       ///\n");
+    printf("///                                    ///\n");
+    printf("----------------------------------------\n");
+    printf(">>> Escolha a opção desejada: ");
+}
+
+#include <stdio.h>
+#include <stdlib.h>
+
+void TelaMenuEstoque() {
+    system("cls");
+    printf("----------------------------------------\n");
+    printf("///          Módulo Estoque          ///\n");
+    printf("----------------------------------------\n");
+    printf("///                                    ///\n");
+    printf("///     1. Cadastrar Produto           ///\n");
+    printf("///     2. Pesquisar Produto           ///\n");
+    printf("///     3. Gerenciar Lotes             ///\n\n");
+    printf("///     4. Movimentar Estoque          ///\n");
+    printf("///     5. Gerar Relatórios            ///\n");
+    printf("///     0. Voltar ao Menu Principal    ///\n");
+    printf("///                                    ///\n");
+    printf("----------------------------------------\n");
+    printf(">>> Escolha a opção desejada: ");
+}
+
+void TelaCadastrarProduto() {
+    system("cls");
+    printf("----------------------------------------\n");
+    printf("///        Cadastrar Produto         ///\n");
+    printf("----------------------------------------\n");
+    printf("///                                    ///\n");
+    printf("///    ID do Produto:                  ///\n");
+    printf("///    Nome do Produto:                ///\n");
+    printf("///    Quantidade:                     ///\n");
+    printf("///    Data de Validade:               ///\n");
+    printf("///                                    ///\n");
+    printf("----------------------------------------\n");
+    printf("\n");
+}
+
+void TelaPesquisarProduto() {
+    system("cls");
+    printf("----------------------------------------\n");
+    printf("///        Pesquisar Produto         ///\n");
+    printf("----------------------------------------\n");
+    printf("///                                    ///\n");
+    printf("///    1. Pesquisar por ID             ///\n");
+    printf("///    2. Pesquisar por Nome           ///\n");
+    printf("///    0. Voltar                       ///\n");
+    printf("///                                    ///\n");
+    printf("----------------------------------------\n");
+    printf(">>> Escolha a opção desejada: ");
+}
+
+void TelaGerenciarLotes() {
+    system("cls");
+    printf("----------------------------------------\n");
+    printf("///       Gerenciar Lotes          ///\n");
+    printf("----------------------------------------\n");
+    printf("///                                    ///\n");
+    printf("///    1. Visualizar Lotes             ///\n");
+    printf("///    2. Adicionar Lote               ///\n");
+    printf("///    3. Remover Lote                 ///\n");
+    printf("///    0. Voltar                       ///\n");
+    printf("///                                    ///\n");
+    printf("----------------------------------------\n");
+    printf(">>> Escolha a opção desejada: ");
+}
+
+void TelaMovimentarEstoque() {
+    system("cls");
+    printf("----------------------------------------\n");
+    printf("///      Movimentar Estoque          ///\n");
+    printf("----------------------------------------\n");
+    printf("///                                    ///\n");
+    printf("///    1. Saída de Material            ///\n");
+    printf("///    2. Entrada de Material          ///\n");
+    printf("///    0. Voltar                       ///\n");
+    printf("///                                    ///\n");
+    printf("----------------------------------------\n");
+    printf(">>> Escolha a opção desejada: ");
+}
+
+void TelaGerarRelatoriosEstoque() {
+    system("cls");
+    printf("----------------------------------------\n");
+    printf("///       Gerar Relatórios           ///\n");
+    printf("----------------------------------------\n");
+    printf("///                                    ///\n");
+    printf("///    1. Itens em Falta               ///\n");
+    printf("///    2. Itens com Validade Próxima   ///\n");
+    printf("///    3. Histórico de Movimentações   ///\n");
+    printf("///    0. Voltar                       ///\n");
+    printf("///                                    ///\n");
+    printf("----------------------------------------\n");
+    printf(">>> Escolha a opção desejada: ");
+}
+
+int main() {
+    TelaMenuEstoque();
+    return 0;
 }
