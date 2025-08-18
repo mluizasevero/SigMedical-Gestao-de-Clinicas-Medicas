@@ -1,6 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+void desenhar_cabecalho_base(void) {
+    printf("///////////////////////////////////////////////////////////////////////////////\n");
+    printf("///                                                                         ///\n");
+    printf("///              Universidade Federal do Rio Grande do Norte (UFRN)         ///\n");
+    printf("///                Centro de Ensino Superior do Serido (CERES)              ///\n");
+    printf("///              Departamento de Computacao e Tecnologia (DCT)              ///\n");
+    printf("///                     Disciplina DCT1106 -- Programacao                   ///\n");
+    printf("///                                                                         ///\n");
+    printf("///               Projeto SigMedical :: Sistema de Gestao de Clinicas Medicas         ///\n");
+    printf("///               Developed by Maria Luiza Severo and Thiago Gomes de Oliveira      ///\n");
+    printf("///                                                                         ///\n");
+    printf("///////////////////////////////////////////////////////////////////////////////\n");
+}
+
+
 void TelaMenuPrincipal() {
     system("cls");
     printf("----------------------------------------\n");
