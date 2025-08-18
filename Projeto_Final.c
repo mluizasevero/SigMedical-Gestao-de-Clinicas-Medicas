@@ -359,3 +359,18 @@ int main() {
     TelaMenuEstoque();
     return 0;
 }
+
+void tela_equipe(void) {
+    const char* info =
+        "///      Este projeto foi desenvolvido por:                                 ///\n"
+        "///                                                                         ///\n"
+        "///      Maria Luiza Severo                                                 ///\n"
+        "///      E-mail: maria.severo.063@ufrn.edu.br                                 ///\n"
+        "///                                                                         ///\n"
+        "///      Thiago Gomes de Oliveira                                           ///\n"
+        "///      E-mail: Thiago.oliveira712@ufrn.edu.br                               ///";
+    desenhar_cabecalho_base();
+    printf("%s\n", info);
+    printf("///////////////////////////////////////////////////////////////////////////////\n");
+
+}
