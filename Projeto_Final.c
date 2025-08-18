@@ -106,13 +106,13 @@ void TelaMenuEstoque() {
     printf("///            Módulo Estoque               ///\n");
     printf("----------------------------------------\n");
     printf("///                                         ///\n");
-    printf("///      1. Cadastrar Produto               ///\n");
-    printf("///      2. Pesquisar Produto               ///\n");
-    printf("///      3. Gerenciar Lotes                 ///\n");
-    printf("///      4. Movimentar Estoque              ///\n");
-    printf("///      5. Gerar Relatórios                ///\n");
-    printf("///      0. Voltar ao Menu Principal        ///\n");
-    printf("///                                         ///\n");
+    printf("///                                     ///\n");
+    printf("///     1. Cadastrar Clientes          ///\n");
+    printf("///     2. Pesquisar Clientes          ///\n");
+    printf("///     3. Alterar Clientes            ///\n");
+    printf("///     4. Excluir Clientes            ///\n");
+    printf("///     0. Voltar ao Menu Principal    ///\n");
+    printf("///                                     ///\n");
     printf("----------------------------------------\n");
     printf(">>> Escolha a opção desejada: ");
 }
