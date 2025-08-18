@@ -366,6 +366,20 @@ void TelaGerarRelatoriosEstoque() {
     printf(">>> Escolha a opção desejada: ");
 }
 
+void finalizar_programa() {
+    system("cls");
+
+    printf("\n\n");
+    printf("////////////////////////////////////////////////////////////////\n");
+    printf("///                                                          ///\n");
+    printf("///          Programa finalizado. Volte sempre!              ///\n");
+    printf("///                                                          ///\n");
+    printf("////////////////////////////////////////////////////////////////\n");
+    printf("\n");
+    printf("            Pressione ENTER para sair...");
+    
+    getchar(); 
+}
 
 int main() {
     TelaMenuEstoque();
