@@ -457,7 +457,38 @@ void modulo_estoque(void) {
 }
 
 int main() {
-    TelaMenuEstoque();
+    int opcao_principal;
+    do {
+        TelaMenuPrincipal();
+        scanf("%d", &opcao_principal);
+        while (getchar() != '\n'); 
+        
+        switch (opcao_principal) {
+            case 1:
+                TelaMenuClientes();
+                // ...
+                break;
+            case 2:
+                TelaMenuFuncionarios();
+                // ...
+                break;
+            case 3:
+                TelaMenuConsultas();
+                // ...
+                break;
+            case 4:
+                modulo_estoque();
+                break;
+            case 0:
+                finalizar_programa();
+                break;
+            default:
+                printf("\nOpção inválida. Pressione ENTER para tentar novamente.\n");
+                getchar();
+                break;
+        }
+    } while (opcao_principal != 0);
+
     return 0;
 
 }
