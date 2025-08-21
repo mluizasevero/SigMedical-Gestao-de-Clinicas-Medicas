@@ -688,6 +688,39 @@ void pesquisar_consulta(Consulta consultas[], int total_consultas) {
     getchar();
 }
 
+void gerenciar_agendamentos(Consulta consultas[], int* total_consultas) {
+    int opcao;
+    do {
+        TelaGerenciarAgendamentos();
+        printf(">>> Escolha a opcao desejada: ");
+        if (scanf("%d", &opcao) != 1) {
+            opcao = -1; 
+            while (getchar() != '\n'); 
+        } else {
+            while (getchar() != '\n'); 
+        }
+
+        switch (opcao) {
+            case 1: // Alterar
+                alterar_consulta(consultas, *total_consultas);
+                break;
+            case 2: // Cancelar (Excluir)
+                excluir_consulta(consultas, total_consultas);
+                break;
+            case 3: // Confirmar Presença (em desenvolvimento)
+                printf("Modulo de Confirmar Presenca em desenvolvimento.\n");
+                press_enter_to_continue();
+                break;
+            case 0:
+                break;
+            default:
+                printf("\nOpcao invalida. Pressione ENTER para tentar novamente.\n");
+                press_enter_to_continue();
+                break;
+        }
+    } while (opcao != 0);
+}
+
 void pesquisar_produto(Produto produtos[], int total_produtos) {
     int id_pesquisa;
     int encontrado = 0;
