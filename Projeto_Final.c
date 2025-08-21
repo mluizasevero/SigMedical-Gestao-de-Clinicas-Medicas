@@ -721,6 +721,53 @@ void gerenciar_agendamentos(Consulta consultas[], int* total_consultas) {
     } while (opcao != 0);
 }
 
+void alterar_consulta(Consulta consultas[], int total_consultas) {
+    char cpf_alteracao[12];
+    int encontrado = 0;
+    limpar_tela();
+    printf("----------------------------------------\n");
+    printf("///       Alterar Consulta           ///\n");
+    printf("----------------------------------------\n");
+    printf("Informe o CPF do paciente cuja consulta deseja alterar: ");
+    scanf("%s", cpf_alteracao);
+    while (getchar() != '\n');
+
+    for (int i = 0; i < total_consultas; i++) {
+        if (strcmp(consultas[i].cpf_paciente, cpf_alteracao) == 0) {
+            printf("\nConsulta encontrada. Informe os novos dados:\n");
+            
+            printf("Data atual: %s\n", consultas[i].data);
+            printf("Nova Data (dd/mm/aaaa): ");
+            scanf("%s", consultas[i].data);
+            while (getchar() != '\n');
+
+            printf("Hora atual: %s\n", consultas[i].hora);
+            printf("Nova Hora (hh:mm): ");
+            scanf("%s", consultas[i].hora);
+            while (getchar() != '\n');
+
+            printf("Medico atual: %s\n", consultas[i].nome_medico);
+            printf("Novo Medico: ");
+            scanf(" %49[^\n]", consultas[i].nome_medico);
+            while (getchar() != '\n');
+
+            printf("Especialidade atual: %s\n", consultas[i].especialidade);
+            printf("Nova Especialidade: ");
+            scanf(" %49[^\n]", consultas[i].especialidade);
+            while (getchar() != '\n');
+
+            printf("\nConsulta alterada com sucesso!\n");
+            encontrado = 1;
+            break;
+        }
+    }
+    if (!encontrado) {
+        printf("\nNenhuma consulta para o CPF %s encontrada.\n", cpf_alteracao);
+    }
+    printf("\nPressione ENTER para voltar...\n");
+    getchar();
+}
+
 void pesquisar_produto(Produto produtos[], int total_produtos) {
     int id_pesquisa;
     int encontrado = 0;
