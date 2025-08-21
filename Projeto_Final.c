@@ -548,16 +548,13 @@ int main() {
         
         switch (opcao_principal) {
             case 1:
-                TelaMenuClientes();
-                // ...
+                modulo_clientes();
                 break;
             case 2:
-                TelaMenuFuncionarios();
-                // ...
+                modulo_funcionarios();
                 break;
             case 3:
-                TelaMenuConsultas();
-                // ...
+                modulo_consultas();
                 break;
             case 4:
                 modulo_estoque();
@@ -573,5 +570,5 @@ int main() {
     } while (opcao_principal != 0);
 
     return 0;
-
+    
 }
