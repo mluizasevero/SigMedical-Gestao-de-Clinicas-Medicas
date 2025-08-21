@@ -476,6 +476,35 @@ int ler_clientes(Cliente clientes[]) {
     fclose(arq_clientes);
     return i; 
 
+void salvar_produtos(Produto produtos[], int total_produtos) {
+    FILE *arq_produtos = fopen("produtos.dat", "w");
+    if (arq_produtos == NULL) {
+        printf("Erro ao abrir o arquivo para escrita.\n");
+        return;
+    }
+    for (int i = 0; i < total_produtos; i++) {
+        fprintf(arq_produtos, "%d;%s;%d;%s\n", 
+                produtos[i].id, produtos[i].nome, 
+                produtos[i].quantidade, produtos[i].validade);
+    }
+    fclose(arq_produtos);
+}
+
+int ler_produtos(Produto produtos[]) {
+    FILE *arq_produtos = fopen("produtos.dat", "r");
+    if (arq_produtos == NULL) {
+        return 0; 
+    }
+    int i = 0;
+    while(fscanf(arq_produtos, "%d;%[^;];%d;%[^\n]\n", 
+                  &produtos[i].id, produtos[i].nome, 
+                  &produtos[i].quantidade, produtos[i].validade) == 4) {
+        i++;
+    }
+    fclose(arq_produtos);
+    return i; 
+}
+
 void modulo_clientes(Cliente clientes[], int* total_clientes) { // MODIFICADO
     int opcao_clientes;
     do {
