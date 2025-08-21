@@ -31,14 +31,10 @@ void salvar_produtos(Produto produtos[], int total_produtos);
 int ler_produtos(Produto produtos[]);
 void salvar_consultas(Consulta consultas[], int total_consultas);
 int ler_consultas(Consulta consultas[]);
-
-
-void salvar_clientes(Cliente clientes[], int total_clientes);
-int ler_clientes(Cliente clientes[]);
-
 void desenhar_cabecalho_base(void);
 void tela_equipe(void);
 void limpar_tela(void);
+void finalizar_programa(void);
 
 void TelaMenuPrincipal(void);
 void TelaMenuFuncionarios(void);
@@ -59,14 +55,24 @@ void TelaConfirmarExclusaoCliente(void);
 void TelaAgendarNovaConsulta(void);
 void TelaGerenciarAgendamentos(void);
 void TelaGerarRelatorios(void);
-
 void TelaCadastrarProduto(void);
 void TelaPesquisarProduto(void);
 void TelaGerenciarLotes(void);
 void TelaMovimentarEstoque(void);
 void TelaGerarRelatoriosEstoque(void);
 
-void finalizar_programa(void);
+void modulo_clientes(Cliente clientes[], int* total_clientes);
+void modulo_consultas(Consulta consultas[], int* total_consultas);
+void modulo_estoque(Produto produtos[], int* total_produtos);
+void modulo_funcionarios();
+
+void pesquisar_cliente(Cliente clientes[], int total_clientes);
+void pesquisar_consulta(Consulta consultas[], int total_consultas);
+void pesquisar_produto(Produto produtos[], int total_produtos);
+
+void excluir_cliente(Cliente clientes[], int* total_clientes);
+void excluir_consulta(Consulta consultas[], int* total_consultas);
+void excluir_produto(Produto produtos[], int* total_produtos);
 
 // Funções de Cabeçalho e Equipe
 void desenhar_cabecalho_base(void) {
