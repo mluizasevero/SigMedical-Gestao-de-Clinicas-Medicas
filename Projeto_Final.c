@@ -413,6 +413,48 @@ void finalizar_programa() {
     getchar(); 
 }
 
+void modulo_clientes(void) {
+    int opcao_clientes;
+    do {
+        TelaMenuClientes();
+        scanf("%d", &opcao_clientes);
+        while (getchar() != '\n'); // Limpa o buffer do teclado
+
+        switch (opcao_clientes) {
+            case 1:
+                TelaCadastrarClientes();
+                printf("Módulo de Cadastrar Clientes em desenvolvimento...\n");
+                printf("Pressione ENTER para voltar...\n");
+                getchar();
+                break;
+            case 2:
+                TelaPesquisarClientes();
+                printf("Módulo de Pesquisar Clientes em desenvolvimento...\n");
+                printf("Pressione ENTER para voltar...\n");
+                getchar();
+                break;
+            case 3:
+                TelaAlterarClientes();
+                printf("Módulo de Alterar Clientes em desenvolvimento...\n");
+                printf("Pressione ENTER para voltar...\n");
+                getchar();
+                break;
+            case 4:
+                TelaExcluirClientes();
+                printf("Módulo de Excluir Clientes em desenvolvimento...\n");
+                printf("Pressione ENTER para voltar...\n");
+                getchar();
+                break;
+            case 0:
+                break;
+            default:
+                printf("\nOpção inválida. Pressione ENTER para tentar novamente.\n");
+                getchar();
+                break;
+        }
+    } while (opcao_clientes != 0);
+}
+
 void modulo_estoque(void) {
     int opcao_estoque;
     do {
