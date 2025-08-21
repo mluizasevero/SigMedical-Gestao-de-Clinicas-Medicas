@@ -431,6 +431,34 @@ void finalizar_programa() {
     getchar(); 
 }
 
+void salvar_clientes(Cliente clientes[], int total_clientes) {
+    FILE *arq_clientes = fopen("clientes.dat", "w");
+    if (arq_clientes == NULL) {
+        printf("Erro ao abrir o arquivo para escrita.\n");
+        return;
+    }
+    for (int i = 0; i < total_clientes; i++) {
+        fprintf(arq_clientes, "%s;%s;%s;%s\n", 
+                clientes[i].cpf, clientes[i].nome, 
+                clientes[i].telefone, clientes[i].email);
+    }
+    fclose(arq_clientes);
+}
+
+int ler_clientes(Cliente clientes[]) {
+    FILE *arq_clientes = fopen("clientes.dat", "r");
+    if (arq_clientes == NULL) {
+        return 0; 
+    }
+    int i = 0;
+    while(fscanf(arq_clientes, "%[^;];%[^;];%[^;];%[^\n]\n", 
+                 clientes[i].cpf, clientes[i].nome, 
+                 clientes[i].telefone, clientes[i].email) == 4) {
+        i++;
+    }
+    fclose(arq_clientes);
+    return i; 
+
 void modulo_clientes(void) {
     int opcao_clientes;
     do {
@@ -558,21 +586,6 @@ void modulo_estoque(void) {
     } while (opcao_estoque != 0);
 }
 
-// funções para manipulação de arquivos
-void salvar_clientes(Cliente clientes[], int total_clientes) {
-    FILE *arq_clientes = fopen("clientes.dat", "w");
-    if (arq_clientes == NULL) {
-        printf("Erro ao abrir o arquivo para escrita.\n");
-        return;
-    }
-    for (int i = 0; i < total_clientes; i++) {
-        fprintf(arq_clientes, "%s;%s;%s;%s\n", 
-                clientes[i].cpf, clientes[i].nome, 
-                clientes[i].telefone, clientes[i].email);
-    }
-    fclose(arq_clientes);
-}
-
 int ler_clientes(Cliente clientes[]) {
     FILE *arq_clientes = fopen("clientes.dat", "r");
     if (arq_clientes == NULL) {
@@ -585,7 +598,7 @@ int ler_clientes(Cliente clientes[]) {
         i++;
     }
     fclose(arq_clientes);
-    return i; // retorna o número total de clientes lidos
+    return i; 
 }
 
 int main() {
