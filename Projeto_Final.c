@@ -16,6 +16,23 @@ typedef struct {
     char validade[11];
 } Produto;
 
+typedef struct {
+    char nome_paciente[50];
+    char cpf_paciente[12];
+    char data[11];
+    char hora[6];
+    char nome_medico[50];
+    char especialidade[50];
+} Consulta;
+
+void salvar_clientes(Cliente clientes[], int total_clientes);
+int ler_clientes(Cliente clientes[]);
+void salvar_produtos(Produto produtos[], int total_produtos);
+int ler_produtos(Produto produtos[]);
+void salvar_consultas(Consulta consultas[], int total_consultas);
+int ler_consultas(Consulta consultas[]);
+
+
 void salvar_clientes(Cliente clientes[], int total_clientes);
 int ler_clientes(Cliente clientes[]);
 
