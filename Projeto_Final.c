@@ -1,5 +1,20 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h> 
+
+typedef struct {
+    char cpf[12];
+    char nome[50];
+    char telefone[15];
+    char email[50];
+} Cliente;
+
+typedef struct {
+    int id;
+    char nome[50];
+    int quantidade;
+    char validade[11];
+} Produto;
 
 void desenhar_cabecalho_base(void);
 void tela_equipe(void);
@@ -455,6 +470,9 @@ void modulo_clientes(void) {
     } while (opcao_clientes != 0);
 }
 
+void salvar_clientes(Cliente clientes[], int total_clientes);
+int ler_clientes(Cliente clientes[]);
+
 void modulo_consultas(void) {
     int opcao_consultas;
     do {
@@ -570,5 +588,5 @@ int main() {
     } while (opcao_principal != 0);
 
     return 0;
-    
+
 }
