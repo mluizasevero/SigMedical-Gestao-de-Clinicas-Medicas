@@ -696,6 +696,43 @@ void excluir_consulta(Consulta consultas[], int* total_consultas) {
     getchar();
 }
 
+void excluir_produto(Produto produtos[], int* total_produtos) {
+    int id_exclusao;
+    int encontrado = 0;
+    limpar_tela();
+    printf("----------------------------------------\n");
+    printf("///       Excluir Produto            ///\n");
+    printf("----------------------------------------\n");
+    printf("Informe o ID do produto que deseja excluir: ");
+    scanf("%d", &id_exclusao);
+    while (getchar() != '\n');
+
+    for (int i = 0; i < *total_produtos; i++) {
+        if (produtos[i].id == id_exclusao) {
+            char confirmacao;
+            printf("\nProduto encontrado. Deseja realmente excluir este produto (S/N)? ");
+            scanf(" %c", &confirmacao);
+            while (getchar() != '\n');
+            if (confirmacao == 'S' || confirmacao == 's') {
+                for (int j = i; j < *total_produtos - 1; j++) {
+                    produtos[j] = produtos[j + 1];
+                }
+                (*total_produtos)--;
+                printf("\nProduto excluido com sucesso!\n");
+            } else {
+                printf("\nExclusao cancelada.\n");
+            }
+            encontrado = 1;
+            break;
+        }
+    }
+    if (!encontrado) {
+        printf("\nProduto com ID %d nao encontrado.\n", id_exclusao);
+    }
+    printf("\nPressione ENTER para voltar...\n");
+    getchar();
+}
+
 void modulo_clientes(Cliente clientes[], int* total_clientes) { // MODIFICADO
     int opcao_clientes;
     do {
