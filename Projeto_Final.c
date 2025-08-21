@@ -703,38 +703,46 @@ void modulo_estoque(Produto produtos[], int* total_produtos) {
 }
 
 int main() {
-    int opcao_principal;
-    Cliente clientes[100]; // capacidade para 100 clientes
-    int total_clientes = ler_clientes(clientes); // carrega os dados ao iniciar
+    int opcao_principal;
+    Cliente clientes[100]; 
+    int total_clientes = ler_clientes(clientes);
 
-    do {
-        TelaMenuPrincipal();
-        scanf("%d", &opcao_principal);
-        while (getchar() != '\n'); 
-        
-        switch (opcao_principal) {
-            case 1:
-                modulo_clientes(clientes, &total_clientes); // MODIFICADO
-                break;
-            case 2:
-                modulo_funcionarios();
-                break;
-            case 3:
-                modulo_consultas();
-                break;
-            case 4:
-                modulo_estoque();
-                break;
-            case 0:
-                salvar_clientes(clientes, total_clientes); // Salva os dados ao sair
-                finalizar_programa();
-                break;
-            default:
-                printf("\nOpção inválida. Pressione ENTER para tentar novamente.\n");
-                getchar();
-                break;
-        }
-    } while (opcao_principal != 0);
+    Produto produtos[100];
+    int total_produtos = ler_produtos(produtos);
 
-    return 0;
+    Consulta consultas[100];
+    int total_consultas = ler_consultas(consultas);
+
+    do {
+        TelaMenuPrincipal();
+        scanf("%d", &opcao_principal);
+        while (getchar() != '\n'); 
+        
+        switch (opcao_principal) {
+            case 1:
+                modulo_clientes(clientes, &total_clientes);
+                break;
+            case 2:
+                modulo_funcionarios();
+                break;
+            case 3:
+                modulo_consultas(consultas, &total_consultas);
+                break;
+            case 4:
+                modulo_estoque(produtos, &total_produtos);
+                break;
+            case 0:
+                salvar_clientes(clientes, total_clientes); 
+                salvar_produtos(produtos, total_produtos);
+                salvar_consultas(consultas, total_consultas);
+                finalizar_programa();
+                break;
+            default:
+                printf("\nOpção inválida. Pressione ENTER para tentar novamente.\n");
+                getchar();
+                break;
+        }
+    } while (opcao_principal != 0);
+
+    return 0;
 }
