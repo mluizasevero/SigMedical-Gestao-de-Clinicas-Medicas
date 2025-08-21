@@ -643,7 +643,7 @@ void modulo_consultas(Consulta consultas[], int* total_consultas) {
 }
 
 
-void modulo_estoque(void) {
+void modulo_estoque(Produto produtos[], int* total_produtos) {
     int opcao_estoque;
     do {
         TelaMenuEstoque();
@@ -653,26 +653,42 @@ void modulo_estoque(void) {
         switch (opcao_estoque) {
             case 1:
                 TelaCadastrarProduto();
-                printf("Pressione ENTER para voltar...\n");
+                printf("ID do Produto: ");
+                scanf("%d", &produtos[*total_produtos].id);
+                while (getchar() != '\n');
+                printf("Nome do Produto: ");
+                scanf(" %49[^\n]", produtos[*total_produtos].nome);
+                printf("Quantidade: ");
+                scanf("%d", &produtos[*total_produtos].quantidade);
+                while (getchar() != '\n');
+                printf("Data de Validade: ");
+                scanf("%s", produtos[*total_produtos].validade);
+                
+                (*total_produtos)++;
+                printf("\nProduto cadastrado com sucesso! Pressione ENTER para voltar...\n");
                 getchar();
                 break;
             case 2:
                 TelaPesquisarProduto();
+                printf("Módulo de Pesquisar Produto em desenvolvimento...\n");
                 printf("Pressione ENTER para voltar...\n");
                 getchar();
                 break;
             case 3:
                 TelaGerenciarLotes();
+                printf("Módulo de Gerenciar Lotes em desenvolvimento...\n");
                 printf("Pressione ENTER para voltar...\n");
                 getchar();
                 break;
             case 4:
                 TelaMovimentarEstoque();
+                printf("Módulo de Movimentar Estoque em desenvolvimento...\n");
                 printf("Pressione ENTER para voltar...\n");
                 getchar();
                 break;
             case 5:
                 TelaGerarRelatoriosEstoque();
+                printf("Módulo de Gerar Relatórios em desenvolvimento...\n");
                 printf("Pressione ENTER para voltar...\n");
                 getchar();
                 break;
