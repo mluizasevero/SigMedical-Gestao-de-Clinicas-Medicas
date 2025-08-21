@@ -1107,7 +1107,7 @@ int main() {
                 break;
             default:
                 printf("\nOpcao invalida. Pressione ENTER para tentar novamente.\n");
-                getchar();
+                press_enter_to_continue();
                 break;
         }
     } while (opcao_principal != 0);
