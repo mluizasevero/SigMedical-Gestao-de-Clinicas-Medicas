@@ -624,7 +624,39 @@ void alterar_cliente(Cliente clientes[], int total_clientes) {
     getchar();
 }
 
+void excluir_cliente(Cliente clientes[], int* total_clientes) {
+    char cpf_exclusao[12];
+    int encontrado = 0;
+    TelaExcluirClientes();
+    printf("Informe o CPF do cliente que deseja excluir: ");
+    scanf("%s", cpf_exclusao);
+    while (getchar() != '\n');
 
+    for (int i = 0; i < *total_clientes; i++) {
+        if (strcmp(clientes[i].cpf, cpf_exclusao) == 0) {
+            char confirmacao;
+            printf("\nCliente encontrado. Deseja realmente excluir este cliente (S/N)? ");
+            scanf(" %c", &confirmacao);
+            while (getchar() != '\n');
+            if (confirmacao == 'S' || confirmacao == 's') {
+                for (int j = i; j < *total_clientes - 1; j++) {
+                    clientes[j] = clientes[j + 1];
+                }
+                (*total_clientes)--;
+                printf("\nCliente excluido com sucesso!\n");
+            } else {
+                printf("\nExclusao cancelada.\n");
+            }
+            encontrado = 1;
+            break;
+        }
+    }
+    if (!encontrado) {
+        printf("\nCliente com CPF %s nao encontrado.\n", cpf_exclusao);
+    }
+    printf("\nPressione ENTER para voltar...\n");
+    getchar();
+}
 
 void pesquisar_consulta(Consulta consultas[], int total_consultas) {
     char cpf_pesquisa[12];
