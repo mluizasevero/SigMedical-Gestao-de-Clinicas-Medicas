@@ -831,109 +831,60 @@ void pesquisar_produto(Produto produtos[], int total_produtos) {
     getchar();
 }
 
-void excluir_cliente(Cliente clientes[], int* total_clientes) {
-    char cpf_exclusao[12];
-    int encontrado = 0;
-    TelaExcluirClientes();
-    printf("Informe o CPF do cliente que deseja excluir: ");
-    scanf("%s", cpf_exclusao);
+void movimentar_estoque(Produto produtos[], int total_produtos) {
+    int id_produto, quantidade_movimentacao, encontrado = 0;
+    char tipo_movimentacao;
+
+    TelaMovimentarEstoque();
+    printf("1. Entrada de Material\n");
+    printf("2. Saida de Material\n");
+    printf(">>> Escolha o tipo de movimentacao (1 ou 2): ");
+    if (scanf(" %c", &tipo_movimentacao) != 1 || (tipo_movimentacao != '1' && tipo_movimentacao != '2')) {
+        printf("Opcao invalida.\n");
+        while (getchar() != '\n');
+        press_enter_to_continue();
+        return;
+    }
     while (getchar() != '\n');
 
-    for (int i = 0; i < *total_clientes; i++) {
-        if (strcmp(clientes[i].cpf, cpf_exclusao) == 0) {
-            char confirmacao;
-            printf("\nCliente encontrado. Deseja realmente excluir este cliente (S/N)? ");
-            scanf(" %c", &confirmacao);
+    printf("Informe o ID do produto: ");
+    if (scanf("%d", &id_produto) != 1) {
+        printf("\nID invalido. Use apenas numeros.\n");
+        while (getchar() != '\n');
+        press_enter_to_continue();
+        return;
+    }
+    while (getchar() != '\n');
+
+    for (int i = 0; i < total_produtos; i++) {
+        if (produtos[i].id == id_produto) {
+            printf("\nProduto encontrado: %s (Quantidade atual: %d)\n", produtos[i].nome, produtos[i].quantidade);
+            printf("Informe a quantidade para movimentacao: ");
+            if (scanf("%d", &quantidade_movimentacao) != 1 || quantidade_movimentacao <= 0) {
+                printf("\nQuantidade invalida. Use um numero positivo.\n");
+                while (getchar() != '\n');
+                press_enter_to_continue();
+                return;
+            }
             while (getchar() != '\n');
-            if (confirmacao == 'S' || confirmacao == 's') {
-                for (int j = i; j < *total_clientes - 1; j++) {
-                    clientes[j] = clientes[j + 1];
-                }
-                (*total_clientes)--;
-                printf("\nCliente excluido com sucesso!\n");
+
+            if (tipo_movimentacao == '1') {
+                produtos[i].quantidade += quantidade_movimentacao;
+                printf("\nEntrada de %d unidades realizada com sucesso. Nova quantidade: %d\n", quantidade_movimentacao, produtos[i].quantidade);
             } else {
-                printf("\nExclusao cancelada.\n");
+                if (produtos[i].quantidade >= quantidade_movimentacao) {
+                    produtos[i].quantidade -= quantidade_movimentacao;
+                    printf("\nSaida de %d unidades realizada com sucesso. Nova quantidade: %d\n", quantidade_movimentacao, produtos[i].quantidade);
+                } else {
+                    printf("\nErro: Quantidade em estoque insuficiente para a saida.\n");
+                }
             }
             encontrado = 1;
             break;
         }
     }
     if (!encontrado) {
-        printf("\nCliente com CPF %s nao encontrado.\n", cpf_exclusao);
-    }
-    printf("\nPressione ENTER para voltar...\n");
-    getchar();
-}
-
-void excluir_consulta(Consulta consultas[], int* total_consultas) {
-    char cpf_exclusao[12];
-    int encontrado = 0;
-    limpar_tela();
-    printf("----------------------------------------\n");
-    printf("///        Excluir Consulta          ///\n");
-    printf("----------------------------------------\n");
-    printf("Informe o CPF do paciente cuja consulta deseja excluir: ");
-    scanf("%s", cpf_exclusao);
-    while (getchar() != '\n');
-
-    for (int i = 0; i < *total_consultas; i++) {
-        if (strcmp(consultas[i].cpf_paciente, cpf_exclusao) == 0) {
-            char confirmacao;
-            printf("\nConsulta encontrada. Deseja realmente excluir esta consulta (S/N)? ");
-            scanf(" %c", &confirmacao);
-            while (getchar() != '\n');
-            if (confirmacao == 'S' || confirmacao == 's') {
-                for (int j = i; j < *total_consultas - 1; j++) {
-                    consultas[j] = consultas[j + 1];
-                }
-                (*total_consultas)--;
-                printf("\nConsulta excluida com sucesso!\n");
-            } else {
-                printf("\nExclusao cancelada.\n");
-            }
-            encontrado = 1;
-            break;
-        }
-    }
-    if (!encontrado) {
-        printf("\nConsulta para o CPF %s nao encontrada.\n", cpf_exclusao);
-    }
-    printf("\nPressione ENTER para voltar...\n");
-    getchar();
-}
-
-void excluir_produto(Produto produtos[], int* total_produtos) {
-    int id_exclusao;
-    int encontrado = 0;
-    limpar_tela();
-    printf("----------------------------------------\n");
-    printf("///       Excluir Produto            ///\n");
-    printf("----------------------------------------\n");
-    printf("Informe o ID do produto que deseja excluir: ");
-    scanf("%d", &id_exclusao);
-    while (getchar() != '\n');
-
-    for (int i = 0; i < *total_produtos; i++) {
-        if (produtos[i].id == id_exclusao) {
-            char confirmacao;
-            printf("\nProduto encontrado. Deseja realmente excluir este produto (S/N)? ");
-            scanf(" %c", &confirmacao);
-            while (getchar() != '\n');
-            if (confirmacao == 'S' || confirmacao == 's') {
-                for (int j = i; j < *total_produtos - 1; j++) {
-                    produtos[j] = produtos[j + 1];
-                }
-                (*total_produtos)--;
-                printf("\nProduto excluido com sucesso!\n");
-            } else {
-                printf("\nExclusao cancelada.\n");
-            }
-            encontrado = 1;
-            break;
-        }
-    }
-    if (!encontrado) {
-        printf("\nProduto com ID %d nao encontrado.\n", id_exclusao);
+        printf("\nProduto com ID %d nao encontrado.\n", id_produto);
     }
     printf("\nPressione ENTER para voltar...\n");
     getchar();
