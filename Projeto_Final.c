@@ -733,55 +733,57 @@ void excluir_produto(Produto produtos[], int* total_produtos) {
     getchar();
 }
 
-void modulo_clientes(Cliente clientes[], int* total_clientes) { // MODIFICADO
+void modulo_clientes(Cliente clientes[], int* total_clientes) { 
     int opcao_clientes;
     do {
         TelaMenuClientes();
-        scanf("%d", &opcao_clientes);
-        while (getchar() != '\n'); 
+        if (scanf("%d", &opcao_clientes) != 1) {
+            opcao_clientes = -1; 
+            while (getchar() != '\n'); 
+        } else {
+            while (getchar() != '\n'); 
+        }
 
         switch (opcao_clientes) {
             case 1:
                 TelaCadastrarClientes();
                 printf("CPF: ");
                 scanf("%s", clientes[*total_clientes].cpf);
-                printf("Nome: ");
-                scanf(" %49[^\n]", clientes[*total_clientes].nome);
-                printf("Telefone: ");
-                scanf("%s", clientes[*total_clientes].telefone);
-                printf("E-mail: ");
-                scanf("%s", clientes[*total_clientes].email);
-                
-                (*total_clientes)++; 
-                printf("\nCliente cadastrado com sucesso! Pressione ENTER para voltar...\n");
-                getchar();
-                break;
-            case 2:
-                TelaPesquisarClientes();
-                printf("Módulo de Pesquisar Clientes em desenvolvimento...\n");
-                printf("Pressione ENTER para voltar...\n");
-                getchar();
-                break;
-            case 3:
-                TelaAlterarClientes();
-                printf("Módulo de Alterar Clientes em desenvolvimento...\n");
-                printf("Pressione ENTER para voltar...\n");
-                getchar();
-                break;
-            case 4:
-                TelaExcluirClientes();
-                printf("Módulo de Excluir Clientes em desenvolvimento...\n");
-                printf("Pressione ENTER para voltar...\n");
-                getchar();
-                break;
-            case 0:
-                break;
-            default:
-                printf("\nOpção inválida. Pressione ENTER para tentar novamente.\n");
-                getchar();
-                break;
-        }
-    } while (opcao_clientes != 0);
+                while (getchar() != '\n');
+                printf("Nome: ");
+                scanf(" %49[^\n]", clientes[*total_clientes].nome);
+                while (getchar() != '\n');
+                printf("Telefone: ");
+                scanf("%s", clientes[*total_clientes].telefone);
+                while (getchar() != '\n');
+                printf("E-mail: ");
+                scanf("%s", clientes[*total_clientes].email);
+                while (getchar() != '\n');
+                
+                (*total_clientes)++; 
+                printf("\nCliente cadastrado com sucesso! Pressione ENTER para voltar...\n");
+                getchar();
+                break;
+            case 2:
+                pesquisar_cliente(clientes, *total_clientes);
+                break;
+            case 3:
+                TelaAlterarClientes();
+                printf("Módulo de Alterar Clientes em desenvolvimento...\n");
+                printf("Pressione ENTER para voltar...\n");
+                getchar();
+                break;
+            case 4:
+                excluir_cliente(clientes, total_clientes);
+                break;
+            case 0:
+                break;
+            default:
+                printf("\nOpcao invalida. Pressione ENTER para tentar novamente.\n");
+                getchar();
+                break;
+        }
+    } while (opcao_clientes != 0);
 }
 
 void modulo_consultas(Consulta consultas[], int* total_consultas) { 
