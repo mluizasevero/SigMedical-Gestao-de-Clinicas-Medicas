@@ -923,8 +923,12 @@ int main() {
 
     do {
         TelaMenuPrincipal();
-        scanf("%d", &opcao_principal);
-        while (getchar() != '\n'); 
+        if (scanf("%d", &opcao_principal) != 1) {
+            opcao_principal = -1; 
+            while (getchar() != '\n'); 
+        } else {
+            while (getchar() != '\n'); 
+        }
         
         switch (opcao_principal) {
             case 1:
@@ -946,7 +950,7 @@ int main() {
                 finalizar_programa();
                 break;
             default:
-                printf("\nOpção inválida. Pressione ENTER para tentar novamente.\n");
+                printf("\nOpcao invalida. Pressione ENTER para tentar novamente.\n");
                 getchar();
                 break;
         }
