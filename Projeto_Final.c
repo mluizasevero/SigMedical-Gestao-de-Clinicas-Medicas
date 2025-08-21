@@ -586,6 +586,46 @@ void pesquisar_cliente(Cliente clientes[], int total_clientes) {
     getchar();
 }
 
+void alterar_cliente(Cliente clientes[], int total_clientes) {
+    char cpf_alteracao[12];
+    int encontrado = 0;
+    TelaAlterarClientes();
+    printf("Informe o CPF do cliente que deseja alterar: ");
+    scanf("%s", cpf_alteracao);
+    while (getchar() != '\n');
+
+    for (int i = 0; i < total_clientes; i++) {
+        if (strcmp(clientes[i].cpf, cpf_alteracao) == 0) {
+            printf("\nCliente encontrado. Informe os novos dados:\n");
+            printf("Nome atual: %s\n", clientes[i].nome);
+            printf("Novo Nome: ");
+            scanf(" %49[^\n]", clientes[i].nome);
+            while (getchar() != '\n');
+            
+            printf("Telefone atual: %s\n", clientes[i].telefone);
+            printf("Novo Telefone: ");
+            scanf("%s", clientes[i].telefone);
+            while (getchar() != '\n');
+
+            printf("E-mail atual: %s\n", clientes[i].email);
+            printf("Novo E-mail: ");
+            scanf("%s", clientes[i].email);
+            while (getchar() != '\n');
+
+            printf("\nCliente alterado com sucesso!\n");
+            encontrado = 1;
+            break;
+        }
+    }
+    if (!encontrado) {
+        printf("\nCliente com CPF %s nao encontrado.\n", cpf_alteracao);
+    }
+    printf("\nPressione ENTER para voltar...\n");
+    getchar();
+}
+
+
+
 void pesquisar_consulta(Consulta consultas[], int total_consultas) {
     char cpf_pesquisa[12];
     int encontrado = 0;
