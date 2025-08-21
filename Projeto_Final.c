@@ -505,6 +505,38 @@ int ler_produtos(Produto produtos[]) {
     return i; 
 }
 
+void salvar_consultas(Consulta consultas[], int total_consultas) {
+    FILE *arq_consultas = fopen("consultas.dat", "w");
+    if (arq_consultas == NULL) {
+        printf("Erro ao abrir o arquivo para escrita.\n");
+        return;
+    }
+    for (int i = 0; i < total_consultas; i++) {
+        fprintf(arq_consultas, "%s;%s;%s;%s;%s;%s\n", 
+                consultas[i].nome_paciente, consultas[i].cpf_paciente, 
+                consultas[i].data, consultas[i].hora, 
+                consultas[i].nome_medico, consultas[i].especialidade);
+    }
+    fclose(arq_consultas);
+}
+
+int ler_consultas(Consulta consultas[]) {
+    FILE *arq_consultas = fopen("consultas.dat", "r");
+    if (arq_consultas == NULL) {
+        return 0; 
+    }
+    int i = 0;
+    while(fscanf(arq_consultas, "%[^;];%[^;];%[^;];%[^;];%[^;];%[^\n]\n", 
+                  consultas[i].nome_paciente, consultas[i].cpf_paciente, 
+                  consultas[i].data, consultas[i].hora, 
+                  consultas[i].nome_medico, consultas[i].especialidade) == 6) {
+        i++;
+    }
+    fclose(arq_consultas);
+    return i; 
+}
+
+
 void modulo_clientes(Cliente clientes[], int* total_clientes) { // MODIFICADO
     int opcao_clientes;
     do {
