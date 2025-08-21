@@ -768,6 +768,43 @@ void alterar_consulta(Consulta consultas[], int total_consultas) {
     getchar();
 }
 
+void excluir_consulta(Consulta consultas[], int* total_consultas) {
+    char cpf_exclusao[12];
+    int encontrado = 0;
+    limpar_tela();
+    printf("----------------------------------------\n");
+    printf("///        Excluir Consulta          ///\n");
+    printf("----------------------------------------\n");
+    printf("Informe o CPF do paciente cuja consulta deseja excluir: ");
+    scanf("%s", cpf_exclusao);
+    while (getchar() != '\n');
+
+    for (int i = 0; i < *total_consultas; i++) {
+        if (strcmp(consultas[i].cpf_paciente, cpf_exclusao) == 0) {
+            char confirmacao;
+            printf("\nConsulta encontrada. Deseja realmente excluir esta consulta (S/N)? ");
+            scanf(" %c", &confirmacao);
+            while (getchar() != '\n');
+            if (confirmacao == 'S' || confirmacao == 's') {
+                for (int j = i; j < *total_consultas - 1; j++) {
+                    consultas[j] = consultas[j + 1];
+                }
+                (*total_consultas)--;
+                printf("\nConsulta excluida com sucesso!\n");
+            } else {
+                printf("\nExclusao cancelada.\n");
+            }
+            encontrado = 1;
+            break;
+        }
+    }
+    if (!encontrado) {
+        printf("\nNenhuma consulta para o CPF %s encontrada.\n", cpf_exclusao);
+    }
+    printf("\nPressione ENTER para voltar...\n");
+    getchar();
+}
+
 void pesquisar_produto(Produto produtos[], int total_produtos) {
     int id_pesquisa;
     int encontrado = 0;
