@@ -418,7 +418,7 @@ void modulo_clientes(void) {
     do {
         TelaMenuClientes();
         scanf("%d", &opcao_clientes);
-        while (getchar() != '\n'); // Limpa o buffer do teclado
+        while (getchar() != '\n'); 
 
         switch (opcao_clientes) {
             case 1:
@@ -453,6 +453,47 @@ void modulo_clientes(void) {
                 break;
         }
     } while (opcao_clientes != 0);
+}
+
+void modulo_consultas(void) {
+    int opcao_consultas;
+    do {
+        TelaMenuConsultas();
+        scanf("%d", &opcao_consultas);
+        while (getchar() != '\n'); // Limpa o buffer do teclado
+
+        switch (opcao_consultas) {
+            case 1:
+                TelaAgendarNovaConsulta();
+                printf("Módulo de Agendar Nova Consulta em desenvolvimento...\n");
+                printf("Pressione ENTER para voltar...\n");
+                getchar();
+                break;
+            case 2:
+                printf("Módulo de Pesquisar Consultas em desenvolvimento...\n");
+                printf("Pressione ENTER para voltar...\n");
+                getchar();
+                break;
+            case 3:
+                TelaGerenciarAgendamentos();
+                printf("Módulo de Gerenciar Agendamentos em desenvolvimento...\n");
+                printf("Pressione ENTER para voltar...\n");
+                getchar();
+                break;
+            case 4:
+                TelaGerarRelatorios();
+                printf("Módulo de Gerar Relatórios em desenvolvimento...\n");
+                printf("Pressione ENTER para voltar...\n");
+                getchar();
+                break;
+            case 0:
+                break;
+            default:
+                printf("\nOpção inválida. Pressione ENTER para tentar novamente.\n");
+                getchar();
+                break;
+        }
+    } while (opcao_consultas != 0);
 }
 
 void modulo_estoque(void) {
