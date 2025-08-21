@@ -974,33 +974,30 @@ void modulo_consultas(Consulta consultas[], int* total_consultas) {
                 while (getchar() != '\n');
 
                 (*total_consultas)++;
-                printf("\nConsulta agendada com sucesso! Pressione ENTER para voltar...\n");
-                getchar();
+                printf("\nConsulta agendada com sucesso!\n");
+                press_enter_to_continue();
                 break;
             case 2:
                 pesquisar_consulta(consultas, *total_consultas);
                 break;
             case 3:
-                TelaGerenciarAgendamentos();
-                printf("Módulo de Gerenciar Agendamentos em desenvolvimento...\n");
-                printf("Pressione ENTER para voltar...\n");
-                getchar();
+                gerenciar_agendamentos(consultas, total_consultas);
                 break;
             case 4:
                 TelaGerarRelatorios();
-                printf("Módulo de Gerar Relatórios em desenvolvimento...\n");
-                printf("Pressione ENTER para voltar...\n");
-                getchar();
+                printf("Modulo de Gerar Relatorios em desenvolvimento...\n");
+                press_enter_to_continue();
                 break;
             case 0:
                 break;
             default:
                 printf("\nOpcao invalida. Pressione ENTER para tentar novamente.\n");
-                getchar();
+                press_enter_to_continue();
                 break;
         }
     } while (opcao_consultas != 0);
 }
+
 
 void modulo_estoque(Produto produtos[], int* total_produtos) {
     int opcao_estoque;
