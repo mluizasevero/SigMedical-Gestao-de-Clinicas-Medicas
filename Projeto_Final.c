@@ -852,8 +852,12 @@ void modulo_estoque(Produto produtos[], int* total_produtos) {
     int opcao_estoque;
     do {
         TelaMenuEstoque();
-        scanf("%d", &opcao_estoque);
-        while (getchar() != '\n');
+        if (scanf("%d", &opcao_estoque) != 1) {
+            opcao_estoque = -1; 
+            while (getchar() != '\n'); 
+        } else {
+            while (getchar() != '\n');
+        }
         
         switch (opcao_estoque) {
             case 1:
@@ -863,21 +867,20 @@ void modulo_estoque(Produto produtos[], int* total_produtos) {
                 while (getchar() != '\n');
                 printf("Nome do Produto: ");
                 scanf(" %49[^\n]", produtos[*total_produtos].nome);
+                while (getchar() != '\n');
                 printf("Quantidade: ");
                 scanf("%d", &produtos[*total_produtos].quantidade);
                 while (getchar() != '\n');
                 printf("Data de Validade: ");
                 scanf("%s", produtos[*total_produtos].validade);
+                while (getchar() != '\n');
                 
                 (*total_produtos)++;
                 printf("\nProduto cadastrado com sucesso! Pressione ENTER para voltar...\n");
                 getchar();
                 break;
             case 2:
-                TelaPesquisarProduto();
-                printf("Módulo de Pesquisar Produto em desenvolvimento...\n");
-                printf("Pressione ENTER para voltar...\n");
-                getchar();
+                pesquisar_produto(produtos, *total_produtos);
                 break;
             case 3:
                 TelaGerenciarLotes();
@@ -900,7 +903,7 @@ void modulo_estoque(Produto produtos[], int* total_produtos) {
             case 0:
                 break;
             default:
-                printf("\nOpção inválida. Pressione ENTER para tentar novamente.\n");
+                printf("\nOpcao invalida. Pressione ENTER para tentar novamente.\n");
                 getchar();
                 break;
         }
