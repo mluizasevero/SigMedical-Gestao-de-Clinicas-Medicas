@@ -543,94 +543,31 @@ void finalizar_programa() {
     getchar(); 
 }
 
-void salvar_clientes(Cliente clientes[], int total_clientes) {
-    FILE *arq_clientes = fopen("clientes.dat", "w");
-    if (arq_clientes == NULL) {
-        printf("Erro ao abrir o arquivo para escrita.\n");
-        return;
-    }
+void pesquisar_cliente(Cliente clientes[], int total_clientes) {
+    char cpf_pesquisa[12];
+    int encontrado = 0;
+    TelaPesquisarClientes();
+    printf("Informe o CPF do cliente: ");
+    scanf("%s", cpf_pesquisa);
+    while (getchar() != '\n'); 
+
     for (int i = 0; i < total_clientes; i++) {
-        fprintf(arq_clientes, "%s;%s;%s;%s\n", 
-                clientes[i].cpf, clientes[i].nome, 
-                clientes[i].telefone, clientes[i].email);
+        if (strcmp(clientes[i].cpf, cpf_pesquisa) == 0) {
+            printf("\nCliente encontrado:\n");
+            printf("CPF: %s\n", clientes[i].cpf);
+            printf("Nome: %s\n", clientes[i].nome);
+            printf("Telefone: %s\n", clientes[i].telefone);
+            printf("E-mail: %s\n", clientes[i].email);
+            encontrado = 1;
+            break;
+        }
     }
-    fclose(arq_clientes);
+    if (!encontrado) {
+        printf("\nCliente com CPF %s nao encontrado.\n", cpf_pesquisa);
+    }
+    printf("\nPressione ENTER para voltar...\n");
+    getchar();
 }
-
-int ler_clientes(Cliente clientes[]) {
-    FILE *arq_clientes = fopen("clientes.dat", "r");
-    if (arq_clientes == NULL) {
-        return 0; 
-    }
-    int i = 0;
-    while(fscanf(arq_clientes, "%[^;];%[^;];%[^;];%[^\n]\n", 
-                 clientes[i].cpf, clientes[i].nome, 
-                 clientes[i].telefone, clientes[i].email) == 4) {
-        i++;
-    }
-    fclose(arq_clientes);
-    return i; 
-
-void salvar_produtos(Produto produtos[], int total_produtos) {
-    FILE *arq_produtos = fopen("produtos.dat", "w");
-    if (arq_produtos == NULL) {
-        printf("Erro ao abrir o arquivo para escrita.\n");
-        return;
-    }
-    for (int i = 0; i < total_produtos; i++) {
-        fprintf(arq_produtos, "%d;%s;%d;%s\n", 
-                produtos[i].id, produtos[i].nome, 
-                produtos[i].quantidade, produtos[i].validade);
-    }
-    fclose(arq_produtos);
-}
-
-int ler_produtos(Produto produtos[]) {
-    FILE *arq_produtos = fopen("produtos.dat", "r");
-    if (arq_produtos == NULL) {
-        return 0; 
-    }
-    int i = 0;
-    while(fscanf(arq_produtos, "%d;%[^;];%d;%[^\n]\n", 
-                  &produtos[i].id, produtos[i].nome, 
-                  &produtos[i].quantidade, produtos[i].validade) == 4) {
-        i++;
-    }
-    fclose(arq_produtos);
-    return i; 
-}
-
-void salvar_consultas(Consulta consultas[], int total_consultas) {
-    FILE *arq_consultas = fopen("consultas.dat", "w");
-    if (arq_consultas == NULL) {
-        printf("Erro ao abrir o arquivo para escrita.\n");
-        return;
-    }
-    for (int i = 0; i < total_consultas; i++) {
-        fprintf(arq_consultas, "%s;%s;%s;%s;%s;%s\n", 
-                consultas[i].nome_paciente, consultas[i].cpf_paciente, 
-                consultas[i].data, consultas[i].hora, 
-                consultas[i].nome_medico, consultas[i].especialidade);
-    }
-    fclose(arq_consultas);
-}
-
-int ler_consultas(Consulta consultas[]) {
-    FILE *arq_consultas = fopen("consultas.dat", "r");
-    if (arq_consultas == NULL) {
-        return 0; 
-    }
-    int i = 0;
-    while(fscanf(arq_consultas, "%[^;];%[^;];%[^;];%[^;];%[^;];%[^\n]\n", 
-                  consultas[i].nome_paciente, consultas[i].cpf_paciente, 
-                  consultas[i].data, consultas[i].hora, 
-                  consultas[i].nome_medico, consultas[i].especialidade) == 6) {
-        i++;
-    }
-    fclose(arq_consultas);
-    return i; 
-}
-
 
 void modulo_clientes(Cliente clientes[], int* total_clientes) { // MODIFICADO
     int opcao_clientes;
