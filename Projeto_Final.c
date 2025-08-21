@@ -1,6 +1,38 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+void desenhar_cabecalho_base(void);
+void tela_equipe(void);
+void limpar_tela(void);
+
+void TelaMenuPrincipal(void);
+void TelaMenuFuncionarios(void);
+void TelaMenuClientes(void);
+void TelaMenuConsultas(void);
+void TelaMenuEstoque(void);
+
+void TelaCadastrarFuncionarios(void);
+void TelaPesquisarFuncionarios(void);
+void TelaAlterarFuncionarios(void);
+void TelaExcluirFuncionarios(void);
+void TelaConfirmarExclusao(void);
+void TelaCadastrarClientes(void);
+void TelaPesquisarClientes(void);
+void TelaAlterarClientes(void);
+void TelaExcluirClientes(void);
+void TelaConfirmarExclusaoCliente(void);
+void TelaAgendarNovaConsulta(void);
+void TelaGerenciarAgendamentos(void);
+void TelaGerarRelatorios(void);
+
+void TelaCadastrarProduto(void);
+void TelaPesquisarProduto(void);
+void TelaGerenciarLotes(void);
+void TelaMovimentarEstoque(void);
+void TelaGerarRelatoriosEstoque(void);
+
+void finalizar_programa(void);
+
 // Funções de Cabeçalho e Equipe
 void desenhar_cabecalho_base(void) {
     printf("///////////////////////////////////////////////////////////////////////////////\n");
