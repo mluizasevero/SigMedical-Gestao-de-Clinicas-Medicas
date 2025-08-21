@@ -74,6 +74,95 @@ void excluir_cliente(Cliente clientes[], int* total_clientes);
 void excluir_consulta(Consulta consultas[], int* total_consultas);
 void excluir_produto(Produto produtos[], int* total_produtos);
 
+void salvar_clientes(Cliente clientes[], int total_clientes) {
+    FILE *arq_clientes = fopen("clientes.dat", "w");
+    if (arq_clientes == NULL) {
+        printf("Erro ao abrir o arquivo 'clientes.dat' para escrita.\n");
+        return;
+    }
+    for (int i = 0; i < total_clientes; i++) {
+        fprintf(arq_clientes, "%s;%s;%s;%s\n", 
+                clientes[i].cpf, clientes[i].nome, 
+                clientes[i].telefone, clientes[i].email);
+    }
+    fclose(arq_clientes);
+}
+
+int ler_clientes(Cliente clientes[]) {
+    FILE *arq_clientes = fopen("clientes.dat", "r");
+    if (arq_clientes == NULL) {
+        return 0; 
+    }
+    int i = 0;
+    while(fscanf(arq_clientes, "%[^;];%[^;];%[^;];%[^\n]\n", 
+                 clientes[i].cpf, clientes[i].nome, 
+                 clientes[i].telefone, clientes[i].email) == 4) {
+        i++;
+    }
+    fclose(arq_clientes);
+    return i; 
+}
+
+void salvar_produtos(Produto produtos[], int total_produtos) {
+    FILE *arq_produtos = fopen("produtos.dat", "w");
+    if (arq_produtos == NULL) {
+        printf("Erro ao abrir o arquivo 'produtos.dat' para escrita.\n");
+        return;
+    }
+    for (int i = 0; i < total_produtos; i++) {
+        fprintf(arq_produtos, "%d;%s;%d;%s\n", 
+                produtos[i].id, produtos[i].nome, 
+                produtos[i].quantidade, produtos[i].validade);
+    }
+    fclose(arq_produtos);
+}
+
+int ler_produtos(Produto produtos[]) {
+    FILE *arq_produtos = fopen("produtos.dat", "r");
+    if (arq_produtos == NULL) {
+        return 0; 
+    }
+    int i = 0;
+    while(fscanf(arq_produtos, "%d;%[^;];%d;%[^\n]\n", 
+                 &produtos[i].id, produtos[i].nome, 
+                 &produtos[i].quantidade, produtos[i].validade) == 4) {
+        i++;
+    }
+    fclose(arq_produtos);
+    return i; 
+}
+
+void salvar_consultas(Consulta consultas[], int total_consultas) {
+    FILE *arq_consultas = fopen("consultas.dat", "w");
+    if (arq_consultas == NULL) {
+        printf("Erro ao abrir o arquivo 'consultas.dat' para escrita.\n");
+        return;
+    }
+    for (int i = 0; i < total_consultas; i++) {
+        fprintf(arq_consultas, "%s;%s;%s;%s;%s;%s\n", 
+                consultas[i].nome_paciente, consultas[i].cpf_paciente, 
+                consultas[i].data, consultas[i].hora, 
+                consultas[i].nome_medico, consultas[i].especialidade);
+    }
+    fclose(arq_consultas);
+}
+
+int ler_consultas(Consulta consultas[]) {
+    FILE *arq_consultas = fopen("consultas.dat", "r");
+    if (arq_consultas == NULL) {
+        return 0; 
+    }
+    int i = 0;
+    while(fscanf(arq_consultas, "%[^;];%[^;];%[^;];%[^;];%[^;];%[^\n]\n", 
+                 consultas[i].nome_paciente, consultas[i].cpf_paciente, 
+                 consultas[i].data, consultas[i].hora, 
+                 consultas[i].nome_medico, consultas[i].especialidade) == 6) {
+        i++;
+    }
+    fclose(arq_consultas);
+    return i; 
+}
+
 // Funções de Cabeçalho e Equipe
 void desenhar_cabecalho_base(void) {
     printf("///////////////////////////////////////////////////////////////////////////////\n");
