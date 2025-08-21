@@ -569,6 +569,36 @@ void pesquisar_cliente(Cliente clientes[], int total_clientes) {
     getchar();
 }
 
+void pesquisar_consulta(Consulta consultas[], int total_consultas) {
+    char cpf_pesquisa[12];
+    int encontrado = 0;
+    limpar_tela();
+    printf("----------------------------------------\n");
+    printf("///       Pesquisar Consulta         ///\n");
+    printf("----------------------------------------\n");
+    printf("Informe o CPF do paciente: ");
+    scanf("%s", cpf_pesquisa);
+    while (getchar() != '\n'); 
+
+    for (int i = 0; i < total_consultas; i++) {
+        if (strcmp(consultas[i].cpf_paciente, cpf_pesquisa) == 0) {
+            printf("\nConsulta encontrada:\n");
+            printf("Nome do Paciente: %s\n", consultas[i].nome_paciente);
+            printf("CPF: %s\n", consultas[i].cpf_paciente);
+            printf("Data: %s\n", consultas[i].data);
+            printf("Hora: %s\n", consultas[i].hora);
+            printf("Medico: %s\n", consultas[i].nome_medico);
+            printf("Especialidade: %s\n", consultas[i].especialidade);
+            encontrado = 1;
+        }
+    }
+    if (!encontrado) {
+        printf("\nConsulta para o CPF %s nao encontrada.\n", cpf_pesquisa);
+    }
+    printf("\nPressione ENTER para voltar...\n");
+    getchar();
+}
+
 void modulo_clientes(Cliente clientes[], int* total_clientes) { // MODIFICADO
     int opcao_clientes;
     do {
