@@ -682,6 +682,37 @@ void pesquisar_consulta(Consulta consultas[], int total_consultas) {
     getchar();
 }
 
+void relatorio_consultas_medico(Consulta consultas[], int total_consultas) {
+    char nome_medico_pesquisa[50];
+    int encontrado = 0;
+    limpar_tela();
+    printf("----------------------------------------\n");
+    printf("///  Consultas por Medico  ///\n");
+    printf("----------------------------------------\n");
+    printf("Informe o nome do medico para o relatorio: ");
+    scanf(" %49[^\n]", nome_medico_pesquisa);
+    while (getchar() != '\n');
+
+    printf("\nRelatorio de Consultas para o Medico %s:\n", nome_medico_pesquisa);
+    printf("----------------------------------------\n");
+
+    for (int i = 0; i < total_consultas; i++) {
+        if (strcmp(consultas[i].nome_medico, nome_medico_pesquisa) == 0) {
+            printf("Paciente: %s\n", consultas[i].nome_paciente);
+            printf("Data: %s\n", consultas[i].data);
+            printf("Hora: %s\n", consultas[i].hora);
+            printf("Especialidade: %s\n", consultas[i].especialidade);
+            printf("----------------------------------------\n");
+            encontrado = 1;
+        }
+    }
+    if (!encontrado) {
+        printf("Nenhuma consulta encontrada para este medico.\n");
+    }
+    printf("\nPressione ENTER para voltar...\n");
+    getchar();
+}
+
 void gerenciar_agendamentos(Consulta consultas[], int* total_consultas) {
     int opcao;
     do {
