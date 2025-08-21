@@ -77,6 +77,11 @@ void excluir_consulta(Consulta consultas[], int* total_consultas);
 void pesquisar_produto(Produto produtos[], int total_produtos);
 void movimentar_estoque(Produto produtos[], int total_produtos);
 
+void press_enter_to_continue(void) {
+    printf("\nPressione ENTER para voltar...");
+    getchar();
+}
+
 void salvar_clientes(Cliente clientes[], int total_clientes) {
     FILE *arq_clientes = fopen("clientes.dat", "w");
     if (arq_clientes == NULL) {
