@@ -925,10 +925,7 @@ void modulo_clientes(Cliente clientes[], int* total_clientes) {
                 pesquisar_cliente(clientes, *total_clientes);
                 break;
             case 3:
-                TelaAlterarClientes();
-                printf("Módulo de Alterar Clientes em desenvolvimento...\n");
-                printf("Pressione ENTER para voltar...\n");
-                getchar();
+                alterar_cliente(clientes, *total_clientes);
                 break;
             case 4:
                 excluir_cliente(clientes, total_clientes);
