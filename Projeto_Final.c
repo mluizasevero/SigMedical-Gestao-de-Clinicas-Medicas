@@ -413,6 +413,49 @@ void finalizar_programa() {
     getchar(); 
 }
 
+void modulo_estoque(void) {
+    int opcao_estoque;
+    do {
+        TelaMenuEstoque();
+        scanf("%d", &opcao_estoque);
+        while (getchar() != '\n');
+        
+        switch (opcao_estoque) {
+            case 1:
+                TelaCadastrarProduto();
+                printf("Pressione ENTER para voltar...\n");
+                getchar();
+                break;
+            case 2:
+                TelaPesquisarProduto();
+                printf("Pressione ENTER para voltar...\n");
+                getchar();
+                break;
+            case 3:
+                TelaGerenciarLotes();
+                printf("Pressione ENTER para voltar...\n");
+                getchar();
+                break;
+            case 4:
+                TelaMovimentarEstoque();
+                printf("Pressione ENTER para voltar...\n");
+                getchar();
+                break;
+            case 5:
+                TelaGerarRelatoriosEstoque();
+                printf("Pressione ENTER para voltar...\n");
+                getchar();
+                break;
+            case 0:
+                break;
+            default:
+                printf("\nOpção inválida. Pressione ENTER para tentar novamente.\n");
+                getchar();
+                break;
+        }
+    } while (opcao_estoque != 0);
+}
+
 int main() {
     TelaMenuEstoque();
     return 0;
