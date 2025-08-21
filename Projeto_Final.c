@@ -595,51 +595,39 @@ void modulo_estoque(void) {
     } while (opcao_estoque != 0);
 }
 
-int ler_clientes(Cliente clientes[]) {
-    FILE *arq_clientes = fopen("clientes.dat", "r");
-    if (arq_clientes == NULL) {
-        return 0; // arquivo não existe, retorna 0 clientes
-    }
-    int i = 0;
-    while(fscanf(arq_clientes, "%[^;];%[^;];%[^;];%[^\n]\n", 
-                 clientes[i].cpf, clientes[i].nome, 
-                 clientes[i].telefone, clientes[i].email) == 4) {
-        i++;
-    }
-    fclose(arq_clientes);
-    return i; 
-}
-
 int main() {
-    int opcao_principal;
-    do {
-        TelaMenuPrincipal();
-        scanf("%d", &opcao_principal);
-        while (getchar() != '\n'); 
-        
-        switch (opcao_principal) {
-            case 1:
-                modulo_clientes();
-                break;
-            case 2:
-                modulo_funcionarios();
-                break;
-            case 3:
-                modulo_consultas();
-                break;
-            case 4:
-                modulo_estoque();
-                break;
-            case 0:
-                finalizar_programa();
-                break;
-            default:
-                printf("\nOpção inválida. Pressione ENTER para tentar novamente.\n");
-                getchar();
-                break;
-        }
-    } while (opcao_principal != 0);
+    int opcao_principal;
+    Cliente clientes[100]; // capacidade para 100 clientes
+    int total_clientes = ler_clientes(clientes); // carrega os dados ao iniciar
 
-    return 0;
+    do {
+        TelaMenuPrincipal();
+        scanf("%d", &opcao_principal);
+        while (getchar() != '\n'); 
+        
+        switch (opcao_principal) {
+            case 1:
+                modulo_clientes(clientes, &total_clientes); // MODIFICADO
+                break;
+            case 2:
+                modulo_funcionarios();
+                break;
+            case 3:
+                modulo_consultas();
+                break;
+            case 4:
+                modulo_estoque();
+                break;
+            case 0:
+                salvar_clientes(clientes, total_clientes); // Salva os dados ao sair
+                finalizar_programa();
+                break;
+            default:
+                printf("\nOpção inválida. Pressione ENTER para tentar novamente.\n");
+                getchar();
+                break;
+        }
+    } while (opcao_principal != 0);
 
+    return 0;
 }
