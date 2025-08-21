@@ -67,12 +67,15 @@ void modulo_estoque(Produto produtos[], int* total_produtos);
 void modulo_funcionarios();
 
 void pesquisar_cliente(Cliente clientes[], int total_clientes);
-void pesquisar_consulta(Consulta consultas[], int total_consultas);
-void pesquisar_produto(Produto produtos[], int total_produtos);
-
+void alterar_cliente(Cliente clientes[], int total_clientes);
 void excluir_cliente(Cliente clientes[], int* total_clientes);
+
+void pesquisar_consulta(Consulta consultas[], int total_consultas);
+void alterar_consulta(Consulta consultas[], int total_consultas);
 void excluir_consulta(Consulta consultas[], int* total_consultas);
-void excluir_produto(Produto produtos[], int* total_produtos);
+
+void pesquisar_produto(Produto produtos[], int total_produtos);
+void movimentar_estoque(Produto produtos[], int total_produtos);
 
 void salvar_clientes(Cliente clientes[], int total_clientes) {
     FILE *arq_clientes = fopen("clientes.dat", "w");
