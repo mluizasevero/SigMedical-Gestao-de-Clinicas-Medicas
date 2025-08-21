@@ -790,33 +790,41 @@ void modulo_consultas(Consulta consultas[], int* total_consultas) {
     int opcao_consultas;
     do {
         TelaMenuConsultas();
-        scanf("%d", &opcao_consultas);
-        while (getchar() != '\n'); 
+        if (scanf("%d", &opcao_consultas) != 1) {
+            opcao_consultas = -1; 
+            while (getchar() != '\n'); 
+        } else {
+            while (getchar() != '\n'); 
+        }
 
         switch (opcao_consultas) {
             case 1:
                 TelaAgendarNovaConsulta();
                 printf("Nome do Paciente: ");
                 scanf(" %49[^\n]", consultas[*total_consultas].nome_paciente);
+                while (getchar() != '\n');
                 printf("CPF do Paciente: ");
                 scanf("%s", consultas[*total_consultas].cpf_paciente);
+                while (getchar() != '\n');
                 printf("Data (dd/mm/aaaa): ");
                 scanf("%s", consultas[*total_consultas].data);
+                while (getchar() != '\n');
                 printf("Hora (hh:mm): ");
                 scanf("%s", consultas[*total_consultas].hora);
+                while (getchar() != '\n');
                 printf("Nome do Medico: ");
                 scanf(" %49[^\n]", consultas[*total_consultas].nome_medico);
+                while (getchar() != '\n');
                 printf("Especialidade: ");
                 scanf(" %49[^\n]", consultas[*total_consultas].especialidade);
+                while (getchar() != '\n');
 
                 (*total_consultas)++;
                 printf("\nConsulta agendada com sucesso! Pressione ENTER para voltar...\n");
                 getchar();
                 break;
             case 2:
-                printf("Módulo de Pesquisar Consultas em desenvolvimento...\n");
-                printf("Pressione ENTER para voltar...\n");
-                getchar();
+                pesquisar_consulta(consultas, *total_consultas);
                 break;
             case 3:
                 TelaGerenciarAgendamentos();
@@ -833,13 +841,12 @@ void modulo_consultas(Consulta consultas[], int* total_consultas) {
             case 0:
                 break;
             default:
-                printf("\nOpção inválida. Pressione ENTER para tentar novamente.\n");
+                printf("\nOpcao invalida. Pressione ENTER para tentar novamente.\n");
                 getchar();
                 break;
         }
     } while (opcao_consultas != 0);
 }
-
 
 void modulo_estoque(Produto produtos[], int* total_produtos) {
     int opcao_estoque;
