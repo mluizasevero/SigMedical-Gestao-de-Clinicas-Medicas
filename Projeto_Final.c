@@ -599,6 +599,32 @@ void pesquisar_consulta(Consulta consultas[], int total_consultas) {
     getchar();
 }
 
+void pesquisar_produto(Produto produtos[], int total_produtos) {
+    int id_pesquisa;
+    int encontrado = 0;
+    TelaPesquisarProduto();
+    printf("Informe o ID do produto: ");
+    scanf("%d", &id_pesquisa);
+    while (getchar() != '\n');
+
+    for (int i = 0; i < total_produtos; i++) {
+        if (produtos[i].id == id_pesquisa) {
+            printf("\nProduto encontrado:\n");
+            printf("ID: %d\n", produtos[i].id);
+            printf("Nome: %s\n", produtos[i].nome);
+            printf("Quantidade: %d\n", produtos[i].quantidade);
+            printf("Validade: %s\n", produtos[i].validade);
+            encontrado = 1;
+            break;
+        }
+    }
+    if (!encontrado) {
+        printf("\nProduto com ID %d nao encontrado.\n", id_pesquisa);
+    }
+    printf("\nPressione ENTER para voltar...\n");
+    getchar();
+}
+
 void modulo_clientes(Cliente clientes[], int* total_clientes) { // MODIFICADO
     int opcao_clientes;
     do {
