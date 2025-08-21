@@ -588,19 +588,31 @@ void modulo_clientes(Cliente clientes[], int* total_clientes) { // MODIFICADO
     } while (opcao_clientes != 0);
 }
 
-
-void modulo_consultas(void) {
+void modulo_consultas(Consulta consultas[], int* total_consultas) { 
     int opcao_consultas;
     do {
         TelaMenuConsultas();
         scanf("%d", &opcao_consultas);
-        while (getchar() != '\n'); // Limpa o buffer do teclado
+        while (getchar() != '\n'); 
 
         switch (opcao_consultas) {
             case 1:
                 TelaAgendarNovaConsulta();
-                printf("Módulo de Agendar Nova Consulta em desenvolvimento...\n");
-                printf("Pressione ENTER para voltar...\n");
+                printf("Nome do Paciente: ");
+                scanf(" %49[^\n]", consultas[*total_consultas].nome_paciente);
+                printf("CPF do Paciente: ");
+                scanf("%s", consultas[*total_consultas].cpf_paciente);
+                printf("Data (dd/mm/aaaa): ");
+                scanf("%s", consultas[*total_consultas].data);
+                printf("Hora (hh:mm): ");
+                scanf("%s", consultas[*total_consultas].hora);
+                printf("Nome do Medico: ");
+                scanf(" %49[^\n]", consultas[*total_consultas].nome_medico);
+                printf("Especialidade: ");
+                scanf(" %49[^\n]", consultas[*total_consultas].especialidade);
+
+                (*total_consultas)++;
+                printf("\nConsulta agendada com sucesso! Pressione ENTER para voltar...\n");
                 getchar();
                 break;
             case 2:
@@ -629,6 +641,7 @@ void modulo_consultas(void) {
         }
     } while (opcao_consultas != 0);
 }
+
 
 void modulo_estoque(void) {
     int opcao_estoque;
