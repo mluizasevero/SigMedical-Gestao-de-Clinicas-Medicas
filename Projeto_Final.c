@@ -166,7 +166,7 @@ int ler_consultas(Consulta consultas[]) {
     return i; 
 }
 
-// Funções de Cabeçalho e Equipe
+// Funções de cabeçalho e equipe
 void desenhar_cabecalho_base(void) {
     printf("///////////////////////////////////////////////////////////////////////////////\n");
     printf("///                                                                         ///\n");
@@ -545,6 +545,20 @@ void finalizar_programa() {
     
     getchar(); 
 }
+
+void TelaCadastrarClientes() { limpar_tela(); printf("----------------------------------------\n///         Cadastrar Cliente        ///\n----------------------------------------\n"); }
+void TelaPesquisarClientes() { limpar_tela(); printf("----------------------------------------\n///        Pesquisar Cliente         ///\n----------------------------------------\n"); }
+void TelaAlterarClientes() { limpar_tela(); printf("----------------------------------------\n///         Alterar Cliente          ///\n----------------------------------------\n"); }
+void TelaExcluirClientes() { limpar_tela(); printf("----------------------------------------\n///         Excluir Cliente          ///\n----------------------------------------\n"); }
+void TelaConfirmarExclusaoCliente() { limpar_tela(); printf("----------------------------------------\n///       Confirmar Exclusao?        ///\n----------------------------------------\n///      1. Sim (S/s)                ///\n///      2. Nao (N/n)                ///\n----------------------------------------\n>>> Escolha a opcao desejada: "); }
+void TelaAgendarNovaConsulta() { limpar_tela(); printf("----------------------------------------\n///     Agendar Nova Consulta        ///\n----------------------------------------\n"); }
+void TelaGerenciarAgendamentos() { limpar_tela(); printf("----------------------------------------\n///    Gerenciar Agendamentos        ///\n----------------------------------------\n"); }
+void TelaGerarRelatorios() { limpar_tela(); printf("----------------------------------------\n///        Gerar Relatorios          ///\n----------------------------------------\n"); }
+void TelaCadastrarProduto() { limpar_tela(); printf("----------------------------------------\n///       Cadastrar Produto          ///\n----------------------------------------\n"); }
+void TelaPesquisarProduto() { limpar_tela(); printf("----------------------------------------\n///        Pesquisar Produto         ///\n----------------------------------------\n"); }
+void TelaGerenciarLotes() { limpar_tela(); printf("----------------------------------------\n///       Gerenciar Lotes            ///\n----------------------------------------\n"); }
+void TelaMovimentarEstoque() { limpar_tela(); printf("----------------------------------------\n///      Movimentar Estoque          ///\n----------------------------------------\n"); }
+void TelaGerarRelatoriosEstoque() { limpar_tela(); printf("----------------------------------------\n///       Gerar Relatorios           ///\n----------------------------------------\n"); }
 
 void pesquisar_cliente(Cliente clientes[], int total_clientes) {
     char cpf_pesquisa[12];
