@@ -1014,48 +1014,53 @@ void modulo_estoque(Produto produtos[], int* total_produtos) {
             case 1:
                 TelaCadastrarProduto();
                 printf("ID do Produto: ");
-                scanf("%d", &produtos[*total_produtos].id);
+                if (scanf("%d", &produtos[*total_produtos].id) != 1) {
+                    printf("\nEntrada invalida. Use apenas numeros.\n");
+                    while (getchar() != '\n');
+                    press_enter_to_continue();
+                    break;
+                }
                 while (getchar() != '\n');
                 printf("Nome do Produto: ");
                 scanf(" %49[^\n]", produtos[*total_produtos].nome);
                 while (getchar() != '\n');
                 printf("Quantidade: ");
-                scanf("%d", &produtos[*total_produtos].quantidade);
+                if (scanf("%d", &produtos[*total_produtos].quantidade) != 1) {
+                    printf("\nEntrada invalida. Use apenas numeros.\n");
+                    while (getchar() != '\n');
+                    press_enter_to_continue();
+                    break;
+                }
                 while (getchar() != '\n');
                 printf("Data de Validade: ");
                 scanf("%s", produtos[*total_produtos].validade);
                 while (getchar() != '\n');
                 
                 (*total_produtos)++;
-                printf("\nProduto cadastrado com sucesso! Pressione ENTER para voltar...\n");
-                getchar();
+                printf("\nProduto cadastrado com sucesso!\n");
+                press_enter_to_continue();
                 break;
             case 2:
                 pesquisar_produto(produtos, *total_produtos);
                 break;
             case 3:
                 TelaGerenciarLotes();
-                printf("Módulo de Gerenciar Lotes em desenvolvimento...\n");
-                printf("Pressione ENTER para voltar...\n");
-                getchar();
+                printf("Modulo de Gerenciar Lotes em desenvolvimento...\n");
+                press_enter_to_continue();
                 break;
             case 4:
-                TelaMovimentarEstoque();
-                printf("Módulo de Movimentar Estoque em desenvolvimento...\n");
-                printf("Pressione ENTER para voltar...\n");
-                getchar();
+                movimentar_estoque(produtos, *total_produtos);
                 break;
             case 5:
                 TelaGerarRelatoriosEstoque();
-                printf("Módulo de Gerar Relatórios em desenvolvimento...\n");
-                printf("Pressione ENTER para voltar...\n");
-                getchar();
+                printf("Modulo de Gerar Relatorios em desenvolvimento...\n");
+                press_enter_to_continue();
                 break;
             case 0:
                 break;
             default:
                 printf("\nOpcao invalida. Pressione ENTER para tentar novamente.\n");
-                getchar();
+                press_enter_to_continue();
                 break;
         }
     } while (opcao_estoque != 0);
