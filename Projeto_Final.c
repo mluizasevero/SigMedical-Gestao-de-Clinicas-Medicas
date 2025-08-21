@@ -16,6 +16,9 @@ typedef struct {
     char validade[11];
 } Produto;
 
+void salvar_clientes(Cliente clientes[], int total_clientes);
+int ler_clientes(Cliente clientes[]);
+
 void desenhar_cabecalho_base(void);
 void tela_equipe(void);
 void limpar_tela(void);
@@ -470,8 +473,6 @@ void modulo_clientes(void) {
     } while (opcao_clientes != 0);
 }
 
-void salvar_clientes(Cliente clientes[], int total_clientes);
-int ler_clientes(Cliente clientes[]);
 
 void modulo_consultas(void) {
     int opcao_consultas;
@@ -555,6 +556,36 @@ void modulo_estoque(void) {
                 break;
         }
     } while (opcao_estoque != 0);
+}
+
+// funções para manipulação de arquivos
+void salvar_clientes(Cliente clientes[], int total_clientes) {
+    FILE *arq_clientes = fopen("clientes.dat", "w");
+    if (arq_clientes == NULL) {
+        printf("Erro ao abrir o arquivo para escrita.\n");
+        return;
+    }
+    for (int i = 0; i < total_clientes; i++) {
+        fprintf(arq_clientes, "%s;%s;%s;%s\n", 
+                clientes[i].cpf, clientes[i].nome, 
+                clientes[i].telefone, clientes[i].email);
+    }
+    fclose(arq_clientes);
+}
+
+int ler_clientes(Cliente clientes[]) {
+    FILE *arq_clientes = fopen("clientes.dat", "r");
+    if (arq_clientes == NULL) {
+        return 0; // arquivo não existe, retorna 0 clientes
+    }
+    int i = 0;
+    while(fscanf(arq_clientes, "%[^;];%[^;];%[^;];%[^\n]\n", 
+                 clientes[i].cpf, clientes[i].nome, 
+                 clientes[i].telefone, clientes[i].email) == 4) {
+        i++;
+    }
+    fclose(arq_clientes);
+    return i; // retorna o número total de clientes lidos
 }
 
 int main() {
