@@ -2,12 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "clientes.h"
-#include "consultas.h"
-#include "estoque.h"
-#include "movimentacao.h"
-#include "utils.h"
-#include "funcionarios.h" 
+#include "src/clientes.h"
+#include "src/consultas.h"
+#include "src/estoque.h"
+#include "src/movimentacao.h"
+#include "src/utils.h"
+#include "src/funcionarios.h"
 
 int main() {
     int opcao_principal;
@@ -17,7 +17,7 @@ int main() {
     Produto produtos[100];
     int total_produtos = ler_produtos(produtos);
 
-    Consulta consultas[100];
+    Consulta consultas[100]; 
     int total_consultas = ler_consultas(consultas);
     
     Movimentacao movimentacoes[1000];
