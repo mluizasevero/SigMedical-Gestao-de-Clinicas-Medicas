@@ -27,3 +27,10 @@ Sistema de clínica médica: Sistema em linguagem C desenvolvido para a discipli
 # Como executar
 1. Baixe ou clone o repositório.
 2. Compile o código C.
+
+# Criado por:
+Thiago Gomes de Oliveira
+thiago.oliveira.712@ufrn.edu.br
+
+Maria Luiza Severo de Lima
+maria.severo.063@ufrn.edu.br
