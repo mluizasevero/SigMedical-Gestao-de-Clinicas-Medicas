@@ -34,3 +34,6 @@ thiago.oliveira.712@ufrn.edu.br
 
 Maria Luiza Severo de Lima
 maria.severo.063@ufrn.edu.br
+
+Marcus Vinicius de Souza Azevedo
+infobasicifrn2017marcusv@gmail.com
