@@ -40,3 +40,11 @@ infobasicifrn2017marcusv@gmail.com
 
 # referencias
 https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.sqlshack.com%2Fworking-with-json-data-in-python%2F&psig=AOvVaw2b99UDV1hNxHfhSo7a_1Ho&ust=1758740782030000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCKijxI_K748DFQAAAAAdAAAAABBH
+
+# To do
+1. Refatorar o README.md
+2. Adicionar módulo de funcionários
+3. Trocar o for pelo while
+4. Consertar o Makefile
+5. Transformar os arquivos em Json
+6. Ler os arquivos Json
