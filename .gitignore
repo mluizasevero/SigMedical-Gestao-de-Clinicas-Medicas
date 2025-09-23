@@ -1,5 +1,7 @@
 # Prerequisites
 *.d
+*.dat
+sigmedical
 
 # Object files
 *.o
