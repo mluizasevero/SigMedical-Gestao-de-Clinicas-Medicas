@@ -1,7 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 #include <ctype.h>
 #include "utils.h"
+
+void criar_pasta_data(void) {
+    #ifdef _WIN32
+        #include <direct.h>
+        _mkdir("data");
+    #else
+        mkdir("data", 0755);
+    #endif
+}
 
 void desenhar_cabecalho_base(void) {
     printf("///////////////////////////////////////////////////////////////////////////////\n");

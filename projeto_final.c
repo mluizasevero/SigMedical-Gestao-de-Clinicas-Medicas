@@ -46,6 +46,7 @@ int main() {
                 modulo_estoque(produtos, &total_produtos, movimentacoes, &total_movimentacoes);
                 break;
             case 0:
+                criar_pasta_data();
                 salvar_clientes(clientes, total_clientes);
                 salvar_produtos(produtos, total_produtos);
                 salvar_consultas(consultas, total_consultas);

@@ -4,6 +4,16 @@
 #include "consultas.h"
 #include "utils.h"
 
+#ifdef _WIN32
+    #include <direct.h> 
+    #define PATH_SEPARATOR "\\"
+#else
+    #define PATH_SEPARATOR "/"
+#endif
+
+#define DATA_DIR "data"
+#define CONSULTAS_FILE DATA_DIR PATH_SEPARATOR "consultas.dat"
+
 void agendar_consulta(Consulta consultas[], int* total_consultas) {
     TelaAgendarNovaConsulta();
     if (*total_consultas < 100) {
@@ -42,7 +52,7 @@ void agendar_consulta(Consulta consultas[], int* total_consultas) {
 }
 
 void salvar_consultas(Consulta consultas[], int total_consultas) {
-    FILE *arq_consultas = fopen("consultas.dat", "w");
+    FILE *arq_consultas = fopen(CONSULTAS_FILE, "w");
     if (arq_consultas == NULL) {
         printf("Erro ao abrir o arquivo 'consultas.dat' para escrita.\n");
         return;
@@ -58,7 +68,7 @@ void salvar_consultas(Consulta consultas[], int total_consultas) {
 }
 
 int ler_consultas(Consulta consultas[]) {
-    FILE *arq_consultas = fopen("consultas.dat", "r");
+    FILE *arq_consultas = fopen(CONSULTAS_FILE, "r");
     if (arq_consultas == NULL) {
         return 0;
     }

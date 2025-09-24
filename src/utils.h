@@ -1,6 +1,8 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+void criar_pasta_data(void);
+
 void TelaMenuPrincipal();
 void TelaCadastrarClientes();
 void TelaPesquisarClientes();

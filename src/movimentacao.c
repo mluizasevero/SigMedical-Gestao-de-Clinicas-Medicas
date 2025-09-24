@@ -5,8 +5,18 @@
 #include "movimentacao.h"
 #include "utils.h"
 
+#ifdef _WIN32
+    #include <direct.h> 
+    #define PATH_SEPARATOR "\\"
+#else
+    #define PATH_SEPARATOR "/"
+#endif
+
+#define DATA_DIR "data"
+#define MOVIMENTACOES_FILE DATA_DIR PATH_SEPARATOR "movimentacoes.dat"
+
 int ler_movimentacoes(Movimentacao movimentacoes[]) {
-    FILE *arquivo = fopen("movimentacoes.dat", "r");
+    FILE *arquivo = fopen(MOVIMENTACOES_FILE, "r");
     if (arquivo == NULL) {
         return 0; 
     }
@@ -43,7 +53,7 @@ void registrar_movimentacao(int id_produto, const char* tipo_mov, int quantidade
 }
 
 void salvar_movimentacoes(Movimentacao movimentacoes[], int total_movimentacoes) {
-    FILE *arquivo = fopen("movimentacoes.dat", "w");
+    FILE *arquivo = fopen(MOVIMENTACOES_FILE, "w");
     if (arquivo == NULL) {
         printf("Erro ao abrir o arquivo 'movimentacoes.dat' para escrita.\n");
         return;

@@ -1,6 +1,7 @@
 # Prerequisites
 *.d
 *.dat
+/data
 sig*
 
 # Object files
