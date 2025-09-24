@@ -15,7 +15,7 @@ CFLAGS = -Wall -std=c11 -Isrc
 
 
 $(TARGET): $(OBJ)
-	$(CC) $(OBJ) Projeto_Final.c -o $(TARGET)
+	$(CC) $(OBJ) projeto_final.c -o $(TARGET)
 
 
 %.o: src/%.c
