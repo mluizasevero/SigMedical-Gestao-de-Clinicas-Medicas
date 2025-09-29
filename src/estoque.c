@@ -6,6 +6,15 @@
 #include "utils.h"
 #include "movimentacao.h" 
 
+#ifdef _WIN32
+    #include <direct.h> 
+    #define PATH_SEPARATOR "\\"
+#else
+    #define PATH_SEPARATOR "/"
+#endif
+
+#define DATA_DIR "data"
+#define PRODUTOS_FILE DATA_DIR PATH_SEPARATOR "produtos.dat"
 
 void cadastrar_produto(Produto produtos[], int* total_produtos) {
     TelaCadastrarProduto(); 
@@ -35,7 +44,7 @@ void cadastrar_produto(Produto produtos[], int* total_produtos) {
 }
 
 void salvar_produtos(Produto produtos[], int total_produtos) {
-    FILE *arq_produtos = fopen("produtos.dat", "w");
+    FILE *arq_produtos = fopen(PRODUTOS_FILE, "w");
     if (arq_produtos == NULL) {
         printf("Erro ao abrir o arquivo 'produtos.dat' para escrita.\n");
         return;
@@ -49,7 +58,7 @@ void salvar_produtos(Produto produtos[], int total_produtos) {
 }
 
 int ler_produtos(Produto produtos[]) {
-    FILE *arq_produtos = fopen("produtos.dat", "r");
+    FILE *arq_produtos = fopen(PRODUTOS_FILE, "r");
     if (arq_produtos == NULL) {
         return 0;
     }

@@ -4,6 +4,15 @@
 #include "clientes.h"
 #include "utils.h"
 
+#ifdef _WIN32
+    #include <direct.h> 
+    #define PATH_SEPARATOR "\\"
+#else
+    #define PATH_SEPARATOR "/"
+#endif
+
+#define DATA_DIR "data"
+#define CLIENTES_FILE DATA_DIR PATH_SEPARATOR "clientes.dat"
 
 void cadastrar_cliente(Cliente clientes[], int* total_clientes) {
     if (*total_clientes < 100) {
@@ -128,7 +137,7 @@ void excluir_cliente(Cliente clientes[], int* total_clientes) {
 }
 
 void salvar_clientes(Cliente clientes[], int total_clientes) {
-    FILE *arq_clientes = fopen("clientes.dat", "w");
+    FILE *arq_clientes = fopen(CLIENTES_FILE, "w");
     if (arq_clientes == NULL) {
         printf("Erro ao abrir o arquivo 'clientes.dat' para escrita.\n");
         return;
@@ -142,7 +151,7 @@ void salvar_clientes(Cliente clientes[], int total_clientes) {
 }
 
 int ler_clientes(Cliente clientes[]) {
-    FILE *arq_clientes = fopen("clientes.dat", "r");
+    FILE *arq_clientes = fopen(CLIENTES_FILE, "r");
     if (arq_clientes == NULL) {
         return 0;
     }
