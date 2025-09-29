@@ -55,11 +55,11 @@ Esse comando usa o `gcc` para compilar e gerar um executável chamado `sig_medic
 - Atualizar informações de produtos
 - Remover produtos do estoque
   
-# Funcionários
-- Cadastrar funcionários
-- Pesquisar funcionários
-- Alterar funcionários
-- Excluir funcionários
+# Médicos
+- Cadastrar médicos
+- Pesquisar médicos
+- Alterar médicos
+- Excluir médicos
 
 # Clientes
 - Cadastrar clientes
@@ -85,9 +85,9 @@ infobasicifrn2017marcusv@gmail.com
 https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.sqlshack.com%2Fworking-with-json-data-in-python%2F&psig=AOvVaw2b99UDV1hNxHfhSo7a_1Ho&ust=1758740782030000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCKijxI_K748DFQAAAAAdAAAAABBH
 
 # To do
-1. Refatorar o README.md
-2. Adicionar módulo de funcionários
-3. Trocar o for pelo while
-4. Consertar o Makefile
+1. Refatorar o README.md (ok!)
+2. Adicionar módulo de funcionários (ok!)
+3. Trocar o for pelo while (ok!)
+4. Consertar o Makefile (ok!)
 5. Transformar os arquivos em Json
 6. Ler os arquivos Json
