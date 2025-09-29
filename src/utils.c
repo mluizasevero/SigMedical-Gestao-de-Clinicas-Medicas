@@ -12,7 +12,7 @@ void desenhar_cabecalho_base(void) {
     printf("///              Disciplina DCT1106 -- Programacao                          ///\n");
     printf("///                                                                         ///\n");
     printf("///      Projeto SigMedical :: Sistema de Gestao de Clinicas Medicas        ///\n");
-    printf("///      Developed by Maria Luiza Severo and Thiago Gomes de Oliveira       ///\n");
+    printf("///      Developed by Maria Luiza Severo, Thiago Gomes de Oliveira and Marcus Vinicius      ///\n");
     printf("///                                                                         ///\n");
     printf("///////////////////////////////////////////////////////////////////////////////\n");
 }
@@ -23,6 +23,9 @@ void tela_equipe(void) {
         "///                                                                         ///\n"
         "///      Maria Luiza Severo                                                 ///\n"
         "///      E-mail: maria.severo.063@ufrn.edu.br                               ///\n"
+        "///                                                                         ///\n"
+        "///      Marcus Vinicius de Souza Azevedo                                   ///\n"
+        "///      Email: infobasicifrn2017marcusv@gmail.com                          ///\n"
         "///                                                                         ///\n"
         "///      Thiago Gomes de Oliveira                                           ///\n"
         "///      E-mail: Thiago.oliveira712@ufrn.edu.br                             ///";
@@ -45,34 +48,36 @@ void press_enter_to_continue(void) {
 void TelaMenuPrincipal() {
     system("cls");
     printf("----------------------------------------\n");
-    printf("///          MENU PRINCIPAL          ///\n");
+    printf("///           MENU PRINCIPAL           ///\n");
     printf("----------------------------------------\n");
-    printf("///                                  ///\n");
-    printf("///      1. Modulo Clientes          ///\n");
-    printf("///      2. Modulo Funcionarios      ///\n");
-    printf("///      3. Modulo Consultas         ///\n");
-    printf("///      4. Modulo Estoque           ///\n");
-    printf("///      0. Sair                     ///\n");
-    printf("///                                  ///\n");
+    printf("///                                    ///\n");
+    printf("///   1. Modulo Clientes               ///\n");
+    printf("///   2. Modulo Medicos                ///\n");
+    printf("///   3. Modulo Consultas              ///\n");
+    printf("///   4. Modulo Estoque                ///\n");
+    printf("///   0. Sair                          ///\n");
+    printf("///                                    ///\n");
     printf("----------------------------------------\n");
     printf(">>> Escolha a opcao desejada: ");
 }
 
-void TelaMenuFuncionarios() {
+
+void TelaMenuMedicos() {
     system("cls");
     printf("----------------------------------------\n");
-    printf("///        Modulo Funcionarios       ///\n");
+    printf("///            Modulo Medicos          ///\n"); 
     printf("----------------------------------------\n");
-    printf("///                                  ///\n");
-    printf("///   1. Cadastrar Funcionarios      ///\n");
-    printf("///   2. Pesquisar Funcionarios      ///\n");
-    printf("///   3. Alterar Funcionarios        ///\n");
-    printf("///   4. Excluir Funcionarios        ///\n");
-    printf("///   0. Voltar ao Menu Principal    ///\n");
-    printf("///                                  ///\n");
+    printf("///                                    ///\n");
+    printf("///   1. Cadastrar Medico              ///\n"); 
+    printf("///   2. Pesquisar Medico              ///\n"); 
+    printf("///   3. Alterar Medico                ///\n"); 
+    printf("///   4. Excluir Medico                ///\n"); 
+    printf("///   0. Voltar ao Menu Principal      ///\n");
+    printf("///                                    ///\n");
     printf("----------------------------------------\n");
     printf(">>> Escolha a opcao desejada: ");
 }
+
 
 void TelaMenuClientes() {
     system("cls");
@@ -123,56 +128,60 @@ void TelaMenuEstoque() {
     printf(">>> Escolha a opcao desejada: ");
 }
 
-void TelaCadastrarFuncionarios() {
+void TelaCadastrarMedicos() {
     system("cls");
     printf("----------------------------------------\n");
-    printf("///       Cadastrar Funcionario      ///\n");
+    printf("///       Cadastrar Medico      ///\n");
     printf("----------------------------------------\n");
     printf("///                                  ///\n");
-    printf("///   CPF:                           ///\n");
-    printf("///   Nome:                          ///\n");
+    printf("///   ID do Medico:                           ///\n");
+    printf("///   Nome completo:                          ///\n");
+    printf("///   CPF (apenas numeros):                          ///\n");
+    printf("///   Especialidade:                      ///\n");
     printf("///   Telefone:                      ///\n");
-    printf("///   E-mail:                        ///\n");
     printf("///                                  ///\n");
     printf("----------------------------------------\n");
     printf("\n");
 }
 
-void TelaPesquisarFuncionarios() {
+void TelaPesquisarMedicos() {
     system("cls");
     printf("----------------------------------------\n");
-    printf("///       Pesquisar Funcionario      ///\n");
+    printf("///          Pesquisar Medico          ///\n");
     printf("----------------------------------------\n");
-    printf("///                                  ///\n");
-    printf("///   Informe o CPF do funcionario:  ///\n");
-    printf("///                                  ///\n");
+    printf("///                                    ///\n");
+    printf("///   Informe o CPF do medico:         ///\n"); 
+    printf("///                                    ///\n");
     printf("----------------------------------------\n");
     printf("\n");
 }
 
-void TelaAlterarFuncionarios() {
+
+void TelaAlterarMedicos() {
     system("cls");
     printf("----------------------------------------\n");
-    printf("///         Alterar Funcionario      ///\n");
+    printf("///           Alterar Medico           ///\n");
     printf("----------------------------------------\n");
-    printf("///                                  ///\n");
-    printf("///   Informe o CPF do funcionario:  ///\n");
-    printf("///                                  ///\n");
+    printf("///                                    ///\n");
+    printf("///   Informe o CPF do medico:         ///\n");
+    printf("///                                    ///\n");
     printf("----------------------------------------\n");
     printf("\n");
 }
 
-void TelaExcluirFuncionarios() {
+
+void TelaExcluirMedicos() {
     system("cls");
     printf("----------------------------------------\n");
-    printf("///         Excluir Funcionario      ///\n");
+    printf("///           Excluir Medico           ///\n");
     printf("----------------------------------------\n");
-    printf("///                                  ///\n");
-    printf("///   Informe o CPF do funcionario:  ///\n");
-    printf("///                                  ///\n");
+    printf("///                                    ///\n");
+    printf("///   Informe o CPF do medico:         ///\n"); 
+    printf("///                                    ///\n");
     printf("----------------------------------------\n");
     printf("\n");
 }
+
 
 void TelaConfirmarExclusao() {
     system("cls");
@@ -421,3 +430,5 @@ void finalizar_programa() {
     
     getchar();
 }
+
+

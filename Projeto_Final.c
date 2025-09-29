@@ -3,61 +3,74 @@
 #include <string.h>
 
 #include "src/clientes.h"
+#include "src/medicos.h"
 #include "src/consultas.h"
 #include "src/estoque.h"
 #include "src/movimentacao.h"
 #include "src/utils.h"
-#include "src/funcionarios.h"
 
-int main() {
-    int opcao_principal;
-    Cliente clientes[100];
-    int total_clientes = ler_clientes(clientes);
-
-    Produto produtos[100];
-    int total_produtos = ler_produtos(produtos);
-
-    Consulta consultas[100]; 
-    int total_consultas = ler_consultas(consultas);
+int main(void) { 
     
-    Movimentacao movimentacoes[1000];
-    int total_movimentacoes = ler_movimentacoes(movimentacoes);
 
+    Cliente      todos_clientes[100];
+    Medico       todos_medicos[100]; 
+    Consulta     todas_consultas[100];
+    Produto      todos_produtos[100];
+    Movimentacao todas_movimentacoes[1000];
+
+    int total_clientes      = 0;
+    int total_medicos       = 0; 
+    int total_consultas     = 0;
+    int total_produtos      = 0;
+    int total_movimentacoes = 0;
+    
+    total_clientes      = ler_clientes(todos_clientes);
+    total_medicos       = ler_medicos(todos_medicos); 
+    total_consultas     = ler_consultas(todas_consultas);
+    total_produtos      = ler_produtos(todos_produtos);
+    total_movimentacoes = ler_movimentacoes(todas_movimentacoes);
+    
+    printf("Dados carregados com sucesso!\n");
+    press_enter_to_continue(); 
+
+    int opcao_principal;
     do {
-        TelaMenuPrincipal();
-        if (scanf("%d", &opcao_principal) != 1) {
-            opcao_principal = -1;
-            while (getchar() != '\n');
-           } else {
-            while (getchar() != '\n');
-           }
+        TelaMenuPrincipal(); 
+        
 
-            switch (opcao_principal) {
+        scanf("%d", &opcao_principal);
+        while (getchar() != '\n'); 
+
+        switch (opcao_principal) {
             case 1:
-                modulo_clientes(clientes, &total_clientes);
+                modulo_clientes(todos_clientes, &total_clientes);
                 break;
             case 2:
-                modulo_funcionarios();
+                modulo_medicos(todos_medicos, &total_medicos);
                 break;
             case 3:
-                modulo_consultas(consultas, &total_consultas);
+                modulo_consultas(todas_consultas, &total_consultas);
                 break;
             case 4:
-                modulo_estoque(produtos, &total_produtos, movimentacoes, &total_movimentacoes);
+                modulo_estoque(todos_produtos, &total_produtos, todas_movimentacoes, &total_movimentacoes);
                 break;
             case 0:
-                salvar_clientes(clientes, total_clientes);
-                salvar_produtos(produtos, total_produtos);
-                salvar_consultas(consultas, total_consultas);
-                salvar_movimentacoes(movimentacoes, total_movimentacoes);
-                finalizar_programa();
+                printf("\nEncerrando o programa...\n");
                 break;
             default:
-                printf("\nOpcao invalida. Pressione ENTER para continuar.\n");
+                printf("\nOpcao invalida. Pressione ENTER para tentar novamente.\n");
                 press_enter_to_continue();
                 break;
         }
     } while (opcao_principal != 0);
 
+    printf("\nSalvando todas as alteracoes nos arquivos. Por favor, aguarde...\n");
+    salvar_clientes(todos_clientes, total_clientes);
+    salvar_medicos(todos_medicos, total_medicos); 
+    salvar_consultas(todas_consultas, total_consultas);
+    salvar_produtos(todos_produtos, total_produtos);
+    salvar_movimentacoes(todas_movimentacoes, total_movimentacoes);
+    
+    finalizar_programa();
     return 0;
 }

@@ -5,18 +5,24 @@
 #include "movimentacao.h"
 #include "utils.h"
 
+// formato de leitura para CSV
 int ler_movimentacoes(Movimentacao movimentacoes[]) {
-    FILE *arquivo = fopen("movimentacoes.dat", "r");
+    // p/ abrir o arquivo csv no modo de leitura "r"
+    FILE *arquivo = fopen("movimentacoes.csv", "r");
     if (arquivo == NULL) {
-        return 0; 
+        return 0; // retorna 0 movimentações se não existir
     }
 
+
+    char linha_cabecalho[256];
+    fgets(linha_cabecalho, 256, arquivo);
+
     int i = 0;
-    while(fscanf(arquivo, "%d;%[^;];%d;%[^\n]\n",
-                     &movimentacoes[i].id_produto,
-                     movimentacoes[i].tipo,
-                     &movimentacoes[i].quantidade,
-                     movimentacoes[i].data) == 4) {
+    while(fscanf(arquivo, "%d,%[^,],%d,%[^\n]\n",
+                   &movimentacoes[i].id_produto,
+                   movimentacoes[i].tipo,
+                   &movimentacoes[i].quantidade,
+                   movimentacoes[i].data) == 4) {
         i++;
     }
 
@@ -33,8 +39,9 @@ void registrar_movimentacao(int id_produto, const char* tipo_mov, int quantidade
 
         time_t t = time(NULL);
         struct tm tm = *localtime(&t);
-        sprintf(nova.data, "%02d/%02d/%04d", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
+        strftime(nova.data, sizeof(nova.data), "%d/%m/%Y", &tm);
 
+        // add movimentação no array
         movimentacoes[*total_movimentacoes] = nova;
         (*total_movimentacoes)++;
     } else {
@@ -43,22 +50,27 @@ void registrar_movimentacao(int id_produto, const char* tipo_mov, int quantidade
 }
 
 void salvar_movimentacoes(Movimentacao movimentacoes[], int total_movimentacoes) {
-    FILE *arquivo = fopen("movimentacoes.dat", "w");
+    FILE *arquivo = fopen("movimentacoes.csv", "w");
     if (arquivo == NULL) {
-        printf("Erro ao abrir o arquivo 'movimentacoes.dat' para escrita.\n");
+        printf("Erro ao abrir o arquivo 'movimentacoes.csv' para escrita.\n");
         return;
     }
 
-    for (int i = 0; i < total_movimentacoes; i++) {
-        fprintf(arquivo, "%d;%s;%d;%s\n",
+    fprintf(arquivo, "id_produto,tipo,quantidade,data\n");
+
+    int i = 0; 
+    while (i < total_movimentacoes) { 
+        fprintf(arquivo, "%d,%s,%d,%s\n",
                 movimentacoes[i].id_produto,
                 movimentacoes[i].tipo,
                 movimentacoes[i].quantidade,
                 movimentacoes[i].data);
+        i++; 
     }
 
     fclose(arquivo);
 }
+
 
 
 

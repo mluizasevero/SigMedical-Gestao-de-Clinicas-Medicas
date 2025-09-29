@@ -4,9 +4,9 @@
 
 typedef struct {
     int id_produto;
-    char tipo[10];       
+    char tipo[10];      
     int quantidade;
-    char data[11];       
+    char data[11];      
 } Movimentacao;
 
 void registrar_movimentacao(int id_produto, const char* tipo, int quantidade,

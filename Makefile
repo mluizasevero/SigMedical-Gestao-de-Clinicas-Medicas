@@ -1,21 +1,29 @@
-
 TARGET = sigmedical
 
-
-SRC = clientes.c funcionarios.c consultas.c estoque.c movimentacao.c utils.c
-
-
-OBJ = $(SRC:.c=.o)
-
-
 CC = gcc
+CFLAGS = -Wall -g -Isrc
 
 
-CFLAGS = -Wall -std=c11 -Isrc
+SOURCES = projeto_final.c \
+          src/utils.c \
+          src/clientes.c \
+          src/medicos.c \
+          src/consultas.c \
+          src/estoque.c \
+          src/movimentacao.c
 
 
-$(TARGET): $(OBJ)
-	$(CC) $(OBJ) Projeto_Final.c -o $(TARGET)
+OBJECTS = $(SOURCES:.c=.o)
+
+
+all: $(TARGET)
+
+
+$(TARGET): $(OBJECTS)
+	$(CC) $(OBJECTS) -o $(TARGET)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 
 %.o: src/%.c
@@ -23,4 +31,9 @@ $(TARGET): $(OBJ)
 
 
 clean:
-	rm -f $(OBJ) $(TARGET)
+	@echo "Limpando arquivos gerados..."
+ifeq ($(OS),Windows_NT)
+	del /F /Q $(OBJECTS) $(TARGET).exe
+else
+	rm -f $(OBJECTS) $(TARGET)
+endif

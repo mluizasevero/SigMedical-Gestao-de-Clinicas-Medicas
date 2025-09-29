@@ -1,25 +1,34 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-void TelaMenuPrincipal();
-void TelaCadastrarClientes();
-void TelaPesquisarClientes();
-void TelaAlterarClientes();
-void TelaExcluirClientes();
-void TelaMenuClientes();
-void TelaMenuFuncionarios();
-void TelaCadastrarFuncionarios();
-void TelaPesquisarFuncionarios();
-void TelaAlterarFuncionarios();
-void TelaExcluirFuncionarios();
 
 void desenhar_cabecalho_base(void);
 void tela_equipe(void);
+
+
 void limpar_tela(void);
+void press_enter_to_continue(void);
+void maiuscula(char *texto);
 void finalizar_programa(void);
+
+
+void TelaMenuPrincipal(void);
+void TelaMenuMedicos(void);
+void TelaMenuClientes(void);
 void TelaMenuConsultas(void);
 void TelaMenuEstoque(void);
+void TelaMenuMovimentacao(void);
+
+
+void TelaCadastrarMedicos(void);
+void TelaPesquisarMedicos(void);
+void TelaAlterarMedicos(void);
+void TelaExcluirMedicos(void);
 void TelaConfirmarExclusao(void);
+void TelaCadastrarClientes(void);
+void TelaPesquisarClientes(void);
+void TelaAlterarClientes(void);
+void TelaExcluirClientes(void);
 void TelaConfirmarExclusaoCliente(void);
 void TelaAgendarNovaConsulta(void);
 void TelaGerenciarAgendamentos(void);
@@ -29,9 +38,7 @@ void TelaPesquisarProduto(void);
 void TelaGerenciarLotes(void);
 void TelaMovimentarEstoque(void);
 void TelaGerarRelatoriosEstoque(void);
-void press_enter_to_continue(void);
-void TelaGerarRelatoriosMovimentacoes(void); // <-- CORRIGIDO AQUI
-void TelaMenuMovimentacao(void);
-void maiuscula(char *texto);
+void TelaGerarRelatoriosMovimentacoes(void);
 
 #endif
+
