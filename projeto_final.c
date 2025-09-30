@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
 
 #include "src/clientes.h"
 #include "src/medicos.h"
@@ -8,6 +9,19 @@
 #include "src/estoque.h"
 #include "src/movimentacao.h"
 #include "src/utils.h"
+
+int data_existe(const char *caminho) {
+    // A estrutura struct stat é definida na biblioteca <sys/stat.h> e é usada para armazenar informações sobre um arquivo ou diretório
+    struct stat stats;
+    // A função stat verifica as propriedades do caminho especificado em caminho e preenche a estrutura stats com essas informações.
+    // Ela retorna 0 se o caminho existe (seja um arquivo, diretório, ou outro tipo de entrada no sistema de arquivos) 
+    // e um valor negativo (geralmente -1) se o caminho não existe ou houve um erro (ex.: falta de permissão).
+    // O segundo argumento, &stats, é um ponteiro para a estrutura stats, onde as informações serão armazenadas.
+    return stat(caminho, &stats) == 0 && S_ISDIR(stats.st_mode);
+    // stat(caminho, &stats) == 0: Verifica se o caminho existe (a chamada a stat foi bem-sucedida).
+    // S_ISDIR(stats.st_mode): Verifica se o caminho é um diretório. A macro S_ISDIR testa o campo st_mode 
+    // da estrutura stats, que indica o tipo do item (diretório, arquivo, link simbólico, etc.).
+}
 
 int main(void) { 
     
@@ -24,13 +38,18 @@ int main(void) {
     int total_produtos      = 0;
     int total_movimentacoes = 0;
     
-    total_clientes      = ler_clientes(todos_clientes);
-    total_medicos       = ler_medicos(todos_medicos); 
-    total_consultas     = ler_consultas(todas_consultas);
-    total_produtos      = ler_produtos(todos_produtos);
-    total_movimentacoes = ler_movimentacoes(todas_movimentacoes);
+    if (data_existe("./data")) {
+        total_clientes      = ler_clientes(todos_clientes);
+        total_medicos       = ler_medicos(todos_medicos); 
+        total_consultas     = ler_consultas(todas_consultas);
+        total_produtos      = ler_produtos(todos_produtos);
+        total_movimentacoes = ler_movimentacoes(todas_movimentacoes);
+
+        printf("Dados carregados com sucesso!\n");
+    } else {
+        printf("Pasta '/data' nao encontrada. Iniciando com dados vazios.\n");
+    }
     
-    printf("Dados carregados com sucesso!\n");
     press_enter_to_continue(); 
 
     int opcao_principal;

@@ -67,8 +67,6 @@ void salvar_movimentacoes(Movimentacao movimentacoes[], int total_movimentacoes)
         return;
     }
 
-    fprintf(arquivo, "id_produto,tipo,quantidade,data\n");
-
     int i = 0; 
     while (i < total_movimentacoes) { 
         fprintf(arquivo, "%d,%s,%d,%s\n",

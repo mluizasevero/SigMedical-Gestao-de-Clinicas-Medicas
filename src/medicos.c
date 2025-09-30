@@ -45,8 +45,6 @@ void salvar_medicos(Medico medicos[], int total_medicos) {
         return;
     }
 
-    fprintf(arquivo, "id,nome,cpf,especialidade,telefone\n");
-
     int i = 0;
     while (i < total_medicos) {
         fprintf(arquivo, "%d,%s,%s,%s,%s\n",
