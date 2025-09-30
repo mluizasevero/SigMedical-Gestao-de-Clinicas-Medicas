@@ -46,7 +46,7 @@ void tela_equipe(void) {
 }
 
 void limpar_tela(void) {
-    system("cls");
+    system("clear||cls");
 }
 
 void press_enter_to_continue(void) {
@@ -55,7 +55,7 @@ void press_enter_to_continue(void) {
 }
 
 void TelaMenuPrincipal() {
-    system("cls");
+    system("clear||cls");
     printf("----------------------------------------\n");
     printf("///           MENU PRINCIPAL           ///\n");
     printf("----------------------------------------\n");
@@ -72,7 +72,7 @@ void TelaMenuPrincipal() {
 
 
 void TelaMenuMedicos() {
-    system("cls");
+    system("clear||cls");
     printf("----------------------------------------\n");
     printf("///            Modulo Medicos          ///\n"); 
     printf("----------------------------------------\n");
@@ -89,7 +89,7 @@ void TelaMenuMedicos() {
 
 
 void TelaMenuClientes() {
-    system("cls");
+    system("clear||cls");
     printf("----------------------------------------\n");
     printf("///          Modulo Clientes         ///\n");
     printf("----------------------------------------\n");
@@ -105,7 +105,7 @@ void TelaMenuClientes() {
 }
 
 void TelaMenuConsultas() {
-    system("cls");
+    system("clear||cls");
     printf("----------------------------------------\n");
     printf("///        Modulo Consultas          ///\n");
     printf("----------------------------------------\n");
@@ -121,7 +121,7 @@ void TelaMenuConsultas() {
 }
 
 void TelaMenuEstoque() {
-    system("cls");
+    system("clear||cls");
     printf("----------------------------------------\n");
     printf("///          Modulo Estoque          ///\n");
     printf("----------------------------------------\n");
@@ -138,7 +138,7 @@ void TelaMenuEstoque() {
 }
 
 void TelaCadastrarMedicos() {
-    system("cls");
+    system("clear||cls");
     printf("----------------------------------------\n");
     printf("///       Cadastrar Medico      ///\n");
     printf("----------------------------------------\n");
@@ -154,7 +154,7 @@ void TelaCadastrarMedicos() {
 }
 
 void TelaPesquisarMedicos() {
-    system("cls");
+    system("clear||cls");
     printf("----------------------------------------\n");
     printf("///          Pesquisar Medico          ///\n");
     printf("----------------------------------------\n");
@@ -167,7 +167,7 @@ void TelaPesquisarMedicos() {
 
 
 void TelaAlterarMedicos() {
-    system("cls");
+    system("clear||cls");
     printf("----------------------------------------\n");
     printf("///           Alterar Medico           ///\n");
     printf("----------------------------------------\n");
@@ -180,7 +180,7 @@ void TelaAlterarMedicos() {
 
 
 void TelaExcluirMedicos() {
-    system("cls");
+    system("clear||cls");
     printf("----------------------------------------\n");
     printf("///           Excluir Medico           ///\n");
     printf("----------------------------------------\n");
@@ -193,7 +193,7 @@ void TelaExcluirMedicos() {
 
 
 void TelaConfirmarExclusao() {
-    system("cls");
+    system("clear||cls");
     printf("----------------------------------------\n");
     printf("///       Confirmar Exclusao?        ///\n");
     printf("----------------------------------------\n");
@@ -206,7 +206,7 @@ void TelaConfirmarExclusao() {
 }
 
 void TelaCadastrarClientes() {
-    system("cls");
+    system("clear||cls");
     printf("----------------------------------------\n");
     printf("///         Cadastrar Cliente        ///\n");
     printf("----------------------------------------\n");
@@ -221,7 +221,7 @@ void TelaCadastrarClientes() {
 }
 
 void TelaPesquisarClientes() {
-    system("cls");
+    system("clear||cls");
     printf("----------------------------------------\n");
     printf("///         Pesquisar Cliente        ///\n");
     printf("----------------------------------------\n");
@@ -233,7 +233,7 @@ void TelaPesquisarClientes() {
 }
 
 void TelaAlterarClientes() {
-    system("cls");
+    system("clear||cls");
     printf("----------------------------------------\n");
     printf("///           Alterar Cliente        ///\n");
     printf("----------------------------------------\n");
@@ -245,7 +245,7 @@ void TelaAlterarClientes() {
 }
 
 void TelaExcluirClientes() {
-    system("cls");
+    system("clear||cls");
     printf("----------------------------------------\n");
     printf("///           Excluir Cliente        ///\n");
     printf("----------------------------------------\n");
@@ -257,7 +257,7 @@ void TelaExcluirClientes() {
 }
 
 void TelaConfirmarExclusaoCliente() {
-    system("cls");
+    system("clear||cls");
     printf("----------------------------------------\n");
     printf("///        Confirmar Exclusao?       ///\n");
     printf("----------------------------------------\n");
@@ -270,7 +270,7 @@ void TelaConfirmarExclusaoCliente() {
 }
 
 void TelaAgendarNovaConsulta() {
-    system("cls");
+    system("clear||cls");
     printf("----------------------------------------\n");
     printf("///       Agendar Nova Consulta      ///\n");
     printf("----------------------------------------\n");
@@ -287,7 +287,7 @@ void TelaAgendarNovaConsulta() {
 }
 
 void TelaGerenciarAgendamentos() {
-    system("cls");
+    system("clear||cls");
     printf("----------------------------------------\n");
     printf("///       Gerenciar Agendamentos     ///\n");
     printf("----------------------------------------\n");
@@ -302,7 +302,7 @@ void TelaGerenciarAgendamentos() {
 }
 
 void TelaGerarRelatorios() {
-    system("cls");
+    system("clear||cls");
     printf("----------------------------------------\n");
     printf("///         Gerar Relatorios         ///\n");
     printf("----------------------------------------\n");
@@ -318,7 +318,7 @@ void TelaGerarRelatorios() {
 }
 
 void TelaCadastrarProduto() {
-    system("cls");
+    system("clear||cls");
     printf("----------------------------------------\n");
     printf("///         Cadastrar Produto        ///\n");
     printf("----------------------------------------\n");
@@ -333,7 +333,7 @@ void TelaCadastrarProduto() {
 }
 
 void TelaPesquisarProduto() {
-    system("cls");
+    system("clear||cls");
     printf("----------------------------------------\n");
     printf("///         Pesquisar Produto        ///\n");
     printf("----------------------------------------\n");
@@ -347,7 +347,7 @@ void TelaPesquisarProduto() {
 }
 
 void TelaGerenciarLotes() {
-    system("cls");
+    system("clear||cls");
     printf("----------------------------------------\n");
     printf("///         Gerenciar Lotes          ///\n");
     printf("----------------------------------------\n");
@@ -362,7 +362,7 @@ void TelaGerenciarLotes() {
 }
 
 void TelaMovimentarEstoque() {
-    system("cls");
+    system("clear||cls");
     printf("----------------------------------------\n");
     printf("///        Movimentar Estoque        ///\n");
     printf("----------------------------------------\n");
@@ -376,7 +376,7 @@ void TelaMovimentarEstoque() {
 }
 
 void TelaGerarRelatoriosEstoque() {
-    system("cls");
+    system("clear||cls");
     printf("----------------------------------------\n");
     printf("///         Gerar Relatorios         ///\n");
     printf("----------------------------------------\n");
@@ -391,7 +391,7 @@ void TelaGerarRelatoriosEstoque() {
 }
 
 void TelaGerarRelatoriosMovimentacoes(void) {
-    system("cls");
+    system("clear||cls");
     printf("----------------------------------------\n");
     printf("///   Gerar Relatorios Movimentacoes   ///\n");
     printf("----------------------------------------\n");
@@ -405,7 +405,7 @@ void TelaGerarRelatoriosMovimentacoes(void) {
 }
 
 void TelaMenuMovimentacao(void) {
-    system("cls");
+    system("clear||cls");
     printf("----------------------------------------\n");
     printf("///      Modulo de Movimentacao      ///\n");
     printf("----------------------------------------\n");
@@ -427,7 +427,7 @@ void maiuscula(char *texto) {
 
 
 void finalizar_programa() {
-    system("cls");
+    system("clear||cls");
     printf("\n\n");
     printf("////////////////////////////////////////////////////////////////\n");
     printf("///                                                          ///\n");
