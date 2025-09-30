@@ -52,7 +52,6 @@ void limpar_tela(void) {
 void press_enter_to_continue(void) {
     printf("Pressione ENTER para continuar...");
     while(getchar() != '\n'); 
-    getchar(); 
 }
 
 void TelaMenuPrincipal() {
