@@ -3,6 +3,7 @@
 *.dat
 /data
 sig*
+.vscode
 
 # Object files
 *.o

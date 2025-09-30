@@ -1,12 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "medicos.h" // novo header
+#include "medicos.h"
 #include "utils.h"
 
-// carrega os dados do arquivo medicos.csv
+#ifdef _WIN32
+    #include <direct.h> 
+    #define PATH_SEPARATOR "\\"
+#else
+    #define PATH_SEPARATOR "/"
+#endif
+
+#define DATA_DIR "data"
+#define MEDICOS_FILE DATA_DIR PATH_SEPARATOR "medicos.csv"
+
 int ler_medicos(Medico medicos[]) {
-    FILE *arquivo = fopen("medicos.csv", "r");
+    FILE *arquivo = fopen(MEDICOS_FILE, "r");
     if (arquivo == NULL) {
         return 0;
     }
@@ -24,9 +33,10 @@ int ler_medicos(Medico medicos[]) {
     return i;
 }
 
-// salvar os dades no arquivo medicos.csv
+
 void salvar_medicos(Medico medicos[], int total_medicos) {
-    FILE *arquivo = fopen("medicos.csv", "w");
+    criar_pasta_data();
+    FILE *arquivo = fopen(MEDICOS_FILE, "w");
     if (arquivo == NULL) {
         printf("Erro ao abrir o arquivo 'medicos.csv'!\n");
         return;
@@ -44,7 +54,7 @@ void salvar_medicos(Medico medicos[], int total_medicos) {
     fclose(arquivo);
 }
 
-// p/ cadastrar um novo médico
+
 void cadastrar_medico(Medico medicos[], int* total_medicos) {
     TelaCadastrarMedicos(); // Função de UI
     if (*total_medicos < 100) {
@@ -60,7 +70,6 @@ void cadastrar_medico(Medico medicos[], int* total_medicos) {
         scanf("%14s", medicos[*total_medicos].cpf);
         while (getchar() != '\n');
 
-        // Pergunta a especialidade em vez do cargo
         printf("Informe a especialidade: ");
         scanf(" %49[^\n]", medicos[*total_medicos].especialidade);
         while (getchar() != '\n');
@@ -77,7 +86,7 @@ void cadastrar_medico(Medico medicos[], int* total_medicos) {
     press_enter_to_continue();
 }
 
-// pesquisar pelo cpf
+
 void pesquisar_medico(Medico medicos[], int total_medicos) {
     TelaPesquisarMedicos();
     char cpf_busca[15];
@@ -93,7 +102,7 @@ void pesquisar_medico(Medico medicos[], int total_medicos) {
             printf("ID: %d\n", medicos[i].id);
             printf("Nome: %s\n", medicos[i].nome);
             printf("CPF: %s\n", medicos[i].cpf);
-            printf("Especialidade: %s\n", medicos[i].especialidade); // Mostra especialidade
+            printf("Especialidade: %s\n", medicos[i].especialidade);
             printf("Telefone: %s\n", medicos[i].telefone);
             printf("---------------------------\n");
             encontrado = 1;
@@ -108,7 +117,7 @@ void pesquisar_medico(Medico medicos[], int total_medicos) {
     press_enter_to_continue();
 }
 
-// alterar dados de um médico
+
 void alterar_medico(Medico medicos[], int total_medicos) {
     TelaAlterarMedicos();
     char cpf_busca[15];
@@ -147,7 +156,7 @@ void alterar_medico(Medico medicos[], int total_medicos) {
     press_enter_to_continue();
 }
 
-// excluir um médico do sistema
+
 void excluir_medico(Medico medicos[], int* total_medicos) {
     TelaExcluirMedicos();
     char cpf_busca[15];
@@ -182,7 +191,7 @@ void excluir_medico(Medico medicos[], int* total_medicos) {
 void modulo_medicos(Medico medicos[], int* total_medicos) {
     int opcao;
     do {
-        TelaMenuMedicos(); // menu de médicos
+        TelaMenuMedicos();
         scanf("%d", &opcao);
         while (getchar() != '\n');
 

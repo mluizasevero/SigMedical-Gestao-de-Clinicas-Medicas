@@ -5,12 +5,20 @@
 #include "movimentacao.h"
 #include "utils.h"
 
-// formato de leitura para CSV
+#ifdef _WIN32
+    #include <direct.h> 
+    #define PATH_SEPARATOR "\\"
+#else
+    #define PATH_SEPARATOR "/"
+#endif
+
+#define DATA_DIR "data"
+#define MOVIMENTACOES_FILE DATA_DIR PATH_SEPARATOR "movimentacoes.csv"
+
 int ler_movimentacoes(Movimentacao movimentacoes[]) {
-    // p/ abrir o arquivo csv no modo de leitura "r"
-    FILE *arquivo = fopen("movimentacoes.csv", "r");
+    FILE *arquivo = fopen(MOVIMENTACOES_FILE, "r");
     if (arquivo == NULL) {
-        return 0; // retorna 0 movimentações se não existir
+        return 0;
     }
 
 
@@ -41,7 +49,6 @@ void registrar_movimentacao(int id_produto, const char* tipo_mov, int quantidade
         struct tm tm = *localtime(&t);
         strftime(nova.data, sizeof(nova.data), "%d/%m/%Y", &tm);
 
-        // add movimentação no array
         movimentacoes[*total_movimentacoes] = nova;
         (*total_movimentacoes)++;
     } else {
@@ -50,7 +57,8 @@ void registrar_movimentacao(int id_produto, const char* tipo_mov, int quantidade
 }
 
 void salvar_movimentacoes(Movimentacao movimentacoes[], int total_movimentacoes) {
-    FILE *arquivo = fopen("movimentacoes.csv", "w");
+    criar_pasta_data();
+    FILE *arquivo = fopen(MOVIMENTACOES_FILE, "w");
     if (arquivo == NULL) {
         printf("Erro ao abrir o arquivo 'movimentacoes.csv' para escrita.\n");
         return;

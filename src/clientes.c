@@ -137,6 +137,7 @@ void excluir_cliente(Cliente clientes[], int* total_clientes) {
 }
 
 void salvar_clientes(Cliente clientes[], int total_clientes) {
+    criar_pasta_data();
     FILE *arq_clientes = fopen(CLIENTES_FILE, "w");
     if (arq_clientes == NULL) {
         printf("Erro ao abrir o arquivo 'clientes.dat' para escrita.\n");

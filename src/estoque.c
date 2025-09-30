@@ -44,6 +44,7 @@ void cadastrar_produto(Produto produtos[], int* total_produtos) {
 }
 
 void salvar_produtos(Produto produtos[], int total_produtos) {
+    criar_pasta_data();
     FILE *arq_produtos = fopen(PRODUTOS_FILE, "w");
     if (arq_produtos == NULL) {
         printf("Erro ao abrir o arquivo 'produtos.dat' para escrita.\n");

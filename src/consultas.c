@@ -52,6 +52,7 @@ void agendar_consulta(Consulta consultas[], int* total_consultas) {
 }
 
 void salvar_consultas(Consulta consultas[], int total_consultas) {
+    criar_pasta_data();
     FILE *arq_consultas = fopen(CONSULTAS_FILE, "w");
     if (arq_consultas == NULL) {
         printf("Erro ao abrir o arquivo 'consultas.dat' para escrita.\n");

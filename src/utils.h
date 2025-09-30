@@ -4,6 +4,7 @@
 
 void desenhar_cabecalho_base(void);
 void tela_equipe(void);
+void criar_pasta_data(void);
 
 
 void limpar_tela(void);

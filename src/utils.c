@@ -435,9 +435,6 @@ void finalizar_programa() {
     printf("///                                                          ///\n");
     printf("////////////////////////////////////////////////////////////////\n");
     printf("\n");
-    printf("      Pressione ENTER para sair...");
-    
-    getchar();
 }
 
 
