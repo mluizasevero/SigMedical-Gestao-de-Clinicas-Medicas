@@ -17,6 +17,8 @@
 int ler_medicos(Medico medicos[]) {
     FILE *arquivo = fopen(MEDICOS_FILE, "r");
     if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo 'medicos.csv' para leitura.\n");
+        press_enter_to_continue();
         return 0;
     }
 
@@ -38,7 +40,8 @@ void salvar_medicos(Medico medicos[], int total_medicos) {
     criar_pasta_data();
     FILE *arquivo = fopen(MEDICOS_FILE, "w");
     if (arquivo == NULL) {
-        printf("Erro ao abrir o arquivo 'medicos.csv'!\n");
+        printf("Erro ao abrir o arquivo 'medicos.csv' para escrita.\n");
+        press_enter_to_continue();
         return;
     }
 

@@ -18,6 +18,8 @@
 int ler_movimentacoes(Movimentacao movimentacoes[]) {
     FILE *arquivo = fopen(MOVIMENTACOES_FILE, "r");
     if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo 'movimentacoes.csv' para leitura.\n");
+        press_enter_to_continue();
         return 0;
     }
 
@@ -61,6 +63,7 @@ void salvar_movimentacoes(Movimentacao movimentacoes[], int total_movimentacoes)
     FILE *arquivo = fopen(MOVIMENTACOES_FILE, "w");
     if (arquivo == NULL) {
         printf("Erro ao abrir o arquivo 'movimentacoes.csv' para escrita.\n");
+        press_enter_to_continue();
         return;
     }
 

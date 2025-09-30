@@ -56,6 +56,7 @@ void salvar_consultas(Consulta consultas[], int total_consultas) {
     FILE *arq_consultas = fopen(CONSULTAS_FILE, "w");
     if (arq_consultas == NULL) {
         printf("Erro ao abrir o arquivo 'consultas.dat' para escrita.\n");
+        press_enter_to_continue();
         return;
     }
     for (int i = 0; i < total_consultas; i++) {
@@ -71,6 +72,8 @@ void salvar_consultas(Consulta consultas[], int total_consultas) {
 int ler_consultas(Consulta consultas[]) {
     FILE *arq_consultas = fopen(CONSULTAS_FILE, "r");
     if (arq_consultas == NULL) {
+        printf("Erro ao abrir o arquivo 'consultas.dat' para leitura.\n");
+        press_enter_to_continue();
         return 0;
     }
     int i = 0;

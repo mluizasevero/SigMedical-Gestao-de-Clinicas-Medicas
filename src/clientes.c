@@ -141,6 +141,7 @@ void salvar_clientes(Cliente clientes[], int total_clientes) {
     FILE *arq_clientes = fopen(CLIENTES_FILE, "w");
     if (arq_clientes == NULL) {
         printf("Erro ao abrir o arquivo 'clientes.dat' para escrita.\n");
+        press_enter_to_continue();
         return;
     }
     for (int i = 0; i < total_clientes; i++) {
@@ -154,6 +155,8 @@ void salvar_clientes(Cliente clientes[], int total_clientes) {
 int ler_clientes(Cliente clientes[]) {
     FILE *arq_clientes = fopen(CLIENTES_FILE, "r");
     if (arq_clientes == NULL) {
+        printf("Erro ao abrir o arquivo 'clientes.dat' para leitura.\n");
+        press_enter_to_continue();
         return 0;
     }
     int i = 0;

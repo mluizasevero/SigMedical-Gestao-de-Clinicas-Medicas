@@ -48,6 +48,7 @@ void salvar_produtos(Produto produtos[], int total_produtos) {
     FILE *arq_produtos = fopen(PRODUTOS_FILE, "w");
     if (arq_produtos == NULL) {
         printf("Erro ao abrir o arquivo 'produtos.dat' para escrita.\n");
+        press_enter_to_continue();
         return;
     }
     for (int i = 0; i < total_produtos; i++) {
@@ -61,6 +62,8 @@ void salvar_produtos(Produto produtos[], int total_produtos) {
 int ler_produtos(Produto produtos[]) {
     FILE *arq_produtos = fopen(PRODUTOS_FILE, "r");
     if (arq_produtos == NULL) {
+        printf("Erro ao abrir o arquivo 'produtos.dat' para leitura.\n");
+        press_enter_to_continue();
         return 0;
     }
     int i = 0;
