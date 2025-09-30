@@ -54,6 +54,10 @@ int main(void) {
             case 4:
                 modulo_estoque(todos_produtos, &total_produtos, todas_movimentacoes, &total_movimentacoes);
                 break;
+            case 5:
+                tela_equipe();
+                press_enter_to_continue();
+                break;
             case 0:
                 printf("\nEncerrando o programa...\n");
                 break;

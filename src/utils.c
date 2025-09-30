@@ -22,12 +22,11 @@ void desenhar_cabecalho_base(void) {
     printf("///              Disciplina DCT1106 -- Programacao                          ///\n");
     printf("///                                                                         ///\n");
     printf("///      Projeto SigMedical :: Sistema de Gestao de Clinicas Medicas        ///\n");
-    printf("///      Developed by Maria Luiza Severo, Thiago Gomes de Oliveira and Marcus Vinicius      ///\n");
     printf("///                                                                         ///\n");
-    printf("///////////////////////////////////////////////////////////////////////////////\n");
 }
 
 void tela_equipe(void) {
+    system("clear||cls");
     const char* info =
         "///      Este projeto foi desenvolvido por:                                 ///\n"
         "///                                                                         ///\n"
@@ -64,6 +63,7 @@ void TelaMenuPrincipal() {
     printf("///   2. Modulo Medicos                ///\n");
     printf("///   3. Modulo Consultas              ///\n");
     printf("///   4. Modulo Estoque                ///\n");
+    printf("///   5. Sobre Nós                     ///\n");
     printf("///   0. Sair                          ///\n");
     printf("///                                    ///\n");
     printf("----------------------------------------\n");
