@@ -261,7 +261,7 @@ void relatorio_consultas_por_periodo(Consulta consultas[], int total_consultas) 
     
     limpar_tela();
     printf("----------------------------------------\n");
-    printf("///   Consultas por Periodo   ///\n");
+    printf("///   Consultas por Período   ///\n");
     printf("----------------------------------------\n");
     printf("Informe a data de inicio (dd/mm/aaaa): ");
     scanf("%10s", data_inicio_str);
@@ -273,7 +273,7 @@ void relatorio_consultas_por_periodo(Consulta consultas[], int total_consultas) 
     sscanf(data_inicio_str, "%d/%d/%d", &dia_inicio, &mes_inicio, &ano_inicio);
     sscanf(data_fim_str, "%d/%d/%d", &dia_fim, &mes_fim, &ano_fim);
 
-    printf("\nRelatorio de Consultas no Periodo de %s a %s:\n", data_inicio_str, data_fim_str);
+    printf("\nRelatorio de Consultas no Período de %s a %s:\n", data_inicio_str, data_fim_str);
     printf("----------------------------------------\n");
 
     for (int i = 0; i < total_consultas; i++) {
@@ -320,7 +320,7 @@ void relatorio_consultas_por_periodo(Consulta consultas[], int total_consultas) 
     }
 
     if (!encontrado) {
-        printf("Nenhuma consulta encontrada neste periodo.\n");
+        printf("Nenhuma consulta encontrada neste Período.\n");
     }
     press_enter_to_continue();
 }
