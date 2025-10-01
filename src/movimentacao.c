@@ -16,8 +16,8 @@
 #define MOVIMENTACOES_FILE DATA_DIR PATH_SEPARATOR "movimentacoes.csv"
 
 int ler_movimentacoes(Movimentacao movimentacoes[]) {
-    FILE *arquivo = fopen(MOVIMENTACOES_FILE, "r");
-    if (arquivo == NULL) {
+    FILE *arq_movimentacoes = fopen(MOVIMENTACOES_FILE, "r");
+    if (arq_movimentacoes == NULL) {
         printf("Erro ao abrir o arquivo 'movimentacoes.csv' para leitura.\n");
         press_enter_to_continue();
         return 0;
@@ -25,10 +25,10 @@ int ler_movimentacoes(Movimentacao movimentacoes[]) {
 
 
     char linha_cabecalho[256];
-    fgets(linha_cabecalho, 256, arquivo);
+    fgets(linha_cabecalho, 256, arq_movimentacoes);
 
     int i = 0;
-    while(fscanf(arquivo, "%d,%[^,],%d,%[^\n]\n",
+    while(fscanf(arq_movimentacoes, "%d,%[^,],%d,%[^\n]\n",
                    &movimentacoes[i].id_produto,
                    movimentacoes[i].tipo,
                    &movimentacoes[i].quantidade,
@@ -36,7 +36,7 @@ int ler_movimentacoes(Movimentacao movimentacoes[]) {
         i++;
     }
 
-    fclose(arquivo);
+    fclose(arq_movimentacoes);
     return i;
 }
 

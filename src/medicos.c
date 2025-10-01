@@ -38,8 +38,8 @@ int ler_medicos(Medico medicos[]) {
 
 void salvar_medicos(Medico medicos[], int total_medicos) {
     criar_pasta_data();
-    FILE *arquivo = fopen(MEDICOS_FILE, "w");
-    if (arquivo == NULL) {
+    FILE *arq_medicos = fopen(MEDICOS_FILE, "w");
+    if (arq_medicos == NULL) {
         printf("Erro ao abrir o arquivo 'medicos.csv' para escrita.\n");
         press_enter_to_continue();
         return;
@@ -47,12 +47,12 @@ void salvar_medicos(Medico medicos[], int total_medicos) {
 
     int i = 0;
     while (i < total_medicos) {
-        fprintf(arquivo, "%d,%s,%s,%s,%s\n",
+        fprintf(arq_medicos, "%d,%s,%s,%s,%s\n",
                 medicos[i].id, medicos[i].nome, medicos[i].cpf,
                 medicos[i].especialidade, medicos[i].telefone);
         i++;
     }
-    fclose(arquivo);
+    fclose(arq_medicos);
 }
 
 

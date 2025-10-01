@@ -12,7 +12,7 @@
 #endif
 
 #define DATA_DIR "data"
-#define CLIENTES_FILE DATA_DIR PATH_SEPARATOR "clientes.dat"
+#define CLIENTES_FILE DATA_DIR PATH_SEPARATOR "clientes.csv"
 
 void cadastrar_cliente(Cliente clientes[], int* total_clientes) {
     if (*total_clientes < 100) {
@@ -140,12 +140,12 @@ void salvar_clientes(Cliente clientes[], int total_clientes) {
     criar_pasta_data();
     FILE *arq_clientes = fopen(CLIENTES_FILE, "w");
     if (arq_clientes == NULL) {
-        printf("Erro ao abrir o arquivo 'clientes.dat' para escrita.\n");
+        printf("Erro ao abrir o arquivo 'clientes.csv' para escrita.\n");
         press_enter_to_continue();
         return;
     }
     for (int i = 0; i < total_clientes; i++) {
-        fprintf(arq_clientes, "%s;%s;%s;%s\n",
+        fprintf(arq_clientes, "%s,%s,%s,%s\n",
                 clientes[i].cpf, clientes[i].nome,
                 clientes[i].telefone, clientes[i].email);
     }
@@ -155,12 +155,12 @@ void salvar_clientes(Cliente clientes[], int total_clientes) {
 int ler_clientes(Cliente clientes[]) {
     FILE *arq_clientes = fopen(CLIENTES_FILE, "r");
     if (arq_clientes == NULL) {
-        printf("Erro ao abrir o arquivo 'clientes.dat' para leitura.\n");
+        printf("Erro ao abrir o arquivo 'clientes.csv' para leitura.\n");
         press_enter_to_continue();
         return 0;
     }
     int i = 0;
-    while(fscanf(arq_clientes, "%[^;];%[^;];%[^;];%[^\n]\n",
+    while(fscanf(arq_clientes, "%[^,],%[^,],%[^,],%[^\n]\n",
                   clientes[i].cpf, clientes[i].nome,
                   clientes[i].telefone, clientes[i].email) == 4) {
         i++;

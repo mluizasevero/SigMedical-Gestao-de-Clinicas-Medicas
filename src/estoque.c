@@ -14,7 +14,7 @@
 #endif
 
 #define DATA_DIR "data"
-#define PRODUTOS_FILE DATA_DIR PATH_SEPARATOR "produtos.dat"
+#define PRODUTOS_FILE DATA_DIR PATH_SEPARATOR "produtos.csv"
 
 void cadastrar_produto(Produto produtos[], int* total_produtos) {
     TelaCadastrarProduto(); 
@@ -47,12 +47,12 @@ void salvar_produtos(Produto produtos[], int total_produtos) {
     criar_pasta_data();
     FILE *arq_produtos = fopen(PRODUTOS_FILE, "w");
     if (arq_produtos == NULL) {
-        printf("Erro ao abrir o arquivo 'produtos.dat' para escrita.\n");
+        printf("Erro ao abrir o arquivo 'produtos.csv' para escrita.\n");
         press_enter_to_continue();
         return;
     }
     for (int i = 0; i < total_produtos; i++) {
-        fprintf(arq_produtos, "%d;%s;%d;%s\n",
+        fprintf(arq_produtos, "%d,%s,%d,%s\n",
                 produtos[i].id, produtos[i].nome,
                 produtos[i].quantidade, produtos[i].validade);
     }
@@ -62,12 +62,12 @@ void salvar_produtos(Produto produtos[], int total_produtos) {
 int ler_produtos(Produto produtos[]) {
     FILE *arq_produtos = fopen(PRODUTOS_FILE, "r");
     if (arq_produtos == NULL) {
-        printf("Erro ao abrir o arquivo 'produtos.dat' para leitura.\n");
+        printf("Erro ao abrir o arquivo 'produtos.csv' para leitura.\n");
         press_enter_to_continue();
         return 0;
     }
     int i = 0;
-    while(fscanf(arq_produtos, "%d;%[^;];%d;%[^\n]\n",
+    while(fscanf(arq_produtos, "%d,%[^,],%d,%[^\n]\n",
                   &produtos[i].id, produtos[i].nome,
                   &produtos[i].quantidade, produtos[i].validade) == 4) {
         i++;

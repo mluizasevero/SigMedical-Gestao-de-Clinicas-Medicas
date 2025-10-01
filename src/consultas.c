@@ -12,7 +12,7 @@
 #endif
 
 #define DATA_DIR "data"
-#define CONSULTAS_FILE DATA_DIR PATH_SEPARATOR "consultas.dat"
+#define CONSULTAS_FILE DATA_DIR PATH_SEPARATOR "consultas.csv"
 
 void agendar_consulta(Consulta consultas[], int* total_consultas) {
     TelaAgendarNovaConsulta();
@@ -55,12 +55,12 @@ void salvar_consultas(Consulta consultas[], int total_consultas) {
     criar_pasta_data();
     FILE *arq_consultas = fopen(CONSULTAS_FILE, "w");
     if (arq_consultas == NULL) {
-        printf("Erro ao abrir o arquivo 'consultas.dat' para escrita.\n");
+        printf("Erro ao abrir o arquivo 'consultas.csv' para escrita.\n");
         press_enter_to_continue();
         return;
     }
     for (int i = 0; i < total_consultas; i++) {
-        fprintf(arq_consultas, "%s;%s;%s;%s;%s;%s;%s\n",
+        fprintf(arq_consultas, "%s,%s,%s,%s,%s,%s,%s\n",
                 consultas[i].nome_paciente, consultas[i].cpf_paciente,
                 consultas[i].data, consultas[i].hora,
                 consultas[i].nome_medico, consultas[i].especialidade,
@@ -72,12 +72,12 @@ void salvar_consultas(Consulta consultas[], int total_consultas) {
 int ler_consultas(Consulta consultas[]) {
     FILE *arq_consultas = fopen(CONSULTAS_FILE, "r");
     if (arq_consultas == NULL) {
-        printf("Erro ao abrir o arquivo 'consultas.dat' para leitura.\n");
+        printf("Erro ao abrir o arquivo 'consultas.csv' para leitura.\n");
         press_enter_to_continue();
         return 0;
     }
     int i = 0;
-    while(fscanf(arq_consultas, "%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^\n]\n",
+    while(fscanf(arq_consultas, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]\n",
                 consultas[i].nome_paciente, consultas[i].cpf_paciente,
                 consultas[i].data, consultas[i].hora,
                 consultas[i].nome_medico, consultas[i].especialidade,
