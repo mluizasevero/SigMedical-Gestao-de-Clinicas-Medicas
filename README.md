@@ -82,4 +82,4 @@ Marcus Vinicius de Souza Azevedo
 infobasicifrn2017marcusv@gmail.com
 
 # To do
-1. Botar para salvar em binário
+1. Tudo em ordem (por enquanto)

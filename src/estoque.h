@@ -1,6 +1,5 @@
 #ifndef ESTOQUE_H
 #define ESTOQUE_H
-
 #include "movimentacao.h"
 
 typedef struct {
@@ -8,24 +7,19 @@ typedef struct {
     char nome[50];
     int quantidade;
     char validade[11]; 
+    int ativo;         
 } Produto;
 
 
-int ler_produtos(Produto produtos[]);
-void salvar_produtos(Produto produtos[], int total);
-void modulo_estoque(Produto produtos[], int *total, Movimentacao movimentacoes[], int *total_movimentacoes);
+void modulo_estoque(void);
+void cadastrar_produto(void);
+void pesquisar_produto(void);
+void gerenciar_lotes(void); 
+void movimentar_estoque(void);
 
 
-void cadastrar_produto(Produto produtos[], int *total_produtos);
-void pesquisar_produto(Produto produtos[], int total_produtos);
-void gerenciar_lotes(Produto produtos[], int total_produtos);
-void movimentar_estoque(Produto produtos[], int total_produtos, Movimentacao movimentacoes[], int *total_movimentacoes);
-
-
-void gerar_relatorios_estoque(Produto produtos[], int total_produtos);
-void relatorio_itens_falta(Produto produtos[], int total_produtos);
-void relatorio_validade_proxima(Produto produtos[], int total_produtos);
-void relatorio_historico_movimentacoes(void);
+void gerar_relatorios_estoque(void);
+void relatorio_itens_falta(void);
+void relatorio_validade_proxima(void);
 
 #endif
-

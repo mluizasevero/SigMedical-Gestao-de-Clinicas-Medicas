@@ -53,89 +53,94 @@ void press_enter_to_continue(void) {
     while(getchar() != '\n'); 
 }
 
-void TelaMenuPrincipal() {
-    system("clear||cls");
+void TelaMenuPrincipal(void) {
+    limpar_tela();
     printf("----------------------------------------\n");
-    printf("///          MENU PRINCIPAL          ///\n");
+    printf("///         MENU PRINCIPAL           ///\n");
     printf("----------------------------------------\n");
     printf("///                                  ///\n");
-    printf("///   1. Módulo Clientes             ///\n");
-    printf("///   2. Módulo Médicos              ///\n");
-    printf("///   3. Módulo Consultas            ///\n");
-    printf("///   4. Módulo Estoque              ///\n");
-    printf("///   5. Sobre Nós                   ///\n");
+    printf("///   1. Modulo Clientes             ///\n");
+    printf("///   2. Modulo Medicos              ///\n");
+    printf("///   3. Modulo Consultas            ///\n");
+    printf("///   4. Modulo Estoque              ///\n");
+    printf("///   5. Sobre a Equipe              ///\n");
     printf("///   0. Sair                        ///\n");
     printf("///                                  ///\n");
     printf("----------------------------------------\n");
-    printf(">>> Escolha a opção desejada: ");
+    printf(">>> Escolha a opcao desejada: ");
 }
 
 
-void TelaMenuMedicos() {
-    system("clear||cls");
+void TelaMenuMedicos(void) {
+    limpar_tela();
     printf("----------------------------------------\n");
-    printf("///           Módulo Médicos         ///\n"); 
+    printf("///        Modulo de Medicos         ///\n");
     printf("----------------------------------------\n");
     printf("///                                  ///\n");
-    printf("///   1. Cadastrar Médico            ///\n"); 
-    printf("///   2. Pesquisar Médico            ///\n"); 
-    printf("///   3. Alterar Médico              ///\n"); 
-    printf("///   4. Excluir Médico              ///\n"); 
+    printf("///   1. Cadastrar Medico            ///\n");
+    printf("///   2. Pesquisar Medico            ///\n");
+    printf("///   3. Alterar Medico              ///\n");
+    printf("///   4. Excluir Medico              ///\n");
+    printf("///   5. Listar Medicos              ///\n"); // add opção
     printf("///   0. Voltar ao Menu Principal    ///\n");
     printf("///                                  ///\n");
     printf("----------------------------------------\n");
-    printf(">>> Escolha a opção desejada: ");
+    printf(">>> Escolha a opcao desejada: ");
 }
 
 
-void TelaMenuClientes() {
-    system("clear||cls");
+
+void TelaMenuClientes(void) {
+    limpar_tela();
     printf("----------------------------------------\n");
-    printf("///          Módulo Clientes         ///\n");
+    printf("///        Modulo de Clientes        ///\n");
     printf("----------------------------------------\n");
     printf("///                                  ///\n");
-    printf("///   1. Cadastrar Clientes          ///\n");
-    printf("///   2. Pesquisar Clientes          ///\n");
-    printf("///   3. Alterar Clientes            ///\n");
-    printf("///   4. Excluir Clientes            ///\n");
+    printf("///   1. Cadastrar Cliente           ///\n");
+    printf("///   2. Pesquisar Cliente           ///\n");
+    printf("///   3. Alterar Cliente             ///\n");
+    printf("///   4. Excluir Cliente             ///\n");
+    printf("///   5. Listar Clientes             ///\n"); // add opção
     printf("///   0. Voltar ao Menu Principal    ///\n");
     printf("///                                  ///\n");
     printf("----------------------------------------\n");
-    printf(">>> Escolha a opção desejada: ");
+    printf(">>> Escolha a opcao desejada: ");
 }
 
-void TelaMenuConsultas() {
-    system("clear||cls");
+
+void TelaMenuConsultas(void) {
+    limpar_tela();
     printf("----------------------------------------\n");
-    printf("///        Módulo Consultas          ///\n");
+    printf("///        Modulo de Consultas       ///\n");
     printf("----------------------------------------\n");
     printf("///                                  ///\n");
     printf("///   1. Agendar Nova Consulta       ///\n");
     printf("///   2. Pesquisar Consultas         ///\n");
     printf("///   3. Gerenciar Agendamentos      ///\n");
-    printf("///   4. Gerar Relatórios            ///\n");
+    printf("///   4. Gerar Relatorios            ///\n");
     printf("///   0. Voltar ao Menu Principal    ///\n");
     printf("///                                  ///\n");
     printf("----------------------------------------\n");
-    printf(">>> Escolha a opção desejada: ");
+    printf(">>> Escolha a opcao desejada: ");
 }
 
-void TelaMenuEstoque() {
-    system("clear||cls");
+void TelaMenuEstoque(void) {
+    limpar_tela();
     printf("----------------------------------------\n");
-    printf("///          Módulo Estoque          ///\n");
+    printf("///        Modulo de Estoque         ///\n");
     printf("----------------------------------------\n");
     printf("///                                  ///\n");
-    printf("///   1. Cadastrar Produtos          ///\n");
-    printf("///   2. Pesquisar Produtos          ///\n");
-    printf("///   3. Gerenciar Lotes             ///\n");
+    printf("///   1. Cadastrar Produto           ///\n");
+    printf("///   2. Pesquisar Produto           ///\n");
+    printf("///   3. Listar Produtos             ///\n"); // add opção
     printf("///   4. Movimentar Estoque          ///\n");
-    printf("///   5. Gerar Relatórios Estoque    ///\n");
+    printf("///   5. Gerar Relatorios            ///\n");
     printf("///   0. Voltar ao Menu Principal    ///\n");
     printf("///                                  ///\n");
     printf("----------------------------------------\n");
-    printf(">>> Escolha a opção desejada: ");
+    printf(">>> Escolha a opcao desejada: ");
 }
+
 
 void TelaCadastrarMedicos() {
     system("clear||cls");

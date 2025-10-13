@@ -6,183 +6,153 @@
 #include "utils.h"
 #include "movimentacao.h" 
 
-#ifdef _WIN32
-    #include <direct.h> 
-    #define PATH_SEPARATOR "\\"
-#else
-    #define PATH_SEPARATOR "/"
-#endif
-
 #define DATA_DIR "data"
-#define PRODUTOS_FILE DATA_DIR PATH_SEPARATOR "produtos.csv"
+#define PRODUTOS_FILE DATA_DIR "/produtos.dat"
 
-void cadastrar_produto(Produto produtos[], int* total_produtos) {
-    TelaCadastrarProduto(); 
-    if (*total_produtos < 100) {
-        printf("\nInforme o ID do produto: ");
-        scanf("%d", &produtos[*total_produtos].id);
-        while (getchar() != '\n');
+void cadastrar_produto(void) {
+    Produto novo_produto;
+    FILE* arq_produtos;
 
-        printf("Informe o nome do produto: ");
-        scanf(" %49[^\n]", produtos[*total_produtos].nome);
-        while (getchar() != '\n');
+    limpar_tela();
+    printf("----------------------------------------\n");
+    printf("///      Cadastrar Novo Produto    ///\n");
+    printf("----------------------------------------\n");
+    
+    printf("\nInforme o ID unico do produto: ");
+    scanf("%d", &novo_produto.id);
+    while (getchar() != '\n');
 
-        printf("Informe a quantidade: ");
-        scanf("%d", &produtos[*total_produtos].quantidade);
-        while (getchar() != '\n');
+    printf("Informe o nome do produto: ");
+    scanf(" %49[^\n]", novo_produto.nome);
+    while (getchar() != '\n');
 
-        printf("Informe a validade (dd/mm/aaaa): ");
-        scanf("%10s", produtos[*total_produtos].validade);
-        while (getchar() != '\n');
-        
-        (*total_produtos)++;
-        printf("\nProduto cadastrado com sucesso!\n");
-    } else {
-        printf("\nNao e possivel cadastrar mais produtos. Limite atingido.\n");
-    }
-    press_enter_to_continue();
-}
+    printf("Informe a quantidade inicial em estoque: ");
+    scanf("%d", &novo_produto.quantidade);
+    while (getchar() != '\n');
 
-void salvar_produtos(Produto produtos[], int total_produtos) {
-    criar_pasta_data();
-    FILE *arq_produtos = fopen(PRODUTOS_FILE, "w");
+    printf("Informe a data de validade (dd/mm/aaaa): ");
+    scanf("%10s", novo_produto.validade);
+    while (getchar() != '\n');
+    
+    novo_produto.ativo = 1; 
+
+    arq_produtos = fopen(PRODUTOS_FILE, "ab");
     if (arq_produtos == NULL) {
-        printf("Erro ao abrir o arquivo 'produtos.csv' para escrita.\n");
+        printf("\nErro ao abrir o arquivo de produtos!\n");
         press_enter_to_continue();
         return;
     }
-    for (int i = 0; i < total_produtos; i++) {
-        fprintf(arq_produtos, "%d,%s,%d,%s\n",
-                produtos[i].id, produtos[i].nome,
-                produtos[i].quantidade, produtos[i].validade);
-    }
+    
+    fwrite(&novo_produto, sizeof(Produto), 1, arq_produtos);
     fclose(arq_produtos);
+
+    printf("\nProduto cadastrado com sucesso no estoque!\n");
+    press_enter_to_continue();
 }
 
-int ler_produtos(Produto produtos[]) {
-    FILE *arq_produtos = fopen(PRODUTOS_FILE, "r");
-    if (arq_produtos == NULL) {
-        printf("Erro ao abrir o arquivo 'produtos.csv' para leitura.\n");
-        press_enter_to_continue();
-        return 0;
-    }
-    int i = 0;
-    while(fscanf(arq_produtos, "%d,%[^,],%d,%[^\n]\n",
-                  &produtos[i].id, produtos[i].nome,
-                  &produtos[i].quantidade, produtos[i].validade) == 4) {
-        i++;
-    }
-    fclose(arq_produtos);
-    return i;
-}
 
-void pesquisar_produto(Produto produtos[], int total_produtos) {
-    int opcao;
+void pesquisar_produto(void) {
     int encontrado = 0;
-    char busca_str[50];
-    int busca_int;
+    int id_busca;
+    Produto produto_lido;
+    FILE* arq_produtos;
 
     limpar_tela();
     printf("----------------------------------------\n");
-    printf("///   Pesquisar Produto   ///\n");
+    printf("///      Pesquisar Produto por ID  ///\n");
     printf("----------------------------------------\n");
-    printf("///   1. Por ID                 ///\n");
-    printf("///   2. Por Nome               ///\n");
-    printf("----------------------------------------\n");
-    printf(">>> Escolha a opcao de pesquisa: ");
-    
-    if (scanf("%d", &opcao) != 1) {
-        opcao = -1;
-        while (getchar() != '\n');
-    } else {
-        while (getchar() != '\n');
-    }
+    printf("Informe o ID do produto: ");
+    scanf("%d", &id_busca);
+    while (getchar() != '\n');
 
-    if (opcao == 1) {
-        printf("Informe o ID do produto: ");
-        scanf("%d", &busca_int);
-        while (getchar() != '\n');
-        for (int i = 0; i < total_produtos; i++) {
-            if (produtos[i].id == busca_int) {
-                printf("\nProduto encontrado:\n");
-                printf("ID: %d\n", produtos[i].id);
-                printf("Nome: %s\n", produtos[i].nome);
-                printf("Quantidade: %d\n", produtos[i].quantidade);
-                printf("Validade: %s\n", produtos[i].validade);
-                encontrado = 1;
-                break;
-            }
-        }
-    } else if (opcao == 2) {
-        printf("Informe o Nome do produto: ");
-        scanf(" %49[^\n]", busca_str);
-        while (getchar() != '\n');
-        for (int i = 0; i < total_produtos; i++) {
-            if (strcmp(produtos[i].nome, busca_str) == 0) {
-                printf("\nProduto encontrado:\n");
-                printf("ID: %d\n", produtos[i].id);
-                printf("Nome: %s\n", produtos[i].nome);
-                printf("Quantidade: %d\n", produtos[i].quantidade);
-                printf("Validade: %s\n", produtos[i].validade);
-                encontrado = 1;
-                break;
-            }
-        }
-    } else {
-        printf("Opcao invalida.\n");
+    arq_produtos = fopen(PRODUTOS_FILE, "rb");
+    if (arq_produtos == NULL) {
+        printf("\nNenhum produto cadastrado.\n");
+        press_enter_to_continue();
+        return;
     }
+    
+    while(fread(&produto_lido, sizeof(Produto), 1, arq_produtos)) {
+        if (produto_lido.id == id_busca && produto_lido.ativo == 1) {
+            printf("\n--- Produto Encontrado ---\n");
+            printf("ID: %d\n", produto_lido.id);
+            printf("Nome: %s\n", produto_lido.nome);
+            printf("Quantidade em Estoque: %d\n", produto_lido.quantidade);
+            printf("Validade: %s\n", produto_lido.validade);
+            printf("--------------------------\n");
+            encontrado = 1;
+            break;
+        }
+    }
+    fclose(arq_produtos);
 
     if (!encontrado) {
-        printf("\nProduto nao encontrado.\n");
+        printf("\nProduto com ID %d nao foi encontrado.\n", id_busca);
     }
     press_enter_to_continue();
 }
 
-void movimentar_estoque(Produto produtos[], int total_produtos, Movimentacao movimentacoes[], int* total_movimentacoes) {
+
+void movimentar_estoque(void) {
     int opcao, id, quantidade, encontrado = 0;
+    Produto produto_lido;
+    FILE* arq_produtos;
+    long int pos;
+    
     limpar_tela();
     printf("----------------------------------------\n");
-    printf("///       Movimentar Estoque         ///\n");
+    printf("///      Movimentar Estoque        ///\n");
     printf("----------------------------------------\n");
-    printf("///       1. Entrada de Material     ///\n");
-    printf("///       2. Saida de Material       ///\n");
-    printf("///       0. Voltar                  ///\n");
+    printf("1. Entrada de Material\n");
+    printf("2. Saida de Material\n");
+    printf("0. Voltar\n");
     printf("----------------------------------------\n");
-    printf(">>> Escolha a opcao desejada: ");
-    if (scanf("%d", &opcao) != 1) {
-        opcao = -1;
-        while (getchar() != '\n');
-    } else {
-        while (getchar() != '\n');
-    }
+    printf(">>> Escolha a opcao: ");
+    
+    if (scanf("%d", &opcao) != 1) { opcao = -1; }
+    while (getchar() != '\n');
     
     if (opcao == 1 || opcao == 2) {
-        printf("Informe o ID do produto: ");
+        printf("Informe o ID do produto para movimentar: ");
         scanf("%d", &id);
         while (getchar() != '\n');
         printf("Informe a quantidade: ");
         scanf("%d", &quantidade);
         while (getchar() != '\n');
 
-        for (int i = 0; i < total_produtos; i++) {
-            if (produtos[i].id == id) {
+        arq_produtos = fopen(PRODUTOS_FILE, "r+b");
+        if (arq_produtos == NULL) {
+            printf("\nArquivo de produtos nao encontrado.\n");
+            press_enter_to_continue();
+            return;
+        }
+
+        while(fread(&produto_lido, sizeof(Produto), 1, arq_produtos)) {
+            if (produto_lido.id == id && produto_lido.ativo == 1) {
                 encontrado = 1;
-                if (opcao == 1) {
-                    produtos[i].quantidade += quantidade;
-                    registrar_movimentacao(id, "Entrada", quantidade, movimentacoes, total_movimentacoes);
-                    printf("\nEntrada de %d unidades de %s registrada com sucesso!\n", quantidade, produtos[i].nome);
-                } else {
-                    if (produtos[i].quantidade >= quantidade) {
-                        produtos[i].quantidade -= quantidade;
-                        registrar_movimentacao(id, "Saida", quantidade, movimentacoes, total_movimentacoes);
-                        printf("\nSaida de %d unidades de %s registrada com sucesso!\n", quantidade, produtos[i].nome);
+                pos = ftell(arq_produtos) - sizeof(Produto);
+
+                if (opcao == 1) { // Entrada
+                    produto_lido.quantidade += quantidade;
+                    registrar_movimentacao(id, "Entrada", quantidade);
+                    printf("\nEntrada de %d unidades de '%s' registrada com sucesso!\n", quantidade, produto_lido.nome);
+                } else { // Saída
+                    if (produto_lido.quantidade >= quantidade) {
+                        produto_lido.quantidade -= quantidade;
+                        registrar_movimentacao(id, "Saida", quantidade);
+                        printf("\nSaida de %d unidades de '%s' registrada com sucesso!\n", quantidade, produto_lido.nome);
                     } else {
-                        printf("\nQuantidade insuficiente em estoque.\n");
+                        printf("\nQuantidade insuficiente em estoque. Disponivel: %d\n", produto_lido.quantidade);
                     }
                 }
+                
+                fseek(arq_produtos, pos, SEEK_SET);
+                fwrite(&produto_lido, sizeof(Produto), 1, arq_produtos);
                 break;
             }
         }
+        fclose(arq_produtos);
+
         if (!encontrado) {
             printf("\nProduto com ID %d nao encontrado.\n", id);
         }
@@ -193,173 +163,130 @@ void movimentar_estoque(Produto produtos[], int total_produtos, Movimentacao mov
 }
 
 
-void gerenciar_lotes(Produto produtos[], int total_produtos) {
+void listar_produtos(void) {
+    Produto produto_lido;
+    FILE* arq_produtos;
+    int tem_produto = 0;
+    
     limpar_tela();
-    printf("----------------------------------------\n");
-    printf("///   Gerenciar Lotes (Todos os Produtos)   ///\n");
-    printf("----------------------------------------\n");
-    if (total_produtos == 0) {
+    printf("------------------------------------------------------------------\n");
+    printf("///                  Listagem de Produtos em Estoque             ///\n");
+    printf("------------------------------------------------------------------\n");
+    
+    arq_produtos = fopen(PRODUTOS_FILE, "rb");
+    if (arq_produtos == NULL) {
         printf("Nenhum produto cadastrado no estoque.\n");
-    } else {
-        printf("ID | Nome | Quantidade | Validade \n");
-        printf("---|------------------|------------|-------------\n");
-        for (int i = 0; i < total_produtos; i++) {
-            printf("%-2d | %-18s | %-10d | %s\n",
-                   produtos[i].id, produtos[i].nome,
-                   produtos[i].quantidade, produtos[i].validade);
+        press_enter_to_continue();
+        return;
+    }
+    
+    printf("ID | Nome do Produto        | Quantidade | Validade\n");
+    printf("---|------------------------|------------|----------\n");
+    while(fread(&produto_lido, sizeof(Produto), 1, arq_produtos)) {
+        if (produto_lido.ativo == 1) {
+            printf("%-2d | %-22s | %-10d | %s\n",
+                   produto_lido.id, produto_lido.nome,
+                   produto_lido.quantidade, produto_lido.validade);
+            tem_produto = 1;
         }
+    }
+    fclose(arq_produtos);
+
+    if (!tem_produto) {
+        printf("\nNenhum produto ativo encontrado no estoque.\n");
     }
     press_enter_to_continue();
 }
 
-void relatorio_itens_falta(Produto produtos[], int total_produtos) {
+void relatorio_itens_falta(void) {
+    Produto produto_lido;
+    FILE* arq_produtos;
+    int encontrado = 0;
+    const int LIMITE_MINIMO = 5;
+
     limpar_tela();
     printf("----------------------------------------\n");
-    printf("///   Itens em Falta (Estoque Baixo)   ///\n");
+    printf("///   Itens em Falta (Estoque Baixo) ///\n");
     printf("----------------------------------------\n");
-    int encontrado = 0;
-    int limite = 5;
-    printf("Itens com quantidade igual ou inferior a %d:\n", limite);
+    printf("Itens com quantidade igual ou inferior a %d:\n\n", LIMITE_MINIMO);
     
-    for (int i = 0; i < total_produtos; i++) {
-        if (produtos[i].quantidade <= limite) {
-            printf("\nID: %d\n", produtos[i].id);
-            printf("Nome: %s\n", produtos[i].nome);
-            printf("Quantidade: %d\n", produtos[i].quantidade);
-            printf("Validade: %s\n", produtos[i].validade);
-            printf("----------------------------------------\n");
+    arq_produtos = fopen(PRODUTOS_FILE, "rb");
+    if (arq_produtos == NULL) {
+        printf("Nenhum item em falta no estoque.\n");
+        press_enter_to_continue();
+        return;
+    }
+
+    while(fread(&produto_lido, sizeof(Produto), 1, arq_produtos)) {
+        if (produto_lido.ativo == 1 && produto_lido.quantidade <= LIMITE_MINIMO) {
+            printf("-> ID: %d | Nome: %s | Quantidade: %d\n",
+                   produto_lido.id, produto_lido.nome, produto_lido.quantidade);
             encontrado = 1;
         }
     }
+    fclose(arq_produtos);
+
     if (!encontrado) {
         printf("Nenhum item em falta no estoque.\n");
     }
     press_enter_to_continue();
 }
 
-void relatorio_validade_proxima(Produto produtos[], int total_produtos) {
-    limpar_tela();
-    printf("----------------------------------------\n");
-    printf("///   Itens com Validade Proxima   ///\n");
-    printf("----------------------------------------\n");
-    int encontrado = 0;
-    
-    time_t t = time(NULL);
-    struct tm tm = *localtime(&t);
-    int dia_atual = tm.tm_mday;
-    int mes_atual = tm.tm_mon + 1;
-    int ano_atual = tm.tm_year + 1900;
-    
-    printf("Itens com validade nos proximos 90 dias:\n");
-    for (int i = 0; i < total_produtos; i++) {
-        int dia_validade, mes_validade, ano_validade;
-        sscanf(produtos[i].validade, "%d/%d/%d", &dia_validade, &mes_validade, &ano_validade);
-        
-        if (ano_validade < ano_atual) continue;
-        if (ano_validade == ano_atual && mes_validade < mes_atual) continue;
-        if (ano_validade == ano_atual && mes_validade == mes_atual && dia_validade < dia_atual) continue;
-        
-        if (ano_validade == ano_atual && mes_validade <= (mes_atual + 3) && ano_validade == ano_atual) {
-            printf("\nID: %d\n", produtos[i].id);
-            printf("Nome: %s\n", produtos[i].nome);
-            printf("Quantidade: %d\n", produtos[i].quantidade);
-            printf("Validade: %s\n", produtos[i].validade);
-            printf("----------------------------------------\n");
-            encontrado = 1;
-        }
-    }
-    if (!encontrado) {
-        printf("Nenhum item com validade proxima encontrada.\n");
-    }
-    press_enter_to_continue();
-}
 
-void relatorio_historico_movimentacoes(void) {
-    Movimentacao movimentacoes[1000];
-    int total_movimentacoes = ler_movimentacoes(movimentacoes);
-    
-    limpar_tela();
-    printf("----------------------------------------\n");
-    printf("///   Historico de Movimentacoes   ///\n");
-    printf("----------------------------------------\n");
-
-    if (total_movimentacoes == 0) {
-        printf("Nenhuma movimentacao de estoque registrada.\n");
-    } else {
-        printf("ID Produto | Tipo | Quantidade | Data \n");
-        printf("-----------|------|------------|-------------\n");
-        for (int i = 0; i < total_movimentacoes; i++) {
-            printf("%-10d | %-5s | %-10d | %s\n",
-                   movimentacoes[i].id_produto, movimentacoes[i].tipo,
-                   movimentacoes[i].quantidade, movimentacoes[i].data);
-        }
-    }
-    press_enter_to_continue();
-}
-
-void gerar_relatorios_estoque(Produto produtos[], int total_produtos) {
+void gerar_relatorios_estoque(void) {
     int opcao;
     do {
-        TelaGerarRelatoriosEstoque();
-        if (scanf("%d", &opcao) != 1) {
-            opcao = -1;
-            while (getchar() != '\n');
-        } else {
-            while (getchar() != '\n');
-        }
+        limpar_tela();
+        printf("----------------------------------------\n");
+        printf("///   Relatorios de Estoque        ///\n");
+        printf("----------------------------------------\n");
+        printf("1. Itens em Falta (Estoque Baixo)\n");
+        printf("2. Historico de Movimentacoes\n");
+        printf("0. Voltar\n");
+        printf("----------------------------------------\n");
+        printf("Escolha uma opcao: ");
+
+        if (scanf("%d", &opcao) != 1) { opcao = -1; }
+        while (getchar() != '\n');
 
         switch (opcao) {
-            case 1:
-                relatorio_itens_falta(produtos, total_produtos);
+            case 1: 
+                relatorio_itens_falta(); 
                 break;
-            case 2:
-                relatorio_validade_proxima(produtos, total_produtos);
+            case 2: 
+                exibir_historico_movimentacoes(); // Chama a função do módulo de movimentação
                 break;
-            case 3:
-                relatorio_historico_movimentacoes();
+            case 0: 
                 break;
-            case 0:
-                break;
-            default:
-                printf("\nOpcao invalida. Pressione ENTER para tentar novamente.\n");
-                press_enter_to_continue();
+            default: 
+                printf("\nOpcao invalida.\n"); 
+                press_enter_to_continue(); 
                 break;
         }
     } while (opcao != 0);
 }
 
 
-void modulo_estoque(Produto produtos[], int* total_produtos, Movimentacao movimentacoes[], int* total_movimentacoes) {
+void modulo_estoque(void) {
     int opcao;
+    criar_pasta_data();
+
     do {
-        TelaMenuEstoque();
-        if (scanf("%d", &opcao) != 1) {
-            opcao = -1;
-            while (getchar() != '\n');
-        } else {
-            while (getchar() != '\n');
+        TelaMenuEstoque(); 
+        if (scanf("%d", &opcao) != 1) { 
+            opcao = -1; 
         }
+        while (getchar() != '\n'); 
 
         switch (opcao) {
-            case 1:
-                cadastrar_produto(produtos, total_produtos);
-                break;
-            case 2:
-                pesquisar_produto(produtos, *total_produtos);
-                break;
-            case 3:
-                gerenciar_lotes(produtos, *total_produtos);
-                break;
-            case 4:
-                movimentar_estoque(produtos, *total_produtos, movimentacoes, total_movimentacoes);
-                break;
-            case 5:
-                gerar_relatorios_estoque(produtos, *total_produtos);
-                break;
-            case 0:
-                break;
+            case 1: cadastrar_produto(); break;
+            case 2: pesquisar_produto(); break;
+            case 3: listar_produtos(); break;
+            case 4: movimentar_estoque(); break;
+            case 5: gerar_relatorios_estoque(); break;
+            case 0: break;
             default:
-                printf("\nOpcao invalida. Pressione ENTER...\n");
+                printf("\nOpcao invalida. Pressione ENTER para tentar novamente.\n");
                 press_enter_to_continue();
                 break;
         }

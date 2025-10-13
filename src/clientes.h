@@ -1,3 +1,5 @@
+
+
 #ifndef CLIENTES_H
 #define CLIENTES_H
 
@@ -6,18 +8,19 @@ typedef struct {
     char nome[50];
     char telefone[15];
     char email[50];
+    int ativo;
 } Cliente;
 
 
-void salvar_clientes(Cliente clientes[], int total_clientes);
-int ler_clientes(Cliente clientes[]);
+void modulo_clientes(void);
 
 
-void cadastrar_cliente(Cliente clientes[], int* total_clientes);
+void cadastrar_cliente(void);
+void pesquisar_cliente(void);
+void alterar_cliente(void);
+void excluir_cliente(void);
 
-void modulo_clientes(Cliente clientes[], int* total_clientes);
-void pesquisar_cliente(Cliente clientes[], int total_clientes);
-void alterar_cliente(Cliente clientes[], int total_clientes);
-void excluir_cliente(Cliente clientes[], int* total_clientes);
+
+void listar_clientes(void);
 
 #endif

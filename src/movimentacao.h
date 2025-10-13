@@ -1,19 +1,21 @@
 #ifndef MOVIMENTACAO_H
 #define MOVIMENTACAO_H
 
-
 typedef struct {
-    int id_produto;
+    int  id_produto;
     char tipo[10];      
-    int quantidade;
+    int  quantidade;
     char data[11];      
 } Movimentacao;
 
-void registrar_movimentacao(int id_produto, const char* tipo, int quantidade,
-                            Movimentacao movimentacoes[], int* total_movimentacoes);
 
-int ler_movimentacoes(Movimentacao movimentacoes[]);
+// Registra e salva uma nova movimentação no arquivo “movimentacoes.dat”
+// id_produto O ID do produto que foi movimentado.
+// tipo_mov O tipo da movimentação
+// quantidade A quantidade de itens movimentados
 
-void salvar_movimentacoes(Movimentacao movimentacoes[], int total_movimentacoes);
+void registrar_movimentacao(int id_produto, const char* tipo_mov, int quantidade);
+
+void exibir_historico_movimentacoes(void);
 
 #endif
