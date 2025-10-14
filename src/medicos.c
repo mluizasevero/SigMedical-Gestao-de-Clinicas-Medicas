@@ -35,7 +35,7 @@ void cadastrar_medico(void) {
 
     limpar_tela(); // Assumindo TelaCadastrarMedicos()
     printf("----------------------------------------\n");
-    printf("///      Cadastrar Novo Medico     ///\n");
+    printf("///      Cadastrar Novo Medico       ///\n");
     printf("----------------------------------------\n");
 
     printf("\nInforme o ID do medico: ");
@@ -84,7 +84,7 @@ void pesquisar_medico(void) {
 
     limpar_tela(); 
     printf("----------------------------------------\n");
-    printf("///      Pesquisar Medico por CPF  ///\n");
+    printf("///     Pesquisar Medico por CPF     ///\n");
     printf("----------------------------------------\n");
     printf("Informe o CPF do medico a ser pesquisado: ");
     scanf("%14s", cpf_busca);
@@ -129,7 +129,7 @@ void alterar_medico(void) {
 
     limpar_tela();
     printf("----------------------------------------\n");
-    printf("///      Alterar Dados de Medico   ///\n");
+    printf("///     Alterar Dados de Medico      ///\n");
     printf("----------------------------------------\n");
     printf("Informe o CPF do medico que deseja alterar: ");
     scanf("%14s", cpf_busca);
@@ -187,7 +187,7 @@ void excluir_medico(void) {
 
     limpar_tela(); 
     printf("----------------------------------------\n");
-    printf("///         Excluir Medico         ///\n");
+    printf("///          Excluir Medico          ///\n");
     printf("----------------------------------------\n");
     printf("Informe o CPF do medico que deseja excluir: ");
     scanf("%14s", cpf_busca);
@@ -231,7 +231,7 @@ void listar_medicos(void) {
     
     limpar_tela();
     printf("----------------------------------------\n");
-    printf("///       Listagem de Medicos      ///\n");
+    printf("///       Listagem de Medicos        ///\n");
     printf("----------------------------------------\n");
 
     arq_medicos = fopen(MEDICOS_FILE, "rb");
@@ -268,7 +268,7 @@ void modulo_medicos(void) {
     do {
         limpar_tela(); 
         printf("----------------------------------------\n");
-        printf("///        Modulo de Medicos       ///\n");
+        printf("///        Modulo de Medicos         ///\n");
         printf("----------------------------------------\n");
         printf("1. Cadastrar Medico\n");
         printf("2. Pesquisar Medico\n");

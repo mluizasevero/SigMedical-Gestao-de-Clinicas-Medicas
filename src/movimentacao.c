@@ -46,7 +46,7 @@ void exibir_historico_movimentacoes(void) {
     
     limpar_tela();
     printf("----------------------------------------\n");
-    printf("///   Historico de Movimentacoes   ///\n");
+    printf("///    Historico de Movimentacoes    ///\n");
     printf("----------------------------------------\n");
 
     arq_movimentacoes = fopen(MOVIMENTACOES_FILE, "rb");
