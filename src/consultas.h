@@ -1,26 +1,35 @@
-
-#ifndef ESTOQUE_H
-#define ESTOQUE_H
+#ifndef CONSULTAS_H
+#define CONSULTAS_H
 
 typedef struct {
-    int  id;
-    char nome[50];
-    int  quantidade;
-    char validade[11]; 
-    int  ativo;        
-} Produto;
+    char nome_paciente[50];
+    char cpf_paciente[15];
+    char data[11];      
+    char hora[6];       
+    char nome_medico[50];
+    char especialidade[50];
+    char status[15];    
+    int  ativo;         
+} Consulta;
 
 
-void modulo_estoque(void);
-void cadastrar_produto(void);
-void pesquisar_produto(void);
-void movimentar_estoque(void);
+void modulo_consultas(void);
+void agendar_consulta(void);
+void pesquisar_consulta(void);
 
 
-void listar_produtos(void); 
-void gerar_relatorios_estoque(void);
-void relatorio_itens_falta(void);
-void relatorio_validade_proxima(void);
+void gerenciar_agendamentos(void);
+void alterar_consulta(void);
+void excluir_consulta(void);
+void confirmar_presenca(void);
+
+
+void gerar_relatorios_consultas(void);
+void relatorio_consultas_medico(void);
+void relatorio_consultas_agendadas(void);
+void relatorio_consultas_por_periodo(void);
+void relatorio_consultas_canceladas(void);
 
 #endif
+
 
