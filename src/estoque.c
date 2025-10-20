@@ -6,8 +6,25 @@
 #include "utils.h"
 #include "movimentacao.h" 
 
+#ifdef _WIN32
+    #include <direct.h>
+    #define PATH_SEPARATOR "\\"
+#else
+    #include <sys/stat.h>
+    #include <sys/types.h>
+    #define PATH_SEPARATOR "/"
+#endif
+
 #define DATA_DIR "data"
 #define PRODUTOS_FILE DATA_DIR "/produtos.dat"
+
+void criar_pasta_data_se_nao_existir() {
+    #ifdef _WIN32
+        _mkdir(DATA_DIR);
+    #else
+        mkdir(DATA_DIR, 0777);
+    #endif
+}
 
 void cadastrar_produto(void) {
     Produto novo_produto;
@@ -15,7 +32,7 @@ void cadastrar_produto(void) {
 
     limpar_tela();
     printf("----------------------------------------\n");
-    printf("///      Cadastrar Novo Produto    ///\n");
+    printf("///      Cadastrar Novo Produto      ///\n");
     printf("----------------------------------------\n");
     
     printf("\nInforme o ID unico do produto: ");
@@ -59,7 +76,7 @@ void pesquisar_produto(void) {
 
     limpar_tela();
     printf("----------------------------------------\n");
-    printf("///      Pesquisar Produto por ID  ///\n");
+    printf("///     Pesquisar Produto por ID     ///\n");
     printf("----------------------------------------\n");
     printf("Informe o ID do produto: ");
     scanf("%d", &id_busca);
@@ -101,7 +118,7 @@ void movimentar_estoque(void) {
     
     limpar_tela();
     printf("----------------------------------------\n");
-    printf("///      Movimentar Estoque        ///\n");
+    printf("///        Movimentar Estoque        ///\n");
     printf("----------------------------------------\n");
     printf("1. Entrada de Material\n");
     printf("2. Saida de Material\n");
@@ -169,9 +186,9 @@ void listar_produtos(void) {
     int tem_produto = 0;
     
     limpar_tela();
-    printf("------------------------------------------------------------------\n");
-    printf("///                  Listagem de Produtos em Estoque             ///\n");
-    printf("------------------------------------------------------------------\n");
+    printf("-----------------------------------------------\n");
+    printf("///     Listagem de Produtos em Estoque     ///\n");
+    printf("-----------------------------------------------\n");
     
     arq_produtos = fopen(PRODUTOS_FILE, "rb");
     if (arq_produtos == NULL) {
@@ -205,9 +222,9 @@ void relatorio_itens_falta(void) {
     const int LIMITE_MINIMO = 5;
 
     limpar_tela();
-    printf("----------------------------------------\n");
-    printf("///   Itens em Falta (Estoque Baixo) ///\n");
-    printf("----------------------------------------\n");
+    printf("------------------------------------------\n");
+    printf("///   Itens em Falta (Estoque Baixo)   ///\n");
+    printf("------------------------------------------\n");
     printf("Itens com quantidade igual ou inferior a %d:\n\n", LIMITE_MINIMO);
     
     arq_produtos = fopen(PRODUTOS_FILE, "rb");
@@ -238,7 +255,7 @@ void gerar_relatorios_estoque(void) {
     do {
         limpar_tela();
         printf("----------------------------------------\n");
-        printf("///   Relatorios de Estoque        ///\n");
+        printf("///      Relatorios de Estoque       ///\n");
         printf("----------------------------------------\n");
         printf("1. Itens em Falta (Estoque Baixo)\n");
         printf("2. Historico de Movimentacoes\n");
@@ -254,7 +271,7 @@ void gerar_relatorios_estoque(void) {
                 relatorio_itens_falta(); 
                 break;
             case 2: 
-                exibir_historico_movimentacoes(); // Chama a função do módulo de movimentação
+                exibir_historico_movimentacoes();
                 break;
             case 0: 
                 break;

@@ -33,7 +33,7 @@ void cadastrar_cliente(void) {
 
     limpar_tela();
     printf("----------------------------------------\n");
-    printf("///    Cadastrar Novo Cliente      ///\n");
+    printf("///     Cadastrar Novo Cliente       ///\n");
     printf("----------------------------------------\n");
 
     printf("\nInforme o CPF do cliente (apenas numeros): ");
@@ -79,7 +79,7 @@ void pesquisar_cliente(void) {
 
     limpar_tela();
     printf("----------------------------------------\n");
-    printf("///      Pesquisar Cliente         ///\n");
+    printf("///        Pesquisar Cliente         ///\n");
     printf("----------------------------------------\n");
     printf("Informe o CPF do cliente para pesquisa: ");
     scanf("%14s", cpf_pesquisa);
@@ -124,7 +124,7 @@ void alterar_cliente(void) {
 
     limpar_tela();
     printf("----------------------------------------\n");
-    printf("///   Alterar Dados do Cliente     ///\n");
+    printf("///     Alterar Dados do Cliente     ///\n");
     printf("----------------------------------------\n");
     printf("Informe o CPF do cliente que deseja alterar: ");
     scanf("%14s", cpf_alteracao);
@@ -184,7 +184,7 @@ void excluir_cliente(void) {
 
     limpar_tela();
     printf("----------------------------------------\n");
-    printf("///        Excluir Cliente         ///\n");
+    printf("///         Excluir Cliente          ///\n");
     printf("----------------------------------------\n");
     printf("Informe o CPF do cliente que deseja excluir: ");
     scanf("%14s", cpf_exclusao);
@@ -228,7 +228,7 @@ void listar_clientes(void) {
 
     limpar_tela();
     printf("----------------------------------------\n");
-    printf("///     Listagem de Clientes       ///\n");
+    printf("///       Listagem de Clientes       ///\n");
     printf("----------------------------------------\n");
 
     arq_clientes = fopen(CLIENTES_FILE, "rb");
