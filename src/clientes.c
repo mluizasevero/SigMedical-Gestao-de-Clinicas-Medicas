@@ -4,27 +4,8 @@
 #include "clientes.h"
 #include "utils.h" 
 
-#ifdef _WIN32
-    #include <direct.h>
-    #define PATH_SEPARATOR "\\"
-#else
-    #include <sys/stat.h>
-    #include <sys/types.h>
-    #define PATH_SEPARATOR "/"
-#endif
-
-#define DATA_DIR "data"
-// alterei de .csv para .dat (arquivo de dados binários)
+// Definição de CLIENTES FILE fora de utils.h
 #define CLIENTES_FILE DATA_DIR PATH_SEPARATOR "clientes.dat"
-
-// essa função serve p/ garantir que o diretório "data" exista
-void criar_pasta_data_se_nao_existir() {
-    #ifdef _WIN32
-        _mkdir(DATA_DIR);
-    #else
-        mkdir(DATA_DIR, 0777); // Permissão de leitura/escrita/execução para todos
-    #endif
-}
 
 // ele salva um único cliente no final do arquivo binário
 void cadastrar_cliente(void) {
@@ -262,7 +243,7 @@ void modulo_clientes(void) {
     int opcao;
     
     // garante que a pasta ./data exista antes de qualquer operação
-    criar_pasta_data_se_nao_existir();
+    criar_pasta_data();
 
     do {
         limpar_tela();

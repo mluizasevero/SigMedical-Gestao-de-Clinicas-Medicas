@@ -4,36 +4,14 @@
 #include "medicos.h"
 #include "utils.h"
 
-#ifdef _WIN32
-    #include <direct.h>
-    #define PATH_SEPARATOR "\\"
-#else
-    #include <sys/stat.h>
-    #include <sys/types.h>
-    #define PATH_SEPARATOR "/"
-#endif
-
-#define DATA_DIR "data"
 #define MEDICOS_FILE DATA_DIR PATH_SEPARATOR "medicos.dat"
 
-
-void criar_pasta_data_se_nao_existir() {
-    #ifdef _WIN32
-        _mkdir(DATA_DIR);
-    #else
-        mkdir(DATA_DIR, 0777);
-    #endif
-}
-
-
-
 // cadastra um novo médico salva diretamente no arquivo binário
-
 void cadastrar_medico(void) {
     Medico novo_medico;
     FILE* arq_medicos;
 
-    limpar_tela(); // Assumindo TelaCadastrarMedicos()
+    limpar_tela();
     printf("----------------------------------------\n");
     printf("///      Cadastrar Novo Medico       ///\n");
     printf("----------------------------------------\n");
@@ -263,7 +241,7 @@ void listar_medicos(void) {
 // menu do módulo médicos
 void modulo_medicos(void) {
     int opcao;
-    criar_pasta_data_se_nao_existir();
+    criar_pasta_data();
 
     do {
         limpar_tela(); 

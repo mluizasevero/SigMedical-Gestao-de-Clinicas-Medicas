@@ -6,25 +6,7 @@
 #include "utils.h"
 #include "movimentacao.h" 
 
-#ifdef _WIN32
-    #include <direct.h>
-    #define PATH_SEPARATOR "\\"
-#else
-    #include <sys/stat.h>
-    #include <sys/types.h>
-    #define PATH_SEPARATOR "/"
-#endif
-
-#define DATA_DIR "data"
-#define PRODUTOS_FILE DATA_DIR "/produtos.dat"
-
-void criar_pasta_data_se_nao_existir() {
-    #ifdef _WIN32
-        _mkdir(DATA_DIR);
-    #else
-        mkdir(DATA_DIR, 0777);
-    #endif
-}
+#define PRODUTOS_FILE DATA_DIR PATH_SEPARATOR "/produtos.dat"
 
 void cadastrar_produto(void) {
     Produto novo_produto;

@@ -4,19 +4,7 @@
 #include "consultas.h"
 #include "utils.h"
 
-
-#ifdef _WIN32
-    #include <direct.h>
-    #define PATH_SEPARATOR "\\"
-#else
-    #include <sys/stat.h>
-    #include <sys/types.h>
-    #define PATH_SEPARATOR "/"
-#endif
-
-#define DATA_DIR "data"
 #define CONSULTAS_FILE DATA_DIR PATH_SEPARATOR "consultas.dat"
-
 
 void agendar_consulta(void) {
     Consulta nova_consulta;

@@ -5,14 +5,6 @@
 #include "movimentacao.h"
 #include "utils.h"
 
-#ifdef _WIN32
-    #include <direct.h>
-    #define PATH_SEPARATOR "\\"
-#else
-    #define PATH_SEPARATOR "/"
-#endif
-
-#define DATA_DIR "data"
 #define MOVIMENTACOES_FILE DATA_DIR PATH_SEPARATOR "movimentacoes.dat"
 
 //registrar_movimentacao agora salva diretamente no arquivo
