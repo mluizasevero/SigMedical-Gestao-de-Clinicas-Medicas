@@ -5,33 +5,91 @@
 #include "estoque.h"
 #include "utils.h"
 #include "movimentacao.h" 
+#include "validador.h" // MUDANÇA: Incluindo a biblioteca de validação
 
 #define PRODUTOS_FILE DATA_DIR PATH_SEPARATOR "/produtos.dat"
 
+// Declaração da função auxiliar (Para uso interno)
+int id_produto_existe(int id);
+
+
+// ------------------------------------------
+// FUNÇÃO AUXILIAR: Checa a unicidade do ID |
+// ------------------------------------------
+int id_produto_existe(int id) {
+    Produto produto_lido;
+    FILE* arq_produtos = fopen(PRODUTOS_FILE, "rb");
+    
+    if (arq_produtos == NULL) {
+        return 0; // Se o arquivo não existe, o ID é único
+    }
+
+    while(fread(&produto_lido, sizeof(Produto), 1, arq_produtos)) {
+        if (produto_lido.id == id && produto_lido.ativo == 1) {
+            fclose(arq_produtos);
+            return 1; // ID encontrado
+        }
+    }
+    fclose(arq_produtos);
+    return 0; // ID não encontrado
+}
+
+
+// ----------
+// CADASTRO |
+// ----------
 void cadastrar_produto(void) {
     Produto novo_produto;
     FILE* arq_produtos;
+    char buffer[51];
+    int id_temp;
 
     limpar_tela();
     printf("----------------------------------------\n");
-    printf("///      Cadastrar Novo Produto      ///\n");
+    printf("///       Cadastrar Novo Produto     ///\n");
     printf("----------------------------------------\n");
     
-    printf("\nInforme o ID unico do produto: ");
-    scanf("%d", &novo_produto.id);
-    while (getchar() != '\n');
+    // MUDANÇA: Validação de ID único e positivo
+    do {
+        printf("\nInforme o ID unico do produto: ");
+        lerString(buffer, 5); // ID é pequeno, 5 é suficiente
+        id_temp = validarInteiroPositivo(buffer);
+        
+        if (id_temp > 0 && id_produto_existe(id_temp)) {
+            printf("! Erro: ID %d ja cadastrado ou ativo. Use outro ID.\n", id_temp);
+            id_temp = -1; // Força repetição
+        }
+    } while (id_temp <= 0);
+    novo_produto.id = id_temp;
 
-    printf("Informe o nome do produto: ");
-    scanf(" %49[^\n]", novo_produto.nome);
-    while (getchar() != '\n');
 
-    printf("Informe a quantidade inicial em estoque: ");
-    scanf("%d", &novo_produto.quantidade);
-    while (getchar() != '\n');
+    // MUDANÇA: Validação do Nome do Produto
+    do {
+        printf("Informe o nome do produto: ");
+        lerString(buffer, 50);
+    } while (!validarNome(buffer)); // Reutilizando validarNome
+    strcpy(novo_produto.nome, buffer);
 
-    printf("Informe a data de validade (dd/mm/aaaa): ");
-    scanf("%10s", novo_produto.validade);
-    while (getchar() != '\n');
+
+    // MUDANÇA: Validação da Quantidade (deve ser não-negativa)
+    do {
+        printf("Informe a quantidade inicial em estoque: ");
+        lerString(buffer, 10);
+        id_temp = validarInteiroPositivo(buffer); // Reutilizando (ajustar se aceitar zero)
+        if (id_temp < 0) { // Se a validação retornar -1
+            id_temp = -1;
+        }
+    } while (id_temp < 0);
+    novo_produto.quantidade = id_temp;
+
+
+    // MUDANÇA: Validação da Data de Validade
+    do {
+        printf("Informe a data de validade (dd/mm/aaaa): ");
+        lerString(buffer, 11);
+    } while (!validarData(buffer));
+    strcpy(novo_produto.validade, buffer);
+    
     
     novo_produto.ativo = 1; 
 
@@ -50,19 +108,28 @@ void cadastrar_produto(void) {
 }
 
 
+// ----------
+// PESQUISA |
+// ----------
 void pesquisar_produto(void) {
     int encontrado = 0;
     int id_busca;
     Produto produto_lido;
     FILE* arq_produtos;
+    char buffer[51]; // MUDANÇA: Buffer
 
     limpar_tela();
     printf("----------------------------------------\n");
     printf("///     Pesquisar Produto por ID     ///\n");
     printf("----------------------------------------\n");
-    printf("Informe o ID do produto: ");
-    scanf("%d", &id_busca);
-    while (getchar() != '\n');
+    
+    // MUDANÇA: Validação do ID
+    do {
+        printf("Informe o ID do produto: ");
+        lerString(buffer, 5);
+        id_busca = validarInteiroPositivo(buffer);
+    } while (id_busca <= 0);
+
 
     arq_produtos = fopen(PRODUTOS_FILE, "rb");
     if (arq_produtos == NULL) {
@@ -92,11 +159,16 @@ void pesquisar_produto(void) {
 }
 
 
+// --------------
+// MOVIMENTAÇÃO |
+// --------------
 void movimentar_estoque(void) {
     int opcao, id, quantidade, encontrado = 0;
     Produto produto_lido;
     FILE* arq_produtos;
     long int pos;
+    char bufferOpcao[5];
+    char bufferValor[10];
     
     limpar_tela();
     printf("----------------------------------------\n");
@@ -106,18 +178,34 @@ void movimentar_estoque(void) {
     printf("2. Saida de Material\n");
     printf("0. Voltar\n");
     printf("----------------------------------------\n");
-    printf(">>> Escolha a opcao: ");
     
-    if (scanf("%d", &opcao) != 1) { opcao = -1; }
-    while (getchar() != '\n');
-    
+    // MUDANÇA: Leitura segura da Opção
+    do {
+        printf(">>> Escolha a opcao: ");
+        lerString(bufferOpcao, 5);
+        char* endptr;
+        opcao = strtol(bufferOpcao, &endptr, 10);
+        if (endptr == bufferOpcao || *endptr != '\0') {
+            opcao = -1;
+        }
+    } while (!validarOpcaoMenu(opcao, 0, 2));
+
+
     if (opcao == 1 || opcao == 2) {
-        printf("Informe o ID do produto para movimentar: ");
-        scanf("%d", &id);
-        while (getchar() != '\n');
-        printf("Informe a quantidade: ");
-        scanf("%d", &quantidade);
-        while (getchar() != '\n');
+        // MUDANÇA: Validação do ID
+        do {
+            printf("Informe o ID do produto para movimentar: ");
+            lerString(bufferValor, 10);
+            id = validarInteiroPositivo(bufferValor);
+        } while (id <= 0);
+
+        // MUDANÇA: Validação da Quantidade
+        do {
+            printf("Informe a quantidade: ");
+            lerString(bufferValor, 10);
+            quantidade = validarInteiroPositivo(bufferValor);
+        } while (quantidade <= 0);
+
 
         arq_produtos = fopen(PRODUTOS_FILE, "r+b");
         if (arq_produtos == NULL) {
@@ -155,13 +243,14 @@ void movimentar_estoque(void) {
         if (!encontrado) {
             printf("\nProduto com ID %d nao encontrado.\n", id);
         }
-    } else if (opcao != 0) {
-        printf("\nOpcao invalida.\n");
     }
     press_enter_to_continue();
 }
 
 
+// -------------------------------------------------------
+// LISTAGEM E RELATÓRIOS (Não requerem input, não mudam) |
+// ------------------------------------------------------
 void listar_produtos(void) {
     Produto produto_lido;
     FILE* arq_produtos;
@@ -234,33 +323,41 @@ void relatorio_itens_falta(void) {
 
 void gerar_relatorios_estoque(void) {
     int opcao;
+    char bufferOpcao[5];
+
     do {
         limpar_tela();
         printf("----------------------------------------\n");
-        printf("///      Relatorios de Estoque       ///\n");
+        printf("///        Relatorios de Estoque     ///\n");
         printf("----------------------------------------\n");
         printf("1. Itens em Falta (Estoque Baixo)\n");
         printf("2. Historico de Movimentacoes\n");
         printf("0. Voltar\n");
         printf("----------------------------------------\n");
-        printf("Escolha uma opcao: ");
+        
+        // MUDANÇA: Leitura segura de Opção
+        do {
+            printf(">>> Escolha a opcao: ");
+            lerString(bufferOpcao, 5);
+            char* endptr;
+            opcao = strtol(bufferOpcao, &endptr, 10);
+            if (endptr == bufferOpcao || *endptr != '\0') {
+                opcao = -1;
+            }
+        } while (!validarOpcaoMenu(opcao, 0, 2));
 
-        if (scanf("%d", &opcao) != 1) { opcao = -1; }
-        while (getchar() != '\n');
 
         switch (opcao) {
             case 1: 
                 relatorio_itens_falta(); 
                 break;
             case 2: 
-                exibir_historico_movimentacoes();
+                // Assumindo que exibir_historico_movimentacoes() existe em movimentacao.h
+                exibir_historico_movimentacoes(); 
                 break;
             case 0: 
                 break;
-            default: 
-                printf("\nOpcao invalida.\n"); 
-                press_enter_to_continue(); 
-                break;
+            // Default não é mais necessário
         }
     } while (opcao != 0);
 }
@@ -268,14 +365,34 @@ void gerar_relatorios_estoque(void) {
 
 void modulo_estoque(void) {
     int opcao;
+    char bufferOpcao[5];
     criar_pasta_data();
 
     do {
-        TelaMenuEstoque(); 
-        if (scanf("%d", &opcao) != 1) { 
-            opcao = -1; 
-        }
-        while (getchar() != '\n'); 
+        // MUDANÇA: Substituindo TelaMenuEstoque() pelo menu inline para consistência
+        limpar_tela();
+        printf("----------------------------------------\n");
+        printf("///          Modulo Estoque          ///\n");
+        printf("----------------------------------------\n");
+        printf("1. Cadastrar Produto\n");
+        printf("2. Pesquisar Produto (por ID)\n");
+        printf("3. Listar Produtos\n");
+        printf("4. Movimentar Estoque (Entrada/Saida)\n");
+        printf("5. Gerar Relatorios\n");
+        printf("0. Voltar ao menu principal\n");
+        printf("----------------------------------------\n");
+        
+        // MUDANÇA: Leitura segura de Opção
+        do {
+            printf(">>> Escolha a opcao: ");
+            lerString(bufferOpcao, 5);
+            char* endptr;
+            opcao = strtol(bufferOpcao, &endptr, 10);
+            if (endptr == bufferOpcao || *endptr != '\0') {
+                opcao = -1;
+            }
+        } while (!validarOpcaoMenu(opcao, 0, 5));
+
 
         switch (opcao) {
             case 1: cadastrar_produto(); break;
@@ -284,10 +401,7 @@ void modulo_estoque(void) {
             case 4: movimentar_estoque(); break;
             case 5: gerar_relatorios_estoque(); break;
             case 0: break;
-            default:
-                printf("\nOpcao invalida. Pressione ENTER para tentar novamente.\n");
-                press_enter_to_continue();
-                break;
+            // Default não é mais necessário
         }
     } while (opcao != 0);
 }

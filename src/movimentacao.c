@@ -4,16 +4,21 @@
 #include <time.h>
 #include "movimentacao.h"
 #include "utils.h"
+// Não precisa de validadores.h pois não há input direto do usuário
 
-#define MOVIMENTACOES_FILE DATA_DIR PATH_SEPARATOR "movimentacoes.dat"
+#define MOVIMENTACOES_FILE DATA_DIR PATH_SEPARATOR "/movimentacoes.dat" // Ajustado PATH_SEPARATOR para ser consistente
 
-//registrar_movimentacao agora salva diretamente no arquivo
+// registrar_movimentacao agora salva diretamente no arquivo
 void registrar_movimentacao(int id_produto, const char* tipo_mov, int quantidade) {
     Movimentacao nova;
     FILE* arq_movimentacoes;
 
+    // Os dados (id_produto, tipo_mov, quantidade) são assumidos como válidos, 
+    // pois foram validados no módulo estoque antes de chamar esta função.
     nova.id_produto = id_produto;
-    strcpy(nova.tipo, tipo_mov);
+    // O tipo já está validado para ser "Entrada" ou "Saida" no estoque.c
+    strncpy(nova.tipo, tipo_mov, sizeof(nova.tipo) - 1);
+    nova.tipo[sizeof(nova.tipo) - 1] = '\0'; 
     nova.quantidade = quantidade;
 
     // data e hora atual para registrar a movimentação
@@ -60,7 +65,3 @@ void exibir_historico_movimentacoes(void) {
     fclose(arq_movimentacoes);
     press_enter_to_continue();
 }
-
-
-
-

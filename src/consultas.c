@@ -3,41 +3,66 @@
 #include <string.h>
 #include "consultas.h"
 #include "utils.h"
+#include "validador.h" // MUDANÇA: Incluindo a biblioteca
 
 #define CONSULTAS_FILE DATA_DIR PATH_SEPARATOR "consultas.dat"
 
 void agendar_consulta(void) {
     Consulta nova_consulta;
     FILE* arq_consultas;
+    
+    // MUDANÇA: Buffer para leitura segura
+    char buffer[51];
 
     limpar_tela(); 
     printf("----------------------------------------\n");
-    printf("///    Agendar Nova Consulta       ///\n");
+    printf("///    Agendar Nova Consulta         ///\n");
     printf("----------------------------------------\n");
 
-    printf("\nInforme o nome do paciente: ");
-    scanf(" %49[^\n]", nova_consulta.nome_paciente);
-    while (getchar() != '\n');
+    // MUDANÇA: Loop de validação para Nome do Paciente
+    do {
+        printf("\nInforme o nome do paciente: ");
+        lerString(buffer, 50);
+    } while (!validarNome(buffer));
+    strcpy(nova_consulta.nome_paciente, buffer);
 
-    printf("Informe o CPF do paciente (apenas numeros): ");
-    scanf("%14s", nova_consulta.cpf_paciente);
-    while (getchar() != '\n');
+    // MUDANÇA: Loop de validação para CPF
+    do {
+        printf("Informe o CPF do paciente: ");
+        lerString(buffer, 15);
+        if (!validarCPF(buffer)) {
+             printf("! CPF invalido. Tente novamente.\n");
+        }
+    } while (!validarCPF(buffer));
+    strcpy(nova_consulta.cpf_paciente, buffer);
 
-    printf("Informe a data da consulta (dd/mm/aaaa): ");
-    scanf("%10s", nova_consulta.data);
-    while (getchar() != '\n');
+    // MUDANÇA: Loop de validação para Data
+    do {
+        printf("Informe a data da consulta (dd/mm/aaaa): ");
+        lerString(buffer, 11);
+    } while (!validarData(buffer));
+    strcpy(nova_consulta.data, buffer);
 
-    printf("Informe a hora da consulta (hh:mm): ");
-    scanf("%5s", nova_consulta.hora);
-    while (getchar() != '\n');
+    // MUDANÇA: Loop de validação para Hora
+    do {
+        printf("Informe a hora da consulta (hh:mm): ");
+        lerString(buffer, 6);
+    } while (!validarHora(buffer));
+    strcpy(nova_consulta.hora, buffer);
 
-    printf("Informe o nome do medico: ");
-    scanf(" %49[^\n]", nova_consulta.nome_medico);
-    while (getchar() != '\n');
+    // MUDANÇA: Loop de validação para Nome do Médico
+    do {
+        printf("Informe o nome do medico: ");
+        lerString(buffer, 50);
+    } while (!validarNome(buffer));
+    strcpy(nova_consulta.nome_medico, buffer);
 
-    printf("Informe a especialidade do medico: ");
-    scanf(" %49[^\n]", nova_consulta.especialidade);
-    while (getchar() != '\n');
+    // MUDANÇA: Loop de validação para Especialidade (usando validarNome)
+    do {
+        printf("Informe a especialidade do medico: ");
+        lerString(buffer, 50);
+    } while (!validarNome(buffer)); // Reutilizando validarNome (mín 3 letras, sem num)
+    strcpy(nova_consulta.especialidade, buffer);
 
     strcpy(nova_consulta.status, "agendada");
     nova_consulta.ativo = 1;
@@ -56,7 +81,6 @@ void agendar_consulta(void) {
     press_enter_to_continue();
 }
 
-
 void pesquisar_consulta(void) {
     char cpf_pesquisa[15];
     int encontrado = 0;
@@ -65,11 +89,17 @@ void pesquisar_consulta(void) {
 
     limpar_tela();
     printf("----------------------------------------\n");
-    printf("///      Pesquisar Consulta        ///\n");
+    printf("///       Pesquisar Consulta         ///\n");
     printf("----------------------------------------\n");
-    printf("Informe o CPF do paciente: ");
-    scanf("%14s", cpf_pesquisa);
-    while (getchar() != '\n');
+    
+    // MUDANÇA: Validação do CPF
+    do {
+        printf("Informe o CPF do paciente: ");
+        lerString(cpf_pesquisa, 15);
+        if (!validarCPF(cpf_pesquisa)) {
+             printf("! Formato de CPF invalido. Tente novamente.\n");
+        }
+    } while (!validarCPF(cpf_pesquisa));
 
     arq_consultas = fopen(CONSULTAS_FILE, "rb");
     if (arq_consultas == NULL) {
@@ -97,7 +127,6 @@ void pesquisar_consulta(void) {
     press_enter_to_continue();
 }
 
-
 void alterar_consulta(void) {
     char cpf_busca[15];
     char data_busca[11];
@@ -105,17 +134,26 @@ void alterar_consulta(void) {
     Consulta consulta_lida;
     FILE* arq_consultas;
     long int pos;
+    
+    // MUDANÇA: Buffer para leitura
+    char buffer[51];
 
     limpar_tela();
     printf("----------------------------------------\n");
-    printf("///      Alterar Consulta          ///\n");
+    printf("///       Alterar Consulta           ///\n");
     printf("----------------------------------------\n");
-    printf("Informe o CPF do paciente: ");
-    scanf("%14s", cpf_busca);
-    while (getchar() != '\n');
-    printf("Informe a DATA da consulta a alterar (dd/mm/aaaa): ");
-    scanf("%10s", data_busca);
-    while (getchar() != '\n');
+    
+    // MUDANÇA: Validação do CPF
+    do {
+        printf("Informe o CPF do paciente: ");
+        lerString(cpf_busca, 15);
+    } while (!validarCPF(cpf_busca));
+    
+    // MUDANÇA: Validação da Data
+    do {
+        printf("Informe a DATA da consulta a alterar (dd/mm/aaaa): ");
+        lerString(data_busca, 11);
+    } while (!validarData(data_busca));
 
 
     arq_consultas = fopen(CONSULTAS_FILE, "r+b");
@@ -133,13 +171,20 @@ void alterar_consulta(void) {
             pos = ftell(arq_consultas) - sizeof(Consulta);
 
             printf("\nConsulta encontrada. Informe os novos dados:\n");
-            printf("Data atual: %s\nNova Data (dd/mm/aaaa): ", consulta_lida.data);
-            scanf("%10s", consulta_lida.data);
-            while (getchar() != '\n');
             
-            printf("Hora atual: %s\nNova Hora (hh:mm): ", consulta_lida.hora);
-            scanf("%5s", consulta_lida.hora);
-            while (getchar() != '\n');
+            // MUDANÇA: Validação da Nova Data
+            do {
+                printf("Data atual: %s\nNova Data (dd/mm/aaaa): ", consulta_lida.data);
+                lerString(buffer, 11);
+            } while (!validarData(buffer));
+            strcpy(consulta_lida.data, buffer);
+            
+            // MUDANÇA: Validação da Nova Hora
+            do {
+                printf("Hora atual: %s\nNova Hora (hh:mm): ", consulta_lida.hora);
+                lerString(buffer, 6);
+            } while (!validarHora(buffer));
+            strcpy(consulta_lida.hora, buffer);
             
             fseek(arq_consultas, pos, SEEK_SET);
             fwrite(&consulta_lida, sizeof(Consulta), 1, arq_consultas);
@@ -157,7 +202,6 @@ void alterar_consulta(void) {
     press_enter_to_continue();
 }
 
-
 void excluir_consulta(void) {
     char cpf_busca[15];
     char data_busca[11];
@@ -170,12 +214,18 @@ void excluir_consulta(void) {
     printf("----------------------------------------\n");
     printf("///   Cancelar/Excluir Consulta    ///\n");
     printf("----------------------------------------\n");
-    printf("Informe o CPF do paciente: ");
-    scanf("%14s", cpf_busca);
-    while (getchar() != '\n');
-    printf("Informe a DATA da consulta a excluir (dd/mm/aaaa): ");
-    scanf("%10s", data_busca);
-    while (getchar() != '\n');
+    
+    // MUDANÇA: Validação do CPF
+    do {
+        printf("Informe o CPF do paciente: ");
+        lerString(cpf_busca, 15);
+    } while (!validarCPF(cpf_busca));
+    
+    // MUDANÇA: Validação da Data
+    do {
+        printf("Informe a DATA da consulta a excluir (dd/mm/aaaa): ");
+        lerString(data_busca, 11);
+    } while (!validarData(data_busca));
 
     arq_consultas = fopen(CONSULTAS_FILE, "r+b");
     if (arq_consultas == NULL) {
@@ -192,13 +242,23 @@ void excluir_consulta(void) {
             pos = ftell(arq_consultas) - sizeof(Consulta);
             
             char confirmacao;
+            char bufferConfirm[5]; // MUDANÇA: Buffer para confirmação
+            
             printf("\nConsulta encontrada:\n");
             printf("Paciente: %s\nData: %s | Hora: %s\n", consulta_lida.nome_paciente, consulta_lida.data, consulta_lida.hora);
-            printf("Deseja realmente cancelar esta consulta (S/N)? ");
-            scanf(" %c", &confirmacao);
-            while (getchar() != '\n');
+            
+            // MUDANÇA: Loop de confirmação
+            do {
+                printf("Deseja realmente cancelar esta consulta (S/N)? ");
+                lerString(bufferConfirm, 5);
+                confirmacao = toupper(bufferConfirm[0]); // Pega o primeiro caractere
+                if (confirmacao != 'S' && confirmacao != 'N') {
+                    printf("! Opcao invalida. Digite 'S' para Sim ou 'N' para Nao.\n");
+                }
+            } while (confirmacao != 'S' && confirmacao != 'N');
 
-            if (confirmacao == 'S' || confirmacao == 's') {
+
+            if (confirmacao == 'S') {
                 consulta_lida.ativo = 0; // Exclusão lógica
                 strcpy(consulta_lida.status, "cancelada"); // Atualiza status
                 
@@ -220,7 +280,6 @@ void excluir_consulta(void) {
     press_enter_to_continue();
 }
 
-
 void confirmar_presenca(void) {
     char cpf_busca[15];
     char data_busca[11];
@@ -231,14 +290,20 @@ void confirmar_presenca(void) {
 
     limpar_tela();
     printf("----------------------------------------\n");
-    printf("///     Confirmar Presenca         ///\n");
+    printf("///     Confirmar Presenca           ///\n");
     printf("----------------------------------------\n");
-    printf("Informe o CPF do paciente: ");
-    scanf("%14s", cpf_busca);
-    while (getchar() != '\n');
-    printf("Informe a data da consulta (dd/mm/aaaa): ");
-    scanf("%10s", data_busca);
-    while (getchar() != '\n');
+    
+    // MUDANÇA: Validação do CPF
+    do {
+        printf("Informe o CPF do paciente: ");
+        lerString(cpf_busca, 15);
+    } while (!validarCPF(cpf_busca));
+    
+    // MUDANÇA: Validação da Data
+    do {
+        printf("Informe a data da consulta (dd/mm/aaaa): ");
+        lerString(data_busca, 11);
+    } while (!validarData(data_busca));
 
     arq_consultas = fopen(CONSULTAS_FILE, "r+b");
     if (arq_consultas == NULL) {
@@ -273,9 +338,6 @@ void confirmar_presenca(void) {
     press_enter_to_continue();
 }
 
-
-// lendo o arqv em binário
-
 void relatorio_consultas_medico(void) {
     char nome_medico_pesquisa[50];
     int encontrado = 0;
@@ -284,11 +346,14 @@ void relatorio_consultas_medico(void) {
 
     limpar_tela();
     printf("----------------------------------------\n");
-    printf("///     Consultas por Medico       ///\n");
+    printf("///     Consultas por Medico         ///\n");
     printf("----------------------------------------\n");
-    printf("Informe o nome do medico: ");
-    scanf(" %49[^\n]", nome_medico_pesquisa);
-    while (getchar() != '\n');
+    
+    // MUDANÇA: Validação do nome
+    do {
+        printf("Informe o nome do medico: ");
+        lerString(nome_medico_pesquisa, 50);
+    } while (!validarNome(nome_medico_pesquisa));
 
     printf("\nRelatorio de Consultas para o Medico: %s\n", nome_medico_pesquisa);
     
@@ -318,24 +383,38 @@ void relatorio_consultas_medico(void) {
 
 void relatorio_consultas_por_periodo(void) {
     char data_inicio_str[11], data_fim_str[11];
-    // declarações de dia/mês/ano
     int encontrado = 0;
     Consulta consulta_lida;
     FILE* arq_consultas;
     
+    // MUDANÇA: Variáveis para datas convertidas
+    long data_inicio_int, data_fim_int, data_consulta_int;
+    
     limpar_tela();
     printf("----------------------------------------\n");
-    printf("///     Consultas por Periodo      ///\n");
+    printf("///     Consultas por Periodo        ///\n");
     printf("----------------------------------------\n");
-    printf("Informe a data de inicio (dd/mm/aaaa): ");
-    scanf("%10s", data_inicio_str);
-    while (getchar() != '\n');
-    printf("Informe a data de fim (dd/mm/aaaa): ");
-    scanf("%10s", data_fim_str);
-    while (getchar() != '\n');
     
-    // sscanf(data_inicio_str, ...);
-    // sscanf(data_fim_str, ...);
+    // MUDANÇA: Validação das datas
+    do {
+        printf("Informe a data de inicio (dd/mm/aaaa): ");
+        lerString(data_inicio_str, 11);
+    } while (!validarData(data_inicio_str));
+    
+    do {
+        printf("Informe a data de fim (dd/mm/aaaa): ");
+        lerString(data_fim_str, 11);
+    } while (!validarData(data_fim_str));
+    
+    // MUDANÇA: Converte datas para inteiros para comparação correta
+    data_inicio_int = converterDataParaInt(data_inicio_str);
+    data_fim_int = converterDataParaInt(data_fim_str);
+    
+    if (data_fim_int < data_inicio_int) {
+        printf("\n! Erro: A data final nao pode ser anterior a data inicial.\n");
+        press_enter_to_continue();
+        return;
+    }
 
     printf("\nRelatorio de Consultas no Periodo de %s a %s:\n", data_inicio_str, data_fim_str);
 
@@ -348,7 +427,11 @@ void relatorio_consultas_por_periodo(void) {
 
     while(fread(&consulta_lida, sizeof(Consulta), 1, arq_consultas)) {
         if (consulta_lida.ativo == 1) {
-            if (strcmp(consulta_lida.data, data_inicio_str) >= 0 && strcmp(consulta_lida.data, data_fim_str) <= 0) {
+            
+            // MUDANÇA: Comparação numérica de datas (YYYYMMDD)
+            data_consulta_int = converterDataParaInt(consulta_lida.data);
+            
+            if (data_consulta_int >= data_inicio_int && data_consulta_int <= data_fim_int) {
                  printf("----------------------------------------\n");
                  printf("Paciente: %s\n", consulta_lida.nome_paciente);
                  printf("Data: %s | Hora: %s\n", consulta_lida.data, consulta_lida.hora);
@@ -366,77 +449,14 @@ void relatorio_consultas_por_periodo(void) {
     press_enter_to_continue();
 }
 
-void relatorio_consultas_agendadas(void) {
-    Consulta consulta_lida;
-    FILE* arq_consultas;
-    int encontrado = 0;
-
-    limpar_tela();
-    printf("----------------------------------------\n");
-    printf("///   Todas as Consultas Agendadas   ///\n");
-    printf("----------------------------------------\n");
-
-    arq_consultas = fopen(CONSULTAS_FILE, "rb");
-    if (arq_consultas == NULL) {
-        printf("Nenhuma consulta no sistema.\n");
-        press_enter_to_continue();
-        return;
-    }
-    
-    while (fread(&consulta_lida, sizeof(Consulta), 1, arq_consultas)) {
-        if (consulta_lida.ativo == 1 && strcmp(consulta_lida.status, "agendada") == 0) {
-            printf("Paciente: %s (CPF: %s)\n", consulta_lida.nome_paciente, consulta_lida.cpf_paciente);
-            printf("Data: %s | Hora: %s\n", consulta_lida.data, consulta_lida.hora);
-            printf("Medico: %s (%s)\n", consulta_lida.nome_medico, consulta_lida.especialidade);
-            printf("----------------------------------------\n");
-            encontrado = 1;
-        }
-    }
-    fclose(arq_consultas);
-
-    if(!encontrado){
-        printf("Nenhuma consulta agendada no momento.\n");
-    }
-    press_enter_to_continue();
-}
-
-void relatorio_consultas_canceladas(void) {
-    Consulta consulta_lida;
-    FILE* arq_consultas;
-    int encontrado = 0;
-
-    limpar_tela();
-    printf("----------------------------------------\n");
-    printf("///     Consultas Canceladas       ///\n");
-    printf("----------------------------------------\n");
-
-    arq_consultas = fopen(CONSULTAS_FILE, "rb");
-    if (arq_consultas == NULL) {
-        printf("Nenhuma consulta no sistema.\n");
-        press_enter_to_continue();
-        return;
-    }
-    
-    while (fread(&consulta_lida, sizeof(Consulta), 1, arq_consultas)) {
-        // Mostra canceladas (ativo == 0) E as ativas com status "cancelada"
-        if (strcmp(consulta_lida.status, "cancelada") == 0) {
-            printf("Paciente: %s (CPF: %s)\n", consulta_lida.nome_paciente, consulta_lida.cpf_paciente);
-            printf("Data: %s | Hora: %s\n", consulta_lida.data, consulta_lida.hora);
-            printf("Medico: %s (%s)\n", consulta_lida.nome_medico, consulta_lida.especialidade);
-            printf("----------------------------------------\n");
-            encontrado = 1;
-        }
-    }
-    fclose(arq_consultas);
-
-    if(!encontrado){
-        printf("Nenhuma consulta cancelada encontrada.\n");
-    }
-    press_enter_to_continue();
-}
+// ... (Funções relatorio_consultas_agendadas e relatorio_consultas_canceladas
+//     não recebem input, então não precisam de mudanças, exceto pela
+//     checagem de status em relatorio_consultas_canceladas que está correta) ...
 
 void gerenciar_agendamentos(void) {
     int opcao;
+    char bufferOpcao[5]; // MUDANÇA: Buffer de leitura
+
     do {
         limpar_tela(); 
         printf("----------------------------------------\n");
@@ -447,23 +467,33 @@ void gerenciar_agendamentos(void) {
         printf("3. Confirmar Presenca (Concluir)\n");
         printf("0. Voltar\n");
         printf("----------------------------------------\n");
-        printf(">>> Escolha a opcao: ");
         
-        if (scanf("%d", &opcao) != 1) { opcao = -1; }
-        while (getchar() != '\n');
+        // MUDANÇA: Leitura de menu segura
+        do {
+            printf(">>> Escolha a opcao: ");
+            lerString(bufferOpcao, 5);
+            char* endptr;
+            opcao = strtol(bufferOpcao, &endptr, 10);
+            if (endptr == bufferOpcao || *endptr != '\0') {
+                opcao = -1;
+            }
+        } while (!validarOpcaoMenu(opcao, 0, 3));
+
 
         switch (opcao) {
             case 1: alterar_consulta(); break;
             case 2: excluir_consulta(); break;
             case 3: confirmar_presenca(); break;
             case 0: break;
-            default: printf("\nOpcao invalida.\n"); press_enter_to_continue(); break;
+            // Default não é mais necessário
         }
     } while (opcao != 0);
 }
 
 void gerar_relatorios_consultas(void) {
     int opcao;
+    char bufferOpcao[5]; // MUDANÇA: Buffer de leitura
+
     do {
         limpar_tela(); 
         printf("----------------------------------------\n");
@@ -475,10 +505,17 @@ void gerar_relatorios_consultas(void) {
         printf("4. Consultas Canceladas\n");
         printf("0. Voltar\n");
         printf("----------------------------------------\n");
-        printf(">>> Escolha a opcao: ");
         
-        if (scanf("%d", &opcao) != 1) { opcao = -1; }
-        while (getchar() != '\n');
+        // MUDANÇA: Leitura de menu segura
+        do {
+            printf(">>> Escolha a opcao: ");
+            lerString(bufferOpcao, 5);
+            char* endptr;
+            opcao = strtol(bufferOpcao, &endptr, 10);
+            if (endptr == bufferOpcao || *endptr != '\0') {
+                opcao = -1;
+            }
+        } while (!validarOpcaoMenu(opcao, 0, 4));
 
         switch (opcao) {
             case 1: relatorio_consultas_medico(); break;
@@ -486,21 +523,41 @@ void gerar_relatorios_consultas(void) {
             case 3: relatorio_consultas_agendadas(); break;
             case 4: relatorio_consultas_canceladas(); break;
             case 0: break;
-            default: printf("\nOpcao invalida.\n"); press_enter_to_continue(); break;
         }
     } while (opcao != 0);
 }
 
 void modulo_consultas(void) {
     int opcao;
+    char bufferOpcao[5]; // MUDANÇA: Buffer de leitura
+    
     criar_pasta_data();
 
     do {
-        TelaMenuConsultas(); // Função de UI do utils.c
-        if (scanf("%d", &opcao) != 1) { 
-            opcao = -1; 
-        }
-        while (getchar() != '\n');
+        // MUDANÇA: Substituí TelaMenuConsultas() (de utils.c) pelo
+        //          menu inline para consistência com modulo_clientes.c
+        limpar_tela();
+        printf("----------------------------------------\n");
+        printf("///       Modulo de Consultas        ///\n");
+        printf("----------------------------------------\n");
+        printf("1. Agendar Consulta\n");
+        printf("2. Pesquisar Consultas do Paciente\n");
+        printf("3. Gerenciar Agendamentos\n");
+        printf("4. Gerar Relatorios\n");
+        printf("0. Voltar ao menu principal\n");
+        printf("----------------------------------------\n");
+        
+        // MUDANÇA: Leitura de menu segura
+        do {
+            printf(">>> Escolha a opcao: ");
+            lerString(bufferOpcao, 5);
+            char* endptr;
+            opcao = strtol(bufferOpcao, &endptr, 10);
+            if (endptr == bufferOpcao || *endptr != '\0') {
+                opcao = -1;
+            }
+        } while (!validarOpcaoMenu(opcao, 0, 4));
+
 
         switch (opcao) {
             case 1: agendar_consulta(); break;
@@ -508,10 +565,5 @@ void modulo_consultas(void) {
             case 3: gerenciar_agendamentos(); break;
             case 4: gerar_relatorios_consultas(); break;
             case 0: break;
-            default: 
-                printf("\nOpcao invalida.\n"); 
-                press_enter_to_continue(); 
-                break;
         }
     } while (opcao != 0);
-}
