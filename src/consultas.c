@@ -16,7 +16,7 @@ void agendar_consulta(void)
     // MUDANÇA: Buffer para leitura segura
     char buffer[51];
 
-    limpar_tela();
+    limparTela();
     printf("-----------------------------------------\n");
     printf("///       Agendar Nova Consulta       ///\n");
     printf("-----------------------------------------\n");
@@ -80,7 +80,7 @@ void agendar_consulta(void)
     if (arq_consultas == NULL)
     {
         printf("\nErro ao abrir o arquivo para agendamento!\n");
-        press_enter_to_continue();
+        pressioneEnterParaContinuar();
         return;
     }
 
@@ -88,7 +88,7 @@ void agendar_consulta(void)
     fclose(arq_consultas);
 
     printf("\nConsulta agendada com sucesso!\n");
-    press_enter_to_continue();
+    pressioneEnterParaContinuar();
 }
 
 void pesquisar_consulta(void)
@@ -98,7 +98,7 @@ void pesquisar_consulta(void)
     Consulta consulta_lida;
     FILE *arq_consultas;
 
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///       Pesquisar Consulta         ///\n");
     printf("----------------------------------------\n");
@@ -118,7 +118,7 @@ void pesquisar_consulta(void)
     if (arq_consultas == NULL)
     {
         printf("\nNenhuma consulta agendada ou erro ao abrir arquivo.\n");
-        press_enter_to_continue();
+        pressioneEnterParaContinuar();
         return;
     }
 
@@ -141,7 +141,7 @@ void pesquisar_consulta(void)
     {
         printf("\nNenhuma consulta ativa para o CPF %s foi encontrada.\n", cpf_pesquisa);
     }
-    press_enter_to_continue();
+    pressioneEnterParaContinuar();
 }
 
 void alterar_consulta(void)
@@ -156,7 +156,7 @@ void alterar_consulta(void)
     // MUDANÇA: Buffer para leitura
     char buffer[51];
 
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///       Alterar Consulta           ///\n");
     printf("----------------------------------------\n");
@@ -179,7 +179,7 @@ void alterar_consulta(void)
     if (arq_consultas == NULL)
     {
         printf("\nErro ao abrir arquivo.\n");
-        press_enter_to_continue();
+        pressioneEnterParaContinuar();
         return;
     }
 
@@ -224,7 +224,7 @@ void alterar_consulta(void)
     {
         printf("\nConsulta para o CPF %s na data %s nao encontrada.\n", cpf_busca, data_busca);
     }
-    press_enter_to_continue();
+    pressioneEnterParaContinuar();
 }
 
 void excluir_consulta(void)
@@ -236,7 +236,7 @@ void excluir_consulta(void)
     FILE *arq_consultas;
     long int pos;
 
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///   Cancelar/Excluir Consulta    ///\n");
     printf("----------------------------------------\n");
@@ -259,7 +259,7 @@ void excluir_consulta(void)
     if (arq_consultas == NULL)
     {
         printf("\nErro ao abrir arquivo.\n");
-        press_enter_to_continue();
+        pressioneEnterParaContinuar();
         return;
     }
 
@@ -313,7 +313,7 @@ void excluir_consulta(void)
     {
         printf("\nConsulta para o CPF %s na data %s nao encontrada.\n", cpf_busca, data_busca);
     }
-    press_enter_to_continue();
+    pressioneEnterParaContinuar();
 }
 
 void confirmar_presenca(void)
@@ -325,7 +325,7 @@ void confirmar_presenca(void)
     FILE *arq_consultas;
     long int pos;
 
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///     Confirmar Presenca           ///\n");
     printf("----------------------------------------\n");
@@ -348,7 +348,7 @@ void confirmar_presenca(void)
     if (arq_consultas == NULL)
     {
         printf("\nErro ao abrir arquivo.\n");
-        press_enter_to_continue();
+        pressioneEnterParaContinuar();
         return;
     }
 
@@ -378,7 +378,7 @@ void confirmar_presenca(void)
     {
         printf("\nNenhuma consulta para o CPF %s na data %s encontrada.\n", cpf_busca, data_busca);
     }
-    press_enter_to_continue();
+    pressioneEnterParaContinuar();
 }
 
 void relatorio_consultas_medico(void)
@@ -388,7 +388,7 @@ void relatorio_consultas_medico(void)
     Consulta consulta_lida;
     FILE *arq_consultas;
 
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///     Consultas por Medico         ///\n");
     printf("----------------------------------------\n");
@@ -406,7 +406,7 @@ void relatorio_consultas_medico(void)
     if (arq_consultas == NULL)
     {
         printf("Nenhuma consulta no sistema.\n");
-        press_enter_to_continue();
+        pressioneEnterParaContinuar();
         return;
     }
 
@@ -427,7 +427,7 @@ void relatorio_consultas_medico(void)
     {
         printf("\nNenhuma consulta ativa encontrada para este medico.\n");
     }
-    press_enter_to_continue();
+    pressioneEnterParaContinuar();
 }
 
 void relatorio_consultas_por_periodo(void)
@@ -440,7 +440,7 @@ void relatorio_consultas_por_periodo(void)
     // MUDANÇA: Variáveis para datas convertidas
     long data_inicio_int, data_fim_int, data_consulta_int;
 
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///     Consultas por Periodo        ///\n");
     printf("----------------------------------------\n");
@@ -465,7 +465,7 @@ void relatorio_consultas_por_periodo(void)
     if (data_fim_int < data_inicio_int)
     {
         printf("\n! Erro: A data final nao pode ser anterior a data inicial.\n");
-        press_enter_to_continue();
+        pressioneEnterParaContinuar();
         return;
     }
 
@@ -475,7 +475,7 @@ void relatorio_consultas_por_periodo(void)
     if (arq_consultas == NULL)
     {
         printf("Nenhuma consulta no sistema.\n");
-        press_enter_to_continue();
+        pressioneEnterParaContinuar();
         return;
     }
 
@@ -504,7 +504,7 @@ void relatorio_consultas_por_periodo(void)
     {
         printf("Nenhuma consulta encontrada neste Periodo.\n");
     }
-    press_enter_to_continue();
+    pressioneEnterParaContinuar();
 }
 
 // ... (Funções relatorio_consultas_agendadas e relatorio_consultas_canceladas
@@ -518,7 +518,7 @@ void gerenciar_agendamentos(void)
 
     do
     {
-        limpar_tela();
+        limparTela();
         printf("----------------------------------------\n");
         printf("///   Gerenciar Agendamentos       ///\n");
         printf("----------------------------------------\n");
@@ -566,7 +566,7 @@ void gerar_relatorios_consultas(void)
 
     do
     {
-        limpar_tela();
+        limparTela();
         printf("----------------------------------------\n");
         printf("///     Gerar Relatorios           ///\n");
         printf("----------------------------------------\n");
@@ -615,13 +615,13 @@ void modulo_consultas(void)
     int opcao;
     char bufferOpcao[5]; // MUDANÇA: Buffer de leitura
 
-    criar_pasta_data();
+    criarPastaData();
 
     do
     {
         // MUDANÇA: Substituí TelaMenuConsultas() (de utils.c) pelo
         //          menu inline para consistência com modulo_clientes.c
-        limpar_tela();
+        limparTela();
         printf("----------------------------------------\n");
         printf("///       Modulo de Consultas        ///\n");
         printf("----------------------------------------\n");

@@ -47,7 +47,7 @@ void cadastrar_produto(void)
     char buffer[51];
     int id_temp;
 
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///       Cadastrar Novo Produto     ///\n");
     printf("----------------------------------------\n");
@@ -102,7 +102,7 @@ void cadastrar_produto(void)
     if (arq_produtos == NULL)
     {
         printf("\nErro ao abrir o arquivo de produtos!\n");
-        press_enter_to_continue();
+        pressioneEnterParaContinuar();
         return;
     }
 
@@ -110,7 +110,7 @@ void cadastrar_produto(void)
     fclose(arq_produtos);
 
     printf("\nProduto cadastrado com sucesso no estoque!\n");
-    press_enter_to_continue();
+    pressioneEnterParaContinuar();
 }
 
 // ----------
@@ -124,7 +124,7 @@ void pesquisar_produto(void)
     FILE *arq_produtos;
     char buffer[51]; // MUDANÇA: Buffer
 
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///     Pesquisar Produto por ID     ///\n");
     printf("----------------------------------------\n");
@@ -141,7 +141,7 @@ void pesquisar_produto(void)
     if (arq_produtos == NULL)
     {
         printf("\nNenhum produto cadastrado.\n");
-        press_enter_to_continue();
+        pressioneEnterParaContinuar();
         return;
     }
 
@@ -165,7 +165,7 @@ void pesquisar_produto(void)
     {
         printf("\nProduto com ID %d nao foi encontrado.\n", id_busca);
     }
-    press_enter_to_continue();
+    pressioneEnterParaContinuar();
 }
 
 // --------------
@@ -180,7 +180,7 @@ void movimentar_estoque(void)
     char bufferOpcao[5];
     char bufferValor[10];
 
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///        Movimentar Estoque        ///\n");
     printf("----------------------------------------\n");
@@ -224,7 +224,7 @@ void movimentar_estoque(void)
         if (arq_produtos == NULL)
         {
             printf("\nArquivo de produtos nao encontrado.\n");
-            press_enter_to_continue();
+            pressioneEnterParaContinuar();
             return;
         }
 
@@ -267,7 +267,7 @@ void movimentar_estoque(void)
             printf("\nProduto com ID %d nao encontrado.\n", id);
         }
     }
-    press_enter_to_continue();
+    pressioneEnterParaContinuar();
 }
 
 // -------------------------------------------------------
@@ -279,7 +279,7 @@ void listar_produtos(void)
     FILE *arq_produtos;
     int tem_produto = 0;
 
-    limpar_tela();
+    limparTela();
     printf("-----------------------------------------------\n");
     printf("///     Listagem de Produtos em Estoque     ///\n");
     printf("-----------------------------------------------\n");
@@ -288,7 +288,7 @@ void listar_produtos(void)
     if (arq_produtos == NULL)
     {
         printf("Nenhum produto cadastrado no estoque.\n");
-        press_enter_to_continue();
+        pressioneEnterParaContinuar();
         return;
     }
 
@@ -310,7 +310,7 @@ void listar_produtos(void)
     {
         printf("\nNenhum produto ativo encontrado no estoque.\n");
     }
-    press_enter_to_continue();
+    pressioneEnterParaContinuar();
 }
 
 void relatorio_itens_falta(void)
@@ -320,7 +320,7 @@ void relatorio_itens_falta(void)
     int encontrado = 0;
     const int LIMITE_MINIMO = 5;
 
-    limpar_tela();
+    limparTela();
     printf("------------------------------------------\n");
     printf("///   Itens em Falta (Estoque Baixo)   ///\n");
     printf("------------------------------------------\n");
@@ -330,7 +330,7 @@ void relatorio_itens_falta(void)
     if (arq_produtos == NULL)
     {
         printf("Nenhum item em falta no estoque.\n");
-        press_enter_to_continue();
+        pressioneEnterParaContinuar();
         return;
     }
 
@@ -349,7 +349,7 @@ void relatorio_itens_falta(void)
     {
         printf("Nenhum item em falta no estoque.\n");
     }
-    press_enter_to_continue();
+    pressioneEnterParaContinuar();
 }
 
 void gerar_relatorios_estoque(void)
@@ -359,7 +359,7 @@ void gerar_relatorios_estoque(void)
 
     do
     {
-        limpar_tela();
+        limparTela();
         printf("----------------------------------------\n");
         printf("///        Relatorios de Estoque     ///\n");
         printf("----------------------------------------\n");
@@ -401,12 +401,12 @@ void modulo_estoque(void)
 {
     int opcao;
     char bufferOpcao[5];
-    criar_pasta_data();
+    criarPastaData();
 
     do
     {
         // MUDANÇA: Substituindo TelaMenuEstoque() pelo menu inline para consistência
-        limpar_tela();
+        limparTela();
         printf("----------------------------------------\n");
         printf("///          Modulo Estoque          ///\n");
         printf("----------------------------------------\n");

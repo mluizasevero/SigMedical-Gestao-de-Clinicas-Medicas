@@ -63,7 +63,7 @@ void cadastrar_medico(void)
     char buffer[51];
     int id_temp;
 
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///       Cadastrar Novo Medico      ///\n");
     printf("----------------------------------------\n");
@@ -129,7 +129,7 @@ void cadastrar_medico(void)
     if (arq_medicos == NULL)
     {
         printf("\nErro ao abrir o arquivo de medicos!\n");
-        press_enter_to_continue();
+        pressioneEnterParaContinuar();
         return;
     }
 
@@ -137,7 +137,7 @@ void cadastrar_medico(void)
     fclose(arq_medicos);
 
     printf("\nMedico cadastrado com sucesso!\n");
-    press_enter_to_continue();
+    pressioneEnterParaContinuar();
 }
 
 // -----------
@@ -150,7 +150,7 @@ void pesquisar_medico(void)
     Medico medico_lido;
     FILE *arq_medicos;
 
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///     Pesquisar Medico por CPF     ///\n");
     printf("----------------------------------------\n");
@@ -166,7 +166,7 @@ void pesquisar_medico(void)
     if (arq_medicos == NULL)
     {
         printf("\nNenhum medico cadastrado ou erro ao abrir o arquivo.\n");
-        press_enter_to_continue();
+        pressioneEnterParaContinuar();
         return;
     }
 
@@ -191,7 +191,7 @@ void pesquisar_medico(void)
     {
         printf("\nMedico com CPF %s nao encontrado.\n", cpf_busca);
     }
-    press_enter_to_continue();
+    pressioneEnterParaContinuar();
 }
 
 // ------------
@@ -206,7 +206,7 @@ void alterar_medico(void)
     long int pos;
     char buffer[51];
 
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///      Alterar Dados de Medico     ///\n");
     printf("----------------------------------------\n");
@@ -222,7 +222,7 @@ void alterar_medico(void)
     if (arq_medicos == NULL)
     {
         printf("\nErro ao abrir arquivo. Nenhum medico cadastrado?\n");
-        press_enter_to_continue();
+        pressioneEnterParaContinuar();
         return;
     }
 
@@ -298,7 +298,7 @@ void alterar_medico(void)
     {
         printf("\nMedico com CPF %s nao encontrado.\n", cpf_busca);
     }
-    press_enter_to_continue();
+    pressioneEnterParaContinuar();
 }
 
 // -----------
@@ -312,7 +312,7 @@ void excluir_medico(void)
     FILE *arq_medicos;
     long int pos;
 
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///          Excluir Medico          ///\n");
     printf("----------------------------------------\n");
@@ -328,7 +328,7 @@ void excluir_medico(void)
     if (arq_medicos == NULL)
     {
         printf("\nErro ao abrir o arquivo.\n");
-        press_enter_to_continue();
+        pressioneEnterParaContinuar();
         return;
     }
 
@@ -354,7 +354,7 @@ void excluir_medico(void)
     {
         printf("\nMedico com CPF %s nao encontrado.\n", cpf_busca);
     }
-    press_enter_to_continue();
+    pressioneEnterParaContinuar();
 }
 
 // ---------------------------------------
@@ -366,7 +366,7 @@ void listar_medicos(void)
     FILE *arq_medicos;
     int tem_medico = 0;
 
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///        Listagem de Medicos       ///\n");
     printf("----------------------------------------\n");
@@ -375,7 +375,7 @@ void listar_medicos(void)
     if (arq_medicos == NULL)
     {
         printf("Nenhum medico cadastrado.\n");
-        press_enter_to_continue();
+        pressioneEnterParaContinuar();
         return;
     }
 
@@ -398,7 +398,7 @@ void listar_medicos(void)
     {
         printf("Nenhum medico ativo encontrado.\n");
     }
-    press_enter_to_continue();
+    pressioneEnterParaContinuar();
 }
 
 // -------
@@ -408,11 +408,11 @@ void modulo_medicos(void)
 {
     int opcao;
     char bufferOpcao[5];
-    criar_pasta_data();
+    criarPastaData();
 
     do
     {
-        limpar_tela();
+        limparTela();
         printf("----------------------------------------\n");
         printf("///         Modulo de Medicos        ///\n");
         printf("----------------------------------------\n");

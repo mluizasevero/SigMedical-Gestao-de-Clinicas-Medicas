@@ -40,7 +40,7 @@ void cadastrar_cliente(void)
     // MUDANÇA: Buffers temporários para leitura e validação
     char buffer[51]; // 50 + 1 para o \0
 
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///     Cadastrar Novo Cliente       ///\n");
     printf("----------------------------------------\n");
@@ -93,7 +93,7 @@ void cadastrar_cliente(void)
     if (arq_clientes == NULL)
     {
         printf("\nErro fatal ao abrir o arquivo para escrita!\n");
-        press_enter_to_continue();
+        pressioneEnterParaContinuar();
         return;
     }
 
@@ -102,7 +102,7 @@ void cadastrar_cliente(void)
     fclose(arq_clientes);
 
     printf("\nCliente cadastrado com sucesso!\n");
-    press_enter_to_continue();
+    pressioneEnterParaContinuar();
 }
 
 // lê o arquivo de forma sequencial para encontrar um cliente
@@ -113,7 +113,7 @@ void pesquisar_cliente(void)
     Cliente cliente_lido;
     FILE *arq_clientes;
 
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///       Pesquisar Cliente          ///\n");
     printf("----------------------------------------\n");
@@ -134,7 +134,7 @@ void pesquisar_cliente(void)
     if (arq_clientes == NULL)
     {
         printf("\nNenhum cliente cadastrado ou erro ao abrir o arquivo.\n");
-        press_enter_to_continue();
+        pressioneEnterParaContinuar();
         return;
     }
 
@@ -159,7 +159,7 @@ void pesquisar_cliente(void)
     {
         printf("\nCliente com CPF %s nao encontrado.\n", cpf_pesquisa);
     }
-    press_enter_to_continue();
+    pressioneEnterParaContinuar();
 }
 
 // encontra e altera um registro no arquivo.
@@ -174,7 +174,7 @@ void alterar_cliente(void)
     // MUDANÇA: Buffer para novos dados
     char buffer[51];
 
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///     Alterar Dados do Cliente     ///\n");
     printf("----------------------------------------\n");
@@ -195,7 +195,7 @@ void alterar_cliente(void)
     if (arq_clientes == NULL)
     {
         printf("\nErro ao abrir arquivo. Nenhum cliente cadastrado?\n");
-        press_enter_to_continue();
+        pressioneEnterParaContinuar();
         return;
     }
 
@@ -247,7 +247,7 @@ void alterar_cliente(void)
     {
         printf("\nCliente com CPF %s nao encontrado.\n", cpf_alteracao);
     }
-    press_enter_to_continue();
+    pressioneEnterParaContinuar();
 }
 
 // encontra e marca um registro como inativo
@@ -259,7 +259,7 @@ void excluir_cliente(void)
     FILE *arq_clientes;
     long int pos;
 
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///         Excluir Cliente          ///\n");
     printf("----------------------------------------\n");
@@ -279,7 +279,7 @@ void excluir_cliente(void)
     if (arq_clientes == NULL)
     {
         printf("\nErro ao abrir arquivo.\n");
-        press_enter_to_continue();
+        pressioneEnterParaContinuar();
         return;
     }
 
@@ -306,7 +306,7 @@ void excluir_cliente(void)
     {
         printf("\nCliente com CPF %s nao encontrado.\n", cpf_exclusao);
     }
-    press_enter_to_continue();
+    pressioneEnterParaContinuar();
 }
 
 // mostra todos os clientes ativos no arquivo.
@@ -316,7 +316,7 @@ void listar_clientes(void)
     Cliente cliente_lido;
     int nenhum_cliente = 1;
 
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///       Listagem de Clientes       ///\n");
     printf("----------------------------------------\n");
@@ -325,7 +325,7 @@ void listar_clientes(void)
     if (arq_clientes == NULL)
     {
         printf("\nNenhum cliente cadastrado.\n");
-        press_enter_to_continue();
+        pressioneEnterParaContinuar();
         return;
     }
 
@@ -347,7 +347,7 @@ void listar_clientes(void)
     {
         printf("\nNenhum cliente ativo para exibir.\n");
     }
-    press_enter_to_continue();
+    pressioneEnterParaContinuar();
 }
 
 // Módulo principal
@@ -357,11 +357,11 @@ void modulo_clientes(void)
     char bufferOpcao[5]; // MUDANÇA: Buffer para ler a opção
 
     // garante que a pasta ./data exista antes de qualquer operação
-    criar_pasta_data();
+    criarPastaData();
 
     do
     {
-        limpar_tela();
+        limparTela();
         printf("----------------------------------------\n");
         printf("///       Modulo de Clientes         ///\n");
         printf("----------------------------------------\n");

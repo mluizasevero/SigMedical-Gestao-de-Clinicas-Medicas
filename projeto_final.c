@@ -13,7 +13,7 @@
 int main(void)
 {
 
-    criar_pasta_data();
+    criarPastaData();
 
     int opcao_principal;
     char input[MAX_OPCAO]; // Buffer para leitura segura da opção
@@ -50,18 +50,18 @@ int main(void)
             modulo_estoque();
             break;
         case 5:
-            tela_equipe();
-            press_enter_to_continue();
+            telaEquipe();
+            pressioneEnterParaContinuar();
             break;
         case 0:
             break;
         default:
             printf("\nOpcao invalida. Pressione ENTER para tentar novamente.\n");
-            press_enter_to_continue();
+            pressioneEnterParaContinuar();
             break;
         }
     } while (opcao_principal != 0);
 
-    finalizar_programa();
+    finalizarPrograma();
     return 0;
 }

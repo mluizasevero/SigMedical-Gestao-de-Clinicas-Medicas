@@ -6,6 +6,8 @@
 #include <ctype.h>
 #include "utils.h"
 
+// =========== FUNÇÕES ÚTEIS =========== //
+
 static void limpar_buffer(void)
 {
     int c;
@@ -14,9 +16,8 @@ static void limpar_buffer(void)
         ;
 }
 
-// NOTA: Esta função substitui todos os 'scanf(" %49[^\n]", ...)' e 'while(getchar() != '\n')'.
-
 char *lerString(char *str, int size)
+// NOTA: Esta função substitui todos os 'scanf(" %49[^\n]", ...)' e 'while(getchar() != '\n')'.
 {
     if (str == NULL || size <= 0)
     {
@@ -45,7 +46,7 @@ char *lerString(char *str, int size)
     return str;
 }
 
-void criar_pasta_data(void)
+void criarPastaData(void)
 {
 #ifdef _WIN32
     _mkdir("data");
@@ -55,12 +56,12 @@ void criar_pasta_data(void)
 #endif
 }
 
-void limpar_tela(void)
+void limparTela(void)
 {
     system("clear||cls");
 }
 
-void press_enter_to_continue(void)
+void pressioneEnterParaContinuar(void)
 {
     printf("Pressione ENTER para continuar...");
     // MUDANÇA: Substitui 'while(getchar() != '\n');' por 'limpar_buffer()'
@@ -72,7 +73,7 @@ void press_enter_to_continue(void)
     }
 }
 
-void maiuscula(char *texto)
+void transformarEmMaiusculas(char *texto)
 {
     for (int i = 0; texto[i] != '\0'; i++)
     {
@@ -80,7 +81,11 @@ void maiuscula(char *texto)
     }
 }
 
-void desenhar_cabecalho_base(void)
+// ======================================== //
+
+// =========== FUNÇÕES DE TELAS =========== //
+
+void desenharCabecalhoBase(void)
 {
     printf("///////////////////////////////////////////////////////////////////////////////\n");
     printf("///                                                                         ///\n");
@@ -93,9 +98,9 @@ void desenhar_cabecalho_base(void)
     printf("///                                                                         ///\n");
 }
 
-void tela_equipe(void)
+void telaEquipe(void)
 {
-    limpar_tela();
+    limparTela();
     const char *info =
         "///          Este projeto foi desenvolvido por:                             ///\n"
         "///                                                                         ///\n"
@@ -108,14 +113,14 @@ void tela_equipe(void)
         "///          Thiago Gomes de Oliveira                                       ///\n"
         "///          E-mail: Thiago.oliveira712@ufrn.edu.br                         ///";
 
-    desenhar_cabecalho_base();
+    desenharCabecalhoBase();
     printf("%s\n", info);
     printf("///////////////////////////////////////////////////////////////////////////////\n");
 }
 
 void TelaMenuPrincipal(void)
 {
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///          MENU PRINCIPAL          ///\n");
     printf("----------------------------------------\n");
@@ -133,7 +138,7 @@ void TelaMenuPrincipal(void)
 
 void TelaMenuMedicos(void)
 {
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///         Modulo de Medicos        ///\n");
     printf("----------------------------------------\n");
@@ -151,7 +156,7 @@ void TelaMenuMedicos(void)
 
 void TelaMenuClientes(void)
 {
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///         Modulo de Clientes       ///\n");
     printf("----------------------------------------\n");
@@ -169,7 +174,7 @@ void TelaMenuClientes(void)
 
 void TelaMenuConsultas(void)
 {
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///        Modulo de Consultas       ///\n");
     printf("----------------------------------------\n");
@@ -186,7 +191,7 @@ void TelaMenuConsultas(void)
 
 void TelaMenuEstoque(void)
 {
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///         Modulo de Estoque        ///\n");
     printf("----------------------------------------\n");
@@ -204,7 +209,7 @@ void TelaMenuEstoque(void)
 
 void TelaCadastrarMedicos()
 {
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///         Cadastrar Médico         ///\n");
     printf("----------------------------------------\n");
@@ -221,7 +226,7 @@ void TelaCadastrarMedicos()
 
 void TelaPesquisarMedicos()
 {
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///         Pesquisar Médico         ///\n");
     printf("----------------------------------------\n");
@@ -234,7 +239,7 @@ void TelaPesquisarMedicos()
 
 void TelaAlterarMedicos()
 {
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///          Alterar Médico          ///\n");
     printf("----------------------------------------\n");
@@ -247,7 +252,7 @@ void TelaAlterarMedicos()
 
 void TelaExcluirMedicos()
 {
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///          Excluir Médico          ///\n");
     printf("----------------------------------------\n");
@@ -260,7 +265,7 @@ void TelaExcluirMedicos()
 
 void TelaConfirmarExclusao()
 {
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///      Confirmar Exclusão?         ///\n");
     printf("----------------------------------------\n");
@@ -274,7 +279,7 @@ void TelaConfirmarExclusao()
 
 void TelaCadastrarClientes()
 {
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///         Cadastrar Cliente        ///\n");
     printf("----------------------------------------\n");
@@ -290,7 +295,7 @@ void TelaCadastrarClientes()
 
 void TelaPesquisarClientes()
 {
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///         Pesquisar Cliente        ///\n");
     printf("----------------------------------------\n");
@@ -303,7 +308,7 @@ void TelaPesquisarClientes()
 
 void TelaAlterarClientes()
 {
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///          Alterar Cliente         ///\n");
     printf("----------------------------------------\n");
@@ -316,7 +321,7 @@ void TelaAlterarClientes()
 
 void TelaExcluirClientes()
 {
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///          Excluir Cliente         ///\n");
     printf("----------------------------------------\n");
@@ -329,7 +334,7 @@ void TelaExcluirClientes()
 
 void TelaConfirmarExclusaoCliente()
 {
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///      Confirmar Exclusão?         ///\n");
     printf("----------------------------------------\n");
@@ -343,7 +348,7 @@ void TelaConfirmarExclusaoCliente()
 
 void TelaAgendarNovaConsulta()
 {
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///      Agendar Nova Consulta       ///\n");
     printf("----------------------------------------\n");
@@ -361,7 +366,7 @@ void TelaAgendarNovaConsulta()
 
 void TelaGerenciarAgendamentos()
 {
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///      Gerenciar Agendamentos      ///\n");
     printf("----------------------------------------\n");
@@ -377,7 +382,7 @@ void TelaGerenciarAgendamentos()
 
 void TelaGerarRelatorios()
 {
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///         Gerar Relatórios         ///\n");
     printf("----------------------------------------\n");
@@ -394,7 +399,7 @@ void TelaGerarRelatorios()
 
 void TelaCadastrarProduto()
 {
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///         Cadastrar Produto        ///\n");
     printf("----------------------------------------\n");
@@ -410,7 +415,7 @@ void TelaCadastrarProduto()
 
 void TelaPesquisarProduto()
 {
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///         Pesquisar Produto        ///\n");
     printf("----------------------------------------\n");
@@ -425,7 +430,7 @@ void TelaPesquisarProduto()
 
 void TelaGerenciarLotes()
 {
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///          Gerenciar Lotes         ///\n");
     printf("----------------------------------------\n");
@@ -441,7 +446,7 @@ void TelaGerenciarLotes()
 
 void TelaMovimentarEstoque()
 {
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///        Movimentar Estoque        ///\n");
     printf("----------------------------------------\n");
@@ -456,7 +461,7 @@ void TelaMovimentarEstoque()
 
 void TelaGerarRelatoriosEstoque()
 {
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///         Gerar Relatórios         ///\n");
     printf("----------------------------------------\n");
@@ -472,7 +477,7 @@ void TelaGerarRelatoriosEstoque()
 
 void TelaGerarRelatoriosMovimentacoes(void)
 {
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("/// Gerar Relatórios Movimentações   ///\n");
     printf("----------------------------------------\n");
@@ -487,7 +492,7 @@ void TelaGerarRelatoriosMovimentacoes(void)
 
 void TelaMenuMovimentacao(void)
 {
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///     Módulo de Movimentação       ///\n");
     printf("----------------------------------------\n");
@@ -500,10 +505,9 @@ void TelaMenuMovimentacao(void)
     printf(">>> Escolha a opção desejada: ");
 }
 
-
-void finalizar_programa()
+void finalizarPrograma()
 {
-    limpar_tela();
+    limparTela();
     printf("\n\n");
     printf("////////////////////////////////////////////////////////////////\n");
     printf("///                                                          ///\n");

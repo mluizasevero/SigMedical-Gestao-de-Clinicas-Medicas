@@ -16,44 +16,61 @@
 
 // ========================================== //
 
-char *lerString(char *str, int size);
+// ========= FUNÇÕES DE TELA (MENUS) ========= //
 
-// FUNÇÕES UTILITÁRIAS EXISTENTES
-void desenhar_cabecalho_base(void);
-void tela_equipe(void);
-void criar_pasta_data(void);
-void limpar_tela(void);
-void press_enter_to_continue(void);
-void maiuscula(char *texto);
-void finalizar_programa(void);
-
-// FUNÇÕES DE TELA (MENUS)
+// MENU PRINCIPAL
 void TelaMenuPrincipal(void);
-void TelaMenuMedicos(void);
-void TelaMenuClientes(void);
-void TelaMenuConsultas(void);
-void TelaMenuEstoque(void);
-void TelaMenuMovimentacao(void);
 
-// FUNÇÕES DE TELA (CADASTRO/CRUD)
+// CRUD MÉDICOS
+void TelaMenuMedicos(void);
 void TelaCadastrarMedicos(void);
 void TelaPesquisarMedicos(void);
 void TelaAlterarMedicos(void);
 void TelaExcluirMedicos(void);
-void TelaConfirmarExclusao(void);
+
+// CRUD CLIENTES
+void TelaMenuClientes(void);
 void TelaCadastrarClientes(void);
 void TelaPesquisarClientes(void);
 void TelaAlterarClientes(void);
 void TelaExcluirClientes(void);
 void TelaConfirmarExclusaoCliente(void);
+
+// OPÇÕES CONSULTAS
+void TelaMenuConsultas(void);
 void TelaAgendarNovaConsulta(void);
 void TelaGerenciarAgendamentos(void);
+
+// OPÇÕES RELATÓRIOS
 void TelaGerarRelatorios(void);
+void TelaGerarRelatoriosEstoque(void);
+
+// CRUD PRODUTOS
 void TelaCadastrarProduto(void);
 void TelaPesquisarProduto(void);
 void TelaGerenciarLotes(void);
 void TelaMovimentarEstoque(void);
-void TelaGerarRelatoriosEstoque(void);
+void TelaMenuEstoque(void);
 void TelaGerarRelatoriosMovimentacoes(void);
+void TelaMenuMovimentacao(void);
+
+// Outras Telas
+void TelaConfirmarExclusao(void); // CORRIGIR
+void desenharCabecalhoBase(void);
+void finalizarPrograma(void);
+void telaEquipe(void);
+
+// ========================================== //
+
+// ===== FUNÇÕES UTILITÁRIAS EXISTENTES ===== //
+
+char *lerString(char *str, int size);
+void pressioneEnterParaContinuar(void);
+void criarPastaData(void);
+void limparTela(void);
+void transformarEmMaiusculas(char *texto);
+
+// ========================================== //
+
 
 #endif

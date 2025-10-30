@@ -44,7 +44,7 @@ void exibir_historico_movimentacoes(void)
     Movimentacao mov_lida;
     FILE *arq_movimentacoes;
 
-    limpar_tela();
+    limparTela();
     printf("----------------------------------------\n");
     printf("///    Historico de Movimentacoes    ///\n");
     printf("----------------------------------------\n");
@@ -53,7 +53,7 @@ void exibir_historico_movimentacoes(void)
     if (arq_movimentacoes == NULL)
     {
         printf("Nenhuma movimentacao de estoque registrada.\n");
-        press_enter_to_continue();
+        pressioneEnterParaContinuar();
         return;
     }
 
@@ -68,5 +68,5 @@ void exibir_historico_movimentacoes(void)
     }
 
     fclose(arq_movimentacoes);
-    press_enter_to_continue();
+    pressioneEnterParaContinuar();
 }
