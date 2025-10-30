@@ -34,7 +34,6 @@ void TelaCadastrarClientes(void);
 void TelaPesquisarClientes(void);
 void TelaAlterarClientes(void);
 void TelaExcluirClientes(void);
-void TelaConfirmarExclusaoCliente(void);
 
 // OPÇÕES CONSULTAS
 void TelaMenuConsultas(void);
@@ -55,7 +54,7 @@ void TelaGerarRelatoriosMovimentacoes(void);
 void TelaMenuMovimentacao(void);
 
 // Outras Telas
-void TelaConfirmarExclusao(void); // CORRIGIR
+void TelaConfirmarExclusao(void);
 void desenharCabecalhoBase(void);
 void finalizarPrograma(void);
 void telaEquipe(void);

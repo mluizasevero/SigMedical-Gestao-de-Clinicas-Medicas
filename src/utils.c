@@ -332,20 +332,6 @@ void TelaExcluirClientes()
     printf("\n");
 }
 
-void TelaConfirmarExclusaoCliente()
-{
-    limparTela();
-    printf("----------------------------------------\n");
-    printf("///      Confirmar Exclusão?         ///\n");
-    printf("----------------------------------------\n");
-    printf("///                                  ///\n");
-    printf("///     1. Sim (S/s)                 ///\n");
-    printf("///     2. Nao (N/n)                 ///\n");
-    printf("///                                  ///\n");
-    printf("----------------------------------------\n");
-    printf(">>> Escolha a opção desejada: ");
-}
-
 void TelaAgendarNovaConsulta()
 {
     limparTela();
