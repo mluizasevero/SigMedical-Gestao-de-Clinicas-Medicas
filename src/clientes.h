@@ -1,9 +1,8 @@
-
-
 #ifndef CLIENTES_H
 #define CLIENTES_H
 
-typedef struct {
+typedef struct
+{
     char cpf[15];
     char nome[50];
     char telefone[15];
@@ -11,15 +10,12 @@ typedef struct {
     int ativo;
 } Cliente;
 
-
 void modulo_clientes(void);
-
 
 void cadastrar_cliente(void);
 void pesquisar_cliente(void);
 void alterar_cliente(void);
 void excluir_cliente(void);
-
 
 void listar_clientes(void);
 

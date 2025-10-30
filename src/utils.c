@@ -6,77 +6,82 @@
 #include <ctype.h>
 #include "utils.h"
 
-#ifdef _WIN32
-    #include <direct.h>
-#endif
-
-
-
-
-static void limpar_buffer(void) {
+static void limpar_buffer(void)
+{
     int c;
     // Continua lendo e descartando caracteres até encontrar \n ou EOF
-    while ((c = getchar()) != '\n' && c != EOF);
+    while ((c = getchar()) != '\n' && c != EOF)
+        ;
 }
-
-
 
 // NOTA: Esta função substitui todos os 'scanf(" %49[^\n]", ...)' e 'while(getchar() != '\n')'.
 
-char* lerString(char *str, int size) {
-    if (str == NULL || size <= 0) {
+char *lerString(char *str, int size)
+{
+    if (str == NULL || size <= 0)
+    {
         return NULL;
     }
 
     // Leitura com fgets (segura contra buffer overflow)
-    if (fgets(str, size, stdin) == NULL) {
+    if (fgets(str, size, stdin) == NULL)
+    {
         return NULL; // Erro de leitura
     }
 
     // Procura e remove o '\n' do final
     size_t len = strlen(str);
-    if (len > 0 && str[len - 1] == '\n') {
+    if (len > 0 && str[len - 1] == '\n')
+    {
         str[len - 1] = '\0';
-    } else {
+    }
+    else
+    {
         // Se o '\n' não foi encontrado, a entrada foi maior que 'size - 1'.
         // Limpar o restante do buffer para evitar interferência na próxima leitura.
         limpar_buffer();
     }
-    
+
     return str;
 }
 
-
-void criar_pasta_data(void) {
-    #ifdef _WIN32
-        _mkdir("data");
-    #else
-        // Use 'mkdir' com permissões (0755)
-        mkdir("data", 0755); 
-    #endif
+void criar_pasta_data(void)
+{
+#ifdef _WIN32
+    _mkdir("data");
+#else
+    // Use 'mkdir' com permissões (0755)
+    mkdir("data", 0755);
+#endif
 }
 
-void limpar_tela(void) {
+void limpar_tela(void)
+{
     system("clear||cls");
 }
 
-void press_enter_to_continue(void) {
+void press_enter_to_continue(void)
+{
     printf("Pressione ENTER para continuar...");
-    // MUDANÇA: Substitui 'while(getchar() != '\n');' por 'limpar_buffer()' 
+    // MUDANÇA: Substitui 'while(getchar() != '\n');' por 'limpar_buffer()'
     // e um único getchar para esperar o comando.
-    limpar_buffer(); 
-    if (getchar() != EOF) {
+    limpar_buffer();
+    if (getchar() != EOF)
+    {
         // Espera o ENTER e não faz nada, apenas continua
     }
 }
 
-void maiuscula(char *texto) {
-    for (int i = 0; texto[i] != '\0'; i++) {
+void maiuscula(char *texto)
+{
+    for (int i = 0; texto[i] != '\0'; i++)
+    {
         texto[i] = (char)toupper((unsigned char)texto[i]);
     }
 }
 
-void desenhar_cabecalho_base(void) {
+void desenhar_cabecalho_base(void)
+{
     printf("///////////////////////////////////////////////////////////////////////////////\n");
     printf("///                                                                         ///\n");
     printf("///             Universidade Federal do Rio Grande do Norte (UFRN)          ///\n");
@@ -88,27 +93,28 @@ void desenhar_cabecalho_base(void) {
     printf("///                                                                         ///\n");
 }
 
-void tela_equipe(void) {
+void tela_equipe(void)
+{
     limpar_tela();
-    const char* info =
-        "///          Este projeto foi desenvolvido por:                               ///\n"
+    const char *info =
+        "///          Este projeto foi desenvolvido por:                             ///\n"
         "///                                                                         ///\n"
-        "///          Maria Luiza Severo                                               ///\n"
-        "///          E-mail: maria.severo.063@ufrn.edu.br                             ///\n"
+        "///          Maria Luiza Severo                                             ///\n"
+        "///          E-mail: maria.severo.063@ufrn.edu.br                           ///\n"
         "///                                                                         ///\n"
-        "///          Marcus Vinicius de Souza Azevedo                                 ///\n"
-        "///          Email: infobasicifrn2017marcusv@gmail.com                        ///\n"
+        "///          Marcus Vinicius de Souza Azevedo                               ///\n"
+        "///          Email: infobasicifrn2017marcusv@gmail.com                      ///\n"
         "///                                                                         ///\n"
-        "///          Thiago Gomes de Oliveira                                         ///\n"
-        "///          E-mail: Thiago.oliveira712@ufrn.edu.br                           ///";
+        "///          Thiago Gomes de Oliveira                                       ///\n"
+        "///          E-mail: Thiago.oliveira712@ufrn.edu.br                         ///";
 
     desenhar_cabecalho_base();
     printf("%s\n", info);
     printf("///////////////////////////////////////////////////////////////////////////////\n");
 }
 
-
-void TelaMenuPrincipal(void) {
+void TelaMenuPrincipal(void)
+{
     limpar_tela();
     printf("----------------------------------------\n");
     printf("///          MENU PRINCIPAL          ///\n");
@@ -125,8 +131,8 @@ void TelaMenuPrincipal(void) {
     printf(">>> Escolha a opcao desejada: ");
 }
 
-
-void TelaMenuMedicos(void) {
+void TelaMenuMedicos(void)
+{
     limpar_tela();
     printf("----------------------------------------\n");
     printf("///         Modulo de Medicos        ///\n");
@@ -143,9 +149,8 @@ void TelaMenuMedicos(void) {
     printf(">>> Escolha a opcao desejada: ");
 }
 
-
-
-void TelaMenuClientes(void) {
+void TelaMenuClientes(void)
+{
     limpar_tela();
     printf("----------------------------------------\n");
     printf("///         Modulo de Clientes       ///\n");
@@ -162,8 +167,8 @@ void TelaMenuClientes(void) {
     printf(">>> Escolha a opcao desejada: ");
 }
 
-
-void TelaMenuConsultas(void) {
+void TelaMenuConsultas(void)
+{
     limpar_tela();
     printf("----------------------------------------\n");
     printf("///        Modulo de Consultas       ///\n");
@@ -179,7 +184,8 @@ void TelaMenuConsultas(void) {
     printf(">>> Escolha a opcao desejada: ");
 }
 
-void TelaMenuEstoque(void) {
+void TelaMenuEstoque(void)
+{
     limpar_tela();
     printf("----------------------------------------\n");
     printf("///         Modulo de Estoque        ///\n");
@@ -196,8 +202,8 @@ void TelaMenuEstoque(void) {
     printf(">>> Escolha a opcao desejada: ");
 }
 
-
-void TelaCadastrarMedicos() {
+void TelaCadastrarMedicos()
+{
     limpar_tela();
     printf("----------------------------------------\n");
     printf("///         Cadastrar Médico         ///\n");
@@ -213,20 +219,21 @@ void TelaCadastrarMedicos() {
     printf("\n");
 }
 
-void TelaPesquisarMedicos() {
+void TelaPesquisarMedicos()
+{
     limpar_tela();
     printf("----------------------------------------\n");
     printf("///         Pesquisar Médico         ///\n");
     printf("----------------------------------------\n");
     printf("///                                  ///\n");
-    printf("///  Informe o CPF do Médico:        ///\n"); 
+    printf("///  Informe o CPF do Médico:        ///\n");
     printf("///                                  ///\n");
     printf("----------------------------------------\n");
     printf("\n");
 }
 
-
-void TelaAlterarMedicos() {
+void TelaAlterarMedicos()
+{
     limpar_tela();
     printf("----------------------------------------\n");
     printf("///          Alterar Médico          ///\n");
@@ -238,21 +245,21 @@ void TelaAlterarMedicos() {
     printf("\n");
 }
 
-
-void TelaExcluirMedicos() {
+void TelaExcluirMedicos()
+{
     limpar_tela();
     printf("----------------------------------------\n");
     printf("///          Excluir Médico          ///\n");
     printf("----------------------------------------\n");
     printf("///                                  ///\n");
-    printf("///  Informe o CPF do Médico:        ///\n"); 
+    printf("///  Informe o CPF do Médico:        ///\n");
     printf("///                                  ///\n");
     printf("----------------------------------------\n");
     printf("\n");
 }
 
-
-void TelaConfirmarExclusao() {
+void TelaConfirmarExclusao()
+{
     limpar_tela();
     printf("----------------------------------------\n");
     printf("///      Confirmar Exclusão?         ///\n");
@@ -265,7 +272,8 @@ void TelaConfirmarExclusao() {
     printf(">>> Escolha a opção desejada: ");
 }
 
-void TelaCadastrarClientes() {
+void TelaCadastrarClientes()
+{
     limpar_tela();
     printf("----------------------------------------\n");
     printf("///         Cadastrar Cliente        ///\n");
@@ -280,7 +288,8 @@ void TelaCadastrarClientes() {
     printf("\n");
 }
 
-void TelaPesquisarClientes() {
+void TelaPesquisarClientes()
+{
     limpar_tela();
     printf("----------------------------------------\n");
     printf("///         Pesquisar Cliente        ///\n");
@@ -292,7 +301,8 @@ void TelaPesquisarClientes() {
     printf("\n");
 }
 
-void TelaAlterarClientes() {
+void TelaAlterarClientes()
+{
     limpar_tela();
     printf("----------------------------------------\n");
     printf("///          Alterar Cliente         ///\n");
@@ -304,7 +314,8 @@ void TelaAlterarClientes() {
     printf("\n");
 }
 
-void TelaExcluirClientes() {
+void TelaExcluirClientes()
+{
     limpar_tela();
     printf("----------------------------------------\n");
     printf("///          Excluir Cliente         ///\n");
@@ -316,7 +327,8 @@ void TelaExcluirClientes() {
     printf("\n");
 }
 
-void TelaConfirmarExclusaoCliente() {
+void TelaConfirmarExclusaoCliente()
+{
     limpar_tela();
     printf("----------------------------------------\n");
     printf("///      Confirmar Exclusão?         ///\n");
@@ -329,7 +341,8 @@ void TelaConfirmarExclusaoCliente() {
     printf(">>> Escolha a opção desejada: ");
 }
 
-void TelaAgendarNovaConsulta() {
+void TelaAgendarNovaConsulta()
+{
     limpar_tela();
     printf("----------------------------------------\n");
     printf("///      Agendar Nova Consulta       ///\n");
@@ -346,7 +359,8 @@ void TelaAgendarNovaConsulta() {
     printf("\n");
 }
 
-void TelaGerenciarAgendamentos() {
+void TelaGerenciarAgendamentos()
+{
     limpar_tela();
     printf("----------------------------------------\n");
     printf("///      Gerenciar Agendamentos      ///\n");
@@ -361,7 +375,8 @@ void TelaGerenciarAgendamentos() {
     printf(">>> Escolha a opção desejada: ");
 }
 
-void TelaGerarRelatorios() {
+void TelaGerarRelatorios()
+{
     limpar_tela();
     printf("----------------------------------------\n");
     printf("///         Gerar Relatórios         ///\n");
@@ -377,7 +392,8 @@ void TelaGerarRelatorios() {
     printf(">>> Escolha a opção desejada: ");
 }
 
-void TelaCadastrarProduto() {
+void TelaCadastrarProduto()
+{
     limpar_tela();
     printf("----------------------------------------\n");
     printf("///         Cadastrar Produto        ///\n");
@@ -392,7 +408,8 @@ void TelaCadastrarProduto() {
     printf("\n");
 }
 
-void TelaPesquisarProduto() {
+void TelaPesquisarProduto()
+{
     limpar_tela();
     printf("----------------------------------------\n");
     printf("///         Pesquisar Produto        ///\n");
@@ -406,7 +423,8 @@ void TelaPesquisarProduto() {
     printf(">>> Escolha a opção desejada: ");
 }
 
-void TelaGerenciarLotes() {
+void TelaGerenciarLotes()
+{
     limpar_tela();
     printf("----------------------------------------\n");
     printf("///          Gerenciar Lotes         ///\n");
@@ -421,7 +439,8 @@ void TelaGerenciarLotes() {
     printf(">>> Escolha a opção desejada: ");
 }
 
-void TelaMovimentarEstoque() {
+void TelaMovimentarEstoque()
+{
     limpar_tela();
     printf("----------------------------------------\n");
     printf("///        Movimentar Estoque        ///\n");
@@ -435,7 +454,8 @@ void TelaMovimentarEstoque() {
     printf(">>> Escolha a opção desejada: ");
 }
 
-void TelaGerarRelatoriosEstoque() {
+void TelaGerarRelatoriosEstoque()
+{
     limpar_tela();
     printf("----------------------------------------\n");
     printf("///         Gerar Relatórios         ///\n");
@@ -450,7 +470,8 @@ void TelaGerarRelatoriosEstoque() {
     printf(">>> Escolha a opção desejada: ");
 }
 
-void TelaGerarRelatoriosMovimentacoes(void) {
+void TelaGerarRelatoriosMovimentacoes(void)
+{
     limpar_tela();
     printf("----------------------------------------\n");
     printf("/// Gerar Relatórios Movimentações   ///\n");
@@ -464,7 +485,8 @@ void TelaGerarRelatoriosMovimentacoes(void) {
     printf(">>> Escolha a opção desejada: ");
 }
 
-void TelaMenuMovimentacao(void) {
+void TelaMenuMovimentacao(void)
+{
     limpar_tela();
     printf("----------------------------------------\n");
     printf("///     Módulo de Movimentação       ///\n");
@@ -478,22 +500,15 @@ void TelaMenuMovimentacao(void) {
     printf(">>> Escolha a opção desejada: ");
 }
 
-void maiuscula(char *texto) {
-    for (int i = 0; texto[i] != '\0'; i++) {
-        texto[i] = toupper(texto[i]);
-    }
-}
 
-
-void finalizar_programa() {
+void finalizar_programa()
+{
     limpar_tela();
     printf("\n\n");
     printf("////////////////////////////////////////////////////////////////\n");
-    printf("///                                                            ///\n");
-    printf("///             Programa finalizado. Volte sempre!             ///\n");
-    printf("///                                                            ///\n");
+    printf("///                                                          ///\n");
+    printf("///            Programa finalizado. Volte sempre!            ///\n");
+    printf("///                                                          ///\n");
     printf("////////////////////////////////////////////////////////////////\n");
     printf("\n");
 }
-
-

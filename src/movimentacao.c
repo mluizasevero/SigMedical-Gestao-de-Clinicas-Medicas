@@ -6,19 +6,20 @@
 #include "utils.h"
 // Não precisa de validadores.h pois não há input direto do usuário
 
-#define MOVIMENTACOES_FILE DATA_DIR PATH_SEPARATOR "/movimentacoes.dat" // Ajustado PATH_SEPARATOR para ser consistente
+#define MOVIMENTACOES_FILE DATA_DIR PATH_SEPARATOR "movimentacoes.dat"
 
 // registrar_movimentacao agora salva diretamente no arquivo
-void registrar_movimentacao(int id_produto, const char* tipo_mov, int quantidade) {
+void registrar_movimentacao(int id_produto, const char *tipo_mov, int quantidade)
+{
     Movimentacao nova;
-    FILE* arq_movimentacoes;
+    FILE *arq_movimentacoes;
 
-    // Os dados (id_produto, tipo_mov, quantidade) são assumidos como válidos, 
+    // Os dados (id_produto, tipo_mov, quantidade) são assumidos como válidos,
     // pois foram validados no módulo estoque antes de chamar esta função.
     nova.id_produto = id_produto;
     // O tipo já está validado para ser "Entrada" ou "Saida" no estoque.c
     strncpy(nova.tipo, tipo_mov, sizeof(nova.tipo) - 1);
-    nova.tipo[sizeof(nova.tipo) - 1] = '\0'; 
+    nova.tipo[sizeof(nova.tipo) - 1] = '\0';
     nova.quantidade = quantidade;
 
     // data e hora atual para registrar a movimentação
@@ -27,9 +28,10 @@ void registrar_movimentacao(int id_produto, const char* tipo_mov, int quantidade
     strftime(nova.data, sizeof(nova.data), "%d/%m/%Y", &tm);
 
     arq_movimentacoes = fopen(MOVIMENTACOES_FILE, "ab");
-    if (arq_movimentacoes == NULL) {
+    if (arq_movimentacoes == NULL)
+    {
         printf("ERRO CRITICO: Nao foi possivel abrir o arquivo de movimentacoes!\n");
-        return; 
+        return;
     }
 
     fwrite(&nova, sizeof(Movimentacao), 1, arq_movimentacoes);
@@ -37,17 +39,19 @@ void registrar_movimentacao(int id_produto, const char* tipo_mov, int quantidade
 }
 
 // função para ler e exibir o histórico, chamada nos relatórios.
-void exibir_historico_movimentacoes(void) {
+void exibir_historico_movimentacoes(void)
+{
     Movimentacao mov_lida;
-    FILE* arq_movimentacoes;
-    
+    FILE *arq_movimentacoes;
+
     limpar_tela();
     printf("----------------------------------------\n");
     printf("///    Historico de Movimentacoes    ///\n");
     printf("----------------------------------------\n");
 
     arq_movimentacoes = fopen(MOVIMENTACOES_FILE, "rb");
-    if (arq_movimentacoes == NULL) {
+    if (arq_movimentacoes == NULL)
+    {
         printf("Nenhuma movimentacao de estoque registrada.\n");
         press_enter_to_continue();
         return;
@@ -56,7 +60,8 @@ void exibir_historico_movimentacoes(void) {
     printf("ID Produto | Tipo    | Quantidade | Data\n");
     printf("-----------|---------|------------|------------\n");
 
-    while (fread(&mov_lida, sizeof(Movimentacao), 1, arq_movimentacoes)) {
+    while (fread(&mov_lida, sizeof(Movimentacao), 1, arq_movimentacoes))
+    {
         printf("%-10d | %-7s | %-10d | %s\n",
                mov_lida.id_produto, mov_lida.tipo,
                mov_lida.quantidade, mov_lida.data);

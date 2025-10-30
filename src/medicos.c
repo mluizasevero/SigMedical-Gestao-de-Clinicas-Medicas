@@ -5,13 +5,11 @@
 #include "utils.h"
 #include "validador.h" // MUDANÇA: Incluindo a biblioteca de validação
 
-#define MEDICOS_FILE DATA_DIR PATH_SEPARATOR "/medicos.dat"
-
+#define MEDICOS_FILE DATA_DIR PATH_SEPARATOR "medicos.dat"
 
 // Declaração da função auxiliar (Para uso interno)
 // Verifica se o CPF já está cadastrado ou se o ID já existe
-int medico_existe(const char* cpf, int id_a_ignorar);
-
+int medico_existe(const char *cpf, int id_a_ignorar);
 
 // ----------------------------------------------------------------------------
 // FUNÇÃO AUXILIAR: Checa unicidade (CPF) e ID
@@ -20,27 +18,34 @@ int medico_existe(const char* cpf, int id_a_ignorar);
  * Verifica se um médico com o CPF fornecido ou ID (se o ID for checado) já existe no arquivo.
  * O 'id_a_ignorar' é usado na função alterar, para ignorar o médico que está sendo alterado.
  */
-int medico_existe(const char* cpf, int id_a_ignorar) {
+int medico_existe(const char *cpf, int id_a_ignorar)
+{
     Medico medico_lido;
-    FILE* arq_medicos = fopen(MEDICOS_FILE, "rb");
-    
-    if (arq_medicos == NULL) {
+    FILE *arq_medicos = fopen(MEDICOS_FILE, "rb");
+
+    if (arq_medicos == NULL)
+    {
         return 0; // Se o arquivo não existe, o CPF/ID é único
     }
 
-    while(fread(&medico_lido, sizeof(Medico), 1, arq_medicos)) {
-        if (medico_lido.ativo == 1) {
+    while (fread(&medico_lido, sizeof(Medico), 1, arq_medicos))
+    {
+        if (medico_lido.ativo == 1)
+        {
             // Checa CPF
-            if (strcmp(medico_lido.cpf, cpf) == 0) {
-                if (medico_lido.id != id_a_ignorar) {
+            if (strcmp(medico_lido.cpf, cpf) == 0)
+            {
+                if (medico_lido.id != id_a_ignorar)
+                {
                     fclose(arq_medicos);
                     return 1; // CPF encontrado (e não é o médico que estamos alterando)
                 }
             }
             // Checa ID (usado apenas no cadastro para garantir unicidade do ID)
-            if (id_a_ignorar == 0 && medico_lido.id == id_a_ignorar) {
-                 fclose(arq_medicos);
-                 return 2; // ID encontrado (código 2 para diferenciar ID/CPF)
+            if (id_a_ignorar == 0 && medico_lido.id == id_a_ignorar)
+            {
+                fclose(arq_medicos);
+                return 2; // ID encontrado (código 2 para diferenciar ID/CPF)
             }
         }
     }
@@ -48,13 +53,13 @@ int medico_existe(const char* cpf, int id_a_ignorar) {
     return 0; // Não encontrado
 }
 
-
 // ----------
 // CADASTRO |
 // ----------
-void cadastrar_medico(void) {
+void cadastrar_medico(void)
+{
     Medico novo_medico;
-    FILE* arq_medicos;
+    FILE *arq_medicos;
     char buffer[51];
     int id_temp;
 
@@ -64,60 +69,65 @@ void cadastrar_medico(void) {
     printf("----------------------------------------\n");
 
     // MUDANÇA: Validação de ID único e positivo
-    do {
+    do
+    {
         printf("\nInforme o ID do medico (inteiro positivo): ");
-        lerString(buffer, 5); 
+        lerString(buffer, 5);
         id_temp = validarInteiroPositivo(buffer);
-        
-        if (id_temp > 0 && medico_existe("", id_temp) == 2) { // Checa apenas a unicidade do ID
+
+        if (id_temp > 0 && medico_existe("", id_temp) == 2)
+        { // Checa apenas a unicidade do ID
             printf("! Erro: ID %d ja cadastrado ou ativo. Use outro ID.\n", id_temp);
-            id_temp = -1; 
+            id_temp = -1;
         }
     } while (id_temp <= 0);
     novo_medico.id = id_temp;
 
     // MUDANÇA: Validação do Nome
-    do {
+    do
+    {
         printf("Informe o nome completo: ");
         lerString(buffer, 50);
-    } while (!validarNome(buffer)); 
+    } while (!validarNome(buffer));
     strcpy(novo_medico.nome, buffer);
 
-
     // MUDANÇA: Validação e Unicidade do CPF
-    do {
+    do
+    {
         printf("Informe o CPF (apenas numeros, 11 digitos): ");
         lerString(buffer, 15);
-        if (!validarCPF(buffer)) { // Assumindo que validarCPF existe e checa formato
+        if (!validarCPF(buffer))
+        { // Assumindo que validarCPF existe e checa formato
             continue;
         }
-        if (medico_existe(buffer, -1)) { // -1 para não ignorar nenhum ID
-             printf("! Erro: CPF ja cadastrado.\n");
+        if (medico_existe(buffer, -1))
+        { // -1 para não ignorar nenhum ID
+            printf("! Erro: CPF ja cadastrado.\n");
         }
     } while (!validarCPF(buffer) || medico_existe(buffer, -1));
     strcpy(novo_medico.cpf, buffer);
 
-
     // MUDANÇA: Validação da Especialidade
-    do {
+    do
+    {
         printf("Informe a especialidade: ");
         lerString(buffer, 50);
     } while (!validarNome(buffer)); // Reutilizando validarNome
     strcpy(novo_medico.especialidade, buffer);
 
-
     // MUDANÇA: Validação do Telefone
-    do {
+    do
+    {
         printf("Informe o telefone (DDNNNNNNNN): ");
         lerString(buffer, 15);
     } while (!validarTelefone(buffer)); // Assumindo que validarTelefone existe
     strcpy(novo_medico.telefone, buffer);
 
-
     novo_medico.ativo = 1;
 
     arq_medicos = fopen(MEDICOS_FILE, "ab");
-    if (arq_medicos == NULL) {
+    if (arq_medicos == NULL)
+    {
         printf("\nErro ao abrir o arquivo de medicos!\n");
         press_enter_to_continue();
         return;
@@ -130,37 +140,40 @@ void cadastrar_medico(void) {
     press_enter_to_continue();
 }
 
-
 // -----------
 // PESQUISA  |
 // -----------
-void pesquisar_medico(void) {
+void pesquisar_medico(void)
+{
     char cpf_busca[15];
     int encontrado = 0;
     Medico medico_lido;
-    FILE* arq_medicos;
+    FILE *arq_medicos;
 
-    limpar_tela(); 
+    limpar_tela();
     printf("----------------------------------------\n");
     printf("///     Pesquisar Medico por CPF     ///\n");
     printf("----------------------------------------\n");
-    
+
     // MUDANÇA: Validação do CPF
-    do {
+    do
+    {
         printf("Informe o CPF do medico a ser pesquisado: ");
         lerString(cpf_busca, 15);
     } while (!validarCPF(cpf_busca)); // Validação de formato
 
-
     arq_medicos = fopen(MEDICOS_FILE, "rb");
-    if (arq_medicos == NULL) {
+    if (arq_medicos == NULL)
+    {
         printf("\nNenhum medico cadastrado ou erro ao abrir o arquivo.\n");
         press_enter_to_continue();
         return;
     }
 
-    while (fread(&medico_lido, sizeof(Medico), 1, arq_medicos)) {
-        if (strcmp(medico_lido.cpf, cpf_busca) == 0 && medico_lido.ativo == 1) {
+    while (fread(&medico_lido, sizeof(Medico), 1, arq_medicos))
+    {
+        if (strcmp(medico_lido.cpf, cpf_busca) == 0 && medico_lido.ativo == 1)
+        {
             printf("\n--- Medico Encontrado ---\n");
             printf("ID: %d\n", medico_lido.id);
             printf("Nome: %s\n", medico_lido.nome);
@@ -174,7 +187,8 @@ void pesquisar_medico(void) {
     }
     fclose(arq_medicos);
 
-    if (!encontrado) {
+    if (!encontrado)
+    {
         printf("\nMedico com CPF %s nao encontrado.\n", cpf_busca);
     }
     press_enter_to_continue();
@@ -183,11 +197,12 @@ void pesquisar_medico(void) {
 // ------------
 // ALTERAÇÃO  |
 // ------------
-void alterar_medico(void) {
+void alterar_medico(void)
+{
     char cpf_busca[15];
     int encontrado = 0;
     Medico medico_lido;
-    FILE* arq_medicos;
+    FILE *arq_medicos;
     long int pos;
     char buffer[51];
 
@@ -195,69 +210,83 @@ void alterar_medico(void) {
     printf("----------------------------------------\n");
     printf("///      Alterar Dados de Medico     ///\n");
     printf("----------------------------------------\n");
-    
+
     // MUDANÇA: Validação do CPF de busca
-    do {
+    do
+    {
         printf("Informe o CPF do medico que deseja alterar: ");
         lerString(cpf_busca, 15);
     } while (!validarCPF(cpf_busca));
 
     arq_medicos = fopen(MEDICOS_FILE, "r+b");
-    if (arq_medicos == NULL) {
+    if (arq_medicos == NULL)
+    {
         printf("\nErro ao abrir arquivo. Nenhum medico cadastrado?\n");
         press_enter_to_continue();
         return;
     }
 
-    while (fread(&medico_lido, sizeof(Medico), 1, arq_medicos)) {
-        if (strcmp(medico_lido.cpf, cpf_busca) == 0 && medico_lido.ativo == 1) {
+    while (fread(&medico_lido, sizeof(Medico), 1, arq_medicos))
+    {
+        if (strcmp(medico_lido.cpf, cpf_busca) == 0 && medico_lido.ativo == 1)
+        {
             pos = ftell(arq_medicos) - sizeof(Medico);
 
             printf("\nMedico encontrado. Informe os novos dados (deixe em branco para manter o atual):\n");
-            
+
             // MUDANÇA: Validação do Nome (e mantém o antigo se vazio)
-            do {
+            do
+            {
                 printf("Nome atual: %s\nNovo nome: ", medico_lido.nome);
                 lerString(buffer, 50);
-                if (strlen(buffer) > 0 && validarNome(buffer)) {
+                if (strlen(buffer) > 0 && validarNome(buffer))
+                {
                     strcpy(medico_lido.nome, buffer);
                     break;
-                } else if (strlen(buffer) == 0) { // Se vazio, mantém o nome atual
+                }
+                else if (strlen(buffer) == 0)
+                { // Se vazio, mantém o nome atual
                     break;
                 }
             } while (1);
-
 
             // MUDANÇA: Validação da Especialidade (e mantém o antigo se vazio)
-            do {
+            do
+            {
                 printf("Especialidade atual: %s\nNova especialidade: ", medico_lido.especialidade);
                 lerString(buffer, 50);
-                if (strlen(buffer) > 0 && validarNome(buffer)) { // Reutilizando validarNome
+                if (strlen(buffer) > 0 && validarNome(buffer))
+                { // Reutilizando validarNome
                     strcpy(medico_lido.especialidade, buffer);
                     break;
-                } else if (strlen(buffer) == 0) {
+                }
+                else if (strlen(buffer) == 0)
+                {
                     break;
                 }
             } while (1);
-
 
             // MUDANÇA: Validação do Telefone (e mantém o antigo se vazio)
-            do {
+            do
+            {
                 printf("Telefone atual: %s\nNovo telefone: ", medico_lido.telefone);
                 lerString(buffer, 15);
-                if (strlen(buffer) > 0 && validarTelefone(buffer)) { 
+                if (strlen(buffer) > 0 && validarTelefone(buffer))
+                {
                     strcpy(medico_lido.telefone, buffer);
                     break;
-                } else if (strlen(buffer) == 0) {
+                }
+                else if (strlen(buffer) == 0)
+                {
                     break;
                 }
             } while (1);
-            
+
             // CPF e ID não são alterados, pois são identificadores únicos
 
             fseek(arq_medicos, pos, SEEK_SET);
             fwrite(&medico_lido, sizeof(Medico), 1, arq_medicos);
-            
+
             encontrado = 1;
             printf("\nDados do medico alterados com sucesso!\n");
             break;
@@ -265,7 +294,8 @@ void alterar_medico(void) {
     }
     fclose(arq_medicos);
 
-    if (!encontrado) {
+    if (!encontrado)
+    {
         printf("\nMedico com CPF %s nao encontrado.\n", cpf_busca);
     }
     press_enter_to_continue();
@@ -274,34 +304,38 @@ void alterar_medico(void) {
 // -----------
 // EXCLUSÃO  |
 // ------------
-void excluir_medico(void) {
+void excluir_medico(void)
+{
     char cpf_busca[15];
     int encontrado = 0;
     Medico medico_lido;
-    FILE* arq_medicos;
+    FILE *arq_medicos;
     long int pos;
 
-    limpar_tela(); 
+    limpar_tela();
     printf("----------------------------------------\n");
     printf("///          Excluir Medico          ///\n");
     printf("----------------------------------------\n");
-    
+
     // MUDANÇA: Validação do CPF de busca
-    do {
+    do
+    {
         printf("Informe o CPF do medico que deseja excluir: ");
         lerString(cpf_busca, 15);
     } while (!validarCPF(cpf_busca));
 
-
     arq_medicos = fopen(MEDICOS_FILE, "r+b");
-    if (arq_medicos == NULL) {
+    if (arq_medicos == NULL)
+    {
         printf("\nErro ao abrir o arquivo.\n");
         press_enter_to_continue();
         return;
     }
 
-    while (fread(&medico_lido, sizeof(Medico), 1, arq_medicos)) {
-        if (strcmp(medico_lido.cpf, cpf_busca) == 0 && medico_lido.ativo == 1) {
+    while (fread(&medico_lido, sizeof(Medico), 1, arq_medicos))
+    {
+        if (strcmp(medico_lido.cpf, cpf_busca) == 0 && medico_lido.ativo == 1)
+        {
             pos = ftell(arq_medicos) - sizeof(Medico);
 
             medico_lido.ativo = 0;
@@ -316,7 +350,8 @@ void excluir_medico(void) {
     }
     fclose(arq_medicos);
 
-    if (!encontrado) {
+    if (!encontrado)
+    {
         printf("\nMedico com CPF %s nao encontrado.\n", cpf_busca);
     }
     press_enter_to_continue();
@@ -325,18 +360,20 @@ void excluir_medico(void) {
 // ---------------------------------------
 // LISTAGEM (Não requer input do usuário) |
 // ---------------------------------------
-void listar_medicos(void) {
+void listar_medicos(void)
+{
     Medico medico_lido;
-    FILE* arq_medicos;
+    FILE *arq_medicos;
     int tem_medico = 0;
-    
+
     limpar_tela();
     printf("----------------------------------------\n");
     printf("///        Listagem de Medicos       ///\n");
     printf("----------------------------------------\n");
 
     arq_medicos = fopen(MEDICOS_FILE, "rb");
-    if (arq_medicos == NULL) {
+    if (arq_medicos == NULL)
+    {
         printf("Nenhum medico cadastrado.\n");
         press_enter_to_continue();
         return;
@@ -344,9 +381,11 @@ void listar_medicos(void) {
 
     printf("ID | Nome do Medico         | CPF           | Especialidade\n");
     printf("---|------------------------|---------------|------------------\n");
-    
-    while (fread(&medico_lido, sizeof(Medico), 1, arq_medicos)) {
-        if (medico_lido.ativo == 1) {
+
+    while (fread(&medico_lido, sizeof(Medico), 1, arq_medicos))
+    {
+        if (medico_lido.ativo == 1)
+        {
             printf("%-2d | %-22s | %-13s | %s\n",
                    medico_lido.id, medico_lido.nome,
                    medico_lido.cpf, medico_lido.especialidade);
@@ -355,7 +394,8 @@ void listar_medicos(void) {
     }
     fclose(arq_medicos);
 
-    if (!tem_medico) {
+    if (!tem_medico)
+    {
         printf("Nenhum medico ativo encontrado.\n");
     }
     press_enter_to_continue();
@@ -364,13 +404,15 @@ void listar_medicos(void) {
 // -------
 // MENU  |
 // -------
-void modulo_medicos(void) {
+void modulo_medicos(void)
+{
     int opcao;
     char bufferOpcao[5];
     criar_pasta_data();
 
-    do {
-        limpar_tela(); 
+    do
+    {
+        limpar_tela();
         printf("----------------------------------------\n");
         printf("///         Modulo de Medicos        ///\n");
         printf("----------------------------------------\n");
@@ -381,26 +423,39 @@ void modulo_medicos(void) {
         printf("5. Listar Medicos\n");
         printf("0. Voltar ao menu principal\n");
         printf("----------------------------------------\n");
-        
+
         // MUDANÇA: Leitura segura de Opção
-        do {
+        do
+        {
             printf(">>> Escolha a opcao: ");
             lerString(bufferOpcao, 5);
-            char* endptr;
+            char *endptr;
             opcao = strtol(bufferOpcao, &endptr, 10);
-            if (endptr == bufferOpcao || *endptr != '\0') {
+            if (endptr == bufferOpcao || *endptr != '\0')
+            {
                 opcao = -1;
             }
         } while (!validarOpcaoMenu(opcao, 0, 5));
 
-
-        switch (opcao) {
-            case 1: cadastrar_medico(); break;
-            case 2: pesquisar_medico(); break;
-            case 3: alterar_medico(); break;
-            case 4: excluir_medico(); break;
-            case 5: listar_medicos(); break;
-            case 0: break;
+        switch (opcao)
+        {
+        case 1:
+            cadastrar_medico();
+            break;
+        case 2:
+            pesquisar_medico();
+            break;
+        case 3:
+            alterar_medico();
+            break;
+        case 4:
+            excluir_medico();
+            break;
+        case 5:
+            listar_medicos();
+            break;
+        case 0:
+            break;
             // Default não é mais necessário
         }
     } while (opcao != 0);

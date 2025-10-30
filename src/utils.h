@@ -1,23 +1,31 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+// ======= CONFIGURAÇÃO DA PASTA DATA ======= //
 
-char* lerString(char *str, int size);
+#ifdef _WIN32
+    #include <direct.h>
+    #define PATH_SEPARATOR "\\"
+#else
+    #include <sys/stat.h>
+    #include <sys/types.h>
+    #define PATH_SEPARATOR "/"
+#endif
 
+#define DATA_DIR "data"
 
+// ========================================== //
+
+char *lerString(char *str, int size);
 
 // FUNÇÕES UTILITÁRIAS EXISTENTES
 void desenhar_cabecalho_base(void);
 void tela_equipe(void);
 void criar_pasta_data(void);
-
-
 void limpar_tela(void);
 void press_enter_to_continue(void);
 void maiuscula(char *texto);
 void finalizar_programa(void);
-
-
 
 // FUNÇÕES DE TELA (MENUS)
 void TelaMenuPrincipal(void);
@@ -26,8 +34,6 @@ void TelaMenuClientes(void);
 void TelaMenuConsultas(void);
 void TelaMenuEstoque(void);
 void TelaMenuMovimentacao(void);
-
-
 
 // FUNÇÕES DE TELA (CADASTRO/CRUD)
 void TelaCadastrarMedicos(void);
@@ -51,4 +57,3 @@ void TelaGerarRelatoriosEstoque(void);
 void TelaGerarRelatoriosMovimentacoes(void);
 
 #endif
-
