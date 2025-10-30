@@ -10,7 +10,8 @@ SOURCES = projeto_final.c \
           src/medicos.c \
           src/consultas.c \
           src/estoque.c \
-          src/movimentacao.c
+          src/movimentacao.c \
+		  src/validador.c
 
 
 OBJECTS = $(SOURCES:.c=.o)
