@@ -24,8 +24,8 @@ void confirmar_presenca(void);
 
 void gerar_relatorios_consultas(void);
 void relatorio_consultas_medico(void);
-void relatorio_consultas_agendadas(void);
 void relatorio_consultas_por_periodo(void);
-void relatorio_consultas_canceladas(void);
+void relatorio_consultas_agendadas(void); // Ainda não implementado
+void relatorio_consultas_canceladas(void); // Ainda não implementado
 
 #endif

@@ -8,7 +8,6 @@
 
 #define MOVIMENTACOES_FILE DATA_DIR PATH_SEPARATOR "movimentacoes.dat"
 
-// registrar_movimentacao agora salva diretamente no arquivo
 void registrar_movimentacao(int id_produto, const char *tipo_mov, int quantidade)
 {
     Movimentacao nova;
@@ -57,12 +56,12 @@ void exibir_historico_movimentacoes(void)
         return;
     }
 
-    printf("ID Produto | Tipo    | Quantidade | Data\n");
-    printf("-----------|---------|------------|------------\n");
+    printf("ID Produto | Tipo       | Quantidade | Data\n");
+    printf("-----------|------------|------------|------------\n");
 
     while (fread(&mov_lida, sizeof(Movimentacao), 1, arq_movimentacoes))
     {
-        printf("%-10d | %-7s | %-10d | %s\n",
+        printf("%-10d | %-10s | %-10d | %s\n",
                mov_lida.id_produto, mov_lida.tipo,
                mov_lida.quantidade, mov_lida.data);
     }

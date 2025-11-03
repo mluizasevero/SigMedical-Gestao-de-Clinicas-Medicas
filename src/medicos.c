@@ -3,17 +3,10 @@
 #include <string.h>
 #include "medicos.h"
 #include "utils.h"
-#include "validador.h" // MUDANÇA: Incluindo a biblioteca de validação
+#include "validador.h"
 
 #define MEDICOS_FILE DATA_DIR PATH_SEPARATOR "medicos.dat"
 
-// Declaração da função auxiliar (Para uso interno)
-// Verifica se o CPF já está cadastrado ou se o ID já existe
-int medico_existe(const char *cpf, int id_a_ignorar);
-
-// ----------------------------------------------------------------------------
-// FUNÇÃO AUXILIAR: Checa unicidade (CPF) e ID
-// ----------------------------------------------------------------------------
 /**
  * Verifica se um médico com o CPF fornecido ou ID (se o ID for checado) já existe no arquivo.
  * O 'id_a_ignorar' é usado na função alterar, para ignorar o médico que está sendo alterado.
@@ -64,11 +57,11 @@ void cadastrar_medico(void)
     int id_temp;
 
     limparTela();
-    printf("----------------------------------------\n");
-    printf("///       Cadastrar Novo Medico      ///\n");
-    printf("----------------------------------------\n");
+    printf("---------------------------------------\n");
+    printf("///      Cadastrar Novo Medico      ///\n");
+    printf("---------------------------------------\n");
 
-    // MUDANÇA: Validação de ID único e positivo
+    // Validação de ID único e positivo
     do
     {
         printf("\nInforme o ID do medico (inteiro positivo): ");
@@ -83,7 +76,7 @@ void cadastrar_medico(void)
     } while (id_temp <= 0);
     novo_medico.id = id_temp;
 
-    // MUDANÇA: Validação do Nome
+    // Validação do Nome
     do
     {
         printf("Informe o nome completo: ");
@@ -91,13 +84,13 @@ void cadastrar_medico(void)
     } while (!validarNome(buffer));
     strcpy(novo_medico.nome, buffer);
 
-    // MUDANÇA: Validação e Unicidade do CPF
+    // Validação e Unicidade do CPF
     do
     {
         printf("Informe o CPF (apenas numeros, 11 digitos): ");
         lerString(buffer, 15);
         if (!validarCPF(buffer))
-        { // Assumindo que validarCPF existe e checa formato
+        { 
             continue;
         }
         if (medico_existe(buffer, -1))
@@ -107,7 +100,7 @@ void cadastrar_medico(void)
     } while (!validarCPF(buffer) || medico_existe(buffer, -1));
     strcpy(novo_medico.cpf, buffer);
 
-    // MUDANÇA: Validação da Especialidade
+    // Validação da Especialidade
     do
     {
         printf("Informe a especialidade: ");
@@ -115,12 +108,12 @@ void cadastrar_medico(void)
     } while (!validarNome(buffer)); // Reutilizando validarNome
     strcpy(novo_medico.especialidade, buffer);
 
-    // MUDANÇA: Validação do Telefone
+    // Validação do Telefone
     do
     {
         printf("Informe o telefone (DDNNNNNNNN): ");
         lerString(buffer, 15);
-    } while (!validarTelefone(buffer)); // Assumindo que validarTelefone existe
+    } while (!validarTelefone(buffer));
     strcpy(novo_medico.telefone, buffer);
 
     novo_medico.ativo = 1;
@@ -155,7 +148,7 @@ void pesquisar_medico(void)
     printf("///     Pesquisar Medico por CPF     ///\n");
     printf("----------------------------------------\n");
 
-    // MUDANÇA: Validação do CPF
+    // Validação do CPF
     do
     {
         printf("Informe o CPF do medico a ser pesquisado: ");
@@ -207,11 +200,11 @@ void alterar_medico(void)
     char buffer[51];
 
     limparTela();
-    printf("----------------------------------------\n");
-    printf("///      Alterar Dados de Medico     ///\n");
-    printf("----------------------------------------\n");
+    printf("---------------------------------------\n");
+    printf("///     Alterar Dados de Medico     ///\n");
+    printf("---------------------------------------\n");
 
-    // MUDANÇA: Validação do CPF de busca
+    // Validação do CPF de busca
     do
     {
         printf("Informe o CPF do medico que deseja alterar: ");
@@ -234,7 +227,7 @@ void alterar_medico(void)
 
             printf("\nMedico encontrado. Informe os novos dados (deixe em branco para manter o atual):\n");
 
-            // MUDANÇA: Validação do Nome (e mantém o antigo se vazio)
+            // Validação do Nome (e mantém o antigo se vazio)
             do
             {
                 printf("Nome atual: %s\nNovo nome: ", medico_lido.nome);
@@ -250,7 +243,7 @@ void alterar_medico(void)
                 }
             } while (1);
 
-            // MUDANÇA: Validação da Especialidade (e mantém o antigo se vazio)
+            // Validação da Especialidade (e mantém o antigo se vazio)
             do
             {
                 printf("Especialidade atual: %s\nNova especialidade: ", medico_lido.especialidade);
@@ -266,7 +259,7 @@ void alterar_medico(void)
                 }
             } while (1);
 
-            // MUDANÇA: Validação do Telefone (e mantém o antigo se vazio)
+            // Validação do Telefone (e mantém o antigo se vazio)
             do
             {
                 printf("Telefone atual: %s\nNovo telefone: ", medico_lido.telefone);
@@ -317,7 +310,7 @@ void excluir_medico(void)
     printf("///          Excluir Medico          ///\n");
     printf("----------------------------------------\n");
 
-    // MUDANÇA: Validação do CPF de busca
+    // Validação do CPF de busca
     do
     {
         printf("Informe o CPF do medico que deseja excluir: ");
@@ -367,9 +360,9 @@ void listar_medicos(void)
     int tem_medico = 0;
 
     limparTela();
-    printf("----------------------------------------\n");
-    printf("///        Listagem de Medicos       ///\n");
-    printf("----------------------------------------\n");
+    printf("---------------------------------------\n");
+    printf("///       Listagem de Medicos       ///\n");
+    printf("---------------------------------------\n");
 
     arq_medicos = fopen(MEDICOS_FILE, "rb");
     if (arq_medicos == NULL)
@@ -424,7 +417,7 @@ void modulo_medicos(void)
         printf("0. Voltar ao menu principal\n");
         printf("----------------------------------------\n");
 
-        // MUDANÇA: Leitura segura de Opção
+        // Leitura segura de Opção
         do
         {
             printf(">>> Escolha a opcao: ");

@@ -8,7 +8,7 @@
 
 // =========== FUNÇÕES ÚTEIS =========== //
 
-static void limpar_buffer(void)
+static void limpar_buffer(void) // Função usada apenas nesse arquivo (static)
 {
     int c;
     // Continua lendo e descartando caracteres até encontrar \n ou EOF
@@ -64,13 +64,8 @@ void limparTela(void)
 void pressioneEnterParaContinuar(void)
 {
     printf("Pressione ENTER para continuar...");
-    // MUDANÇA: Substitui 'while(getchar() != '\n');' por 'limpar_buffer()'
-    // e um único getchar para esperar o comando.
+    // Substitui 'while(getchar() != '\n');' por 'limpar_buffer()'
     limpar_buffer();
-    if (getchar() != EOF)
-    {
-        // Espera o ENTER e não faz nada, apenas continua
-    }
 }
 
 void transformarEmMaiusculas(char *texto)

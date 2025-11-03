@@ -74,11 +74,11 @@ int validarCPF(const char *cpf)
     // 5. Compara com os dígitos informados
     if ((digito1 == (cpfLimpo[9] - '0')) && (digito2 == (cpfLimpo[10] - '0')))
     {
-        return 1; // Válido
+        return 1;
     }
     else
     {
-        return 0; // Inválido
+        return 0;
     }
 }
 
@@ -96,14 +96,13 @@ int validarNome(const char *nome)
 
     for (int i = 0; i < len; i++)
     {
-        // isalpha() pode não pegar acentos, mas isdigit() pega números.
         if (isdigit(nome[i]))
         {
             printf("! Erro: Nome nao pode conter numeros.\n");
             return 0;
         }
     }
-    return 1; // Válido
+    return 1;
 }
 
 /**
@@ -114,7 +113,7 @@ int validarTelefone(const char *telefone)
     char telLimpo[12];
     int j = 0;
 
-    // Limpa o telefone (remove '(', ')', ' ', '-')
+    // Limpa o telefone (remove parênteses, espaços e hífens)
     for (int i = 0; telefone[i] != '\0'; i++)
     {
         if (isdigit(telefone[i]))
@@ -131,11 +130,11 @@ int validarTelefone(const char *telefone)
     // Deve ter 10 (fixo) ou 11 (celular) dígitos
     if (len == 10 || len == 11)
     {
-        return 1; // Válido
+        return 1;
     }
 
     printf("! Erro: Telefone deve ter 10 ou 11 digitos (com DDD).\n");
-    return 0; // Inválido
+    return 0;
 }
 
 /**
@@ -170,7 +169,7 @@ int validarEmail(const char *email)
         return 0;
     }
 
-    return 1; // Formato básico OK
+    return 1;
 }
 
 /**
@@ -180,10 +179,10 @@ int validarOpcaoMenu(int opcao, int min, int max)
 {
     if (opcao >= min && opcao <= max)
     {
-        return 1; // Válido
+        return 1;
     }
     printf("\n! Opcao invalida. Digite um numero entre %d e %d.\n", min, max);
-    return 0; // Inválido
+    return 0;
 }
 
 /**
@@ -229,7 +228,7 @@ int validarData(const char *data)
         return 0;
     }
 
-    return 1; // Data válida
+    return 1;
 }
 
 /**
@@ -269,7 +268,7 @@ int validarHora(const char *hora)
         return 0;
     }
 
-    return 1; // Hora válida
+    return 1;
 }
 
 /**
@@ -282,7 +281,7 @@ long converterDataParaInt(const char *dataStr)
     {
         return (long)ano * 10000 + (long)mes * 100 + (long)dia;
     }
-    return 0; // Retorna 0 em caso de erro de formato
+    return 0;
 }
 
 /**
@@ -300,7 +299,7 @@ int validarInteiroPositivo(const char *str)
     // Verifica se a string contem apenas dígitos (e opcionalmente um sinal de +/-, que ignoramos para positivo)
     for (int i = 0; str[i] != '\0'; i++)
     {
-        if (!isdigit((unsigned char)str[i]))
+        if (!isdigit((unsigned char)str[i])) // "Cast" de segurança que protege de caracteres acentuados
         {
             if (i == 0 && (str[i] == '+' || str[i] == '-'))
             {
@@ -313,6 +312,7 @@ int validarInteiroPositivo(const char *str)
     }
 
     // Tenta converter para inteiro
+    // Recebe a string, um ponteiro para saber onde a leitura parou (Mas não precisamos disso) e a base numérica
     long num = strtol(str, NULL, 10);
 
     if (num <= 0)
@@ -328,5 +328,6 @@ int validarInteiroPositivo(const char *str)
         return -1;
     }
 
+    // Retorna o número convertendo de volta para int
     return (int)num;
 }

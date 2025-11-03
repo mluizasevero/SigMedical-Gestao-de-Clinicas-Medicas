@@ -3,14 +3,14 @@
 #include <string.h>
 #include "clientes.h"
 #include "utils.h"
-#include "validador.h" // MUDANÇA: Incluindo a nova biblioteca
+#include "validador.h" // Incluindo a nova biblioteca
 
 // Definição de CLIENTES FILE fora de utils.h
 #define CLIENTES_FILE DATA_DIR PATH_SEPARATOR "clientes.dat"
 
 // Função interna para verificar se um CPF já existe
 // Retorna 1 se já existe, 0 se não
-int cpfJaCadastrado(const char *cpf)
+int verifica_cpf_cliente_cadastrado(const char *cpf)
 {
     FILE *arq = fopen(CLIENTES_FILE, "rb");
     if (arq == NULL)
@@ -37,7 +37,7 @@ void cadastrar_cliente(void)
     Cliente novo_cliente;
     FILE *arq_clientes;
 
-    // MUDANÇA: Buffers temporários para leitura e validação
+    // Buffers temporários para leitura e validação
     char buffer[51]; // 50 + 1 para o \0
 
     limparTela();
@@ -45,7 +45,7 @@ void cadastrar_cliente(void)
     printf("///     Cadastrar Novo Cliente       ///\n");
     printf("----------------------------------------\n");
 
-    // MUDANÇA: Loop de validação para CPF
+    // Loop de validação para CPF
     do
     {
         printf("\nInforme o CPF do cliente (apenas numeros ou com ./): ");
@@ -54,14 +54,14 @@ void cadastrar_cliente(void)
         {
             printf("! CPF invalido. Formato ou digitos verificadores incorretos. Tente novamente.\n");
         }
-        else if (cpfJaCadastrado(buffer))
+        else if (verifica_cpf_cliente_cadastrado(buffer))
         {
             printf("! CPF ja cadastrado no sistema. Tente novamente.\n");
         }
-    } while (!validarCPF(buffer) || cpfJaCadastrado(buffer));
+    } while (!validarCPF(buffer) || verifica_cpf_cliente_cadastrado(buffer));
     strcpy(novo_cliente.cpf, buffer); // Copia o dado validado
 
-    // MUDANÇA: Loop de validação para Nome
+    // Loop de validação para Nome
     do
     {
         printf("Informe o nome do cliente: ");
@@ -70,7 +70,7 @@ void cadastrar_cliente(void)
     } while (!validarNome(buffer));
     strcpy(novo_cliente.nome, buffer); // Copia o dado validado
 
-    // MUDANÇA: Loop de validação para Telefone
+    // Loop de validação para Telefone
     do
     {
         printf("Informe o telefone do cliente (com DDD): ");
@@ -78,7 +78,7 @@ void cadastrar_cliente(void)
     } while (!validarTelefone(buffer));
     strcpy(novo_cliente.telefone, buffer); // Copia o dado validado
 
-    // MUDANÇA: Loop de validação para Email
+    // Loop de validação para Email
     do
     {
         printf("Informe o email do cliente: ");
@@ -118,7 +118,7 @@ void pesquisar_cliente(void)
     printf("///       Pesquisar Cliente          ///\n");
     printf("----------------------------------------\n");
 
-    // MUDANÇA: Validação do CPF de pesquisa (opcional, mas bom)
+    // Validação do CPF de pesquisa (opcional, mas bom)
     do
     {
         printf("Informe o CPF do cliente para pesquisa: ");
@@ -171,7 +171,7 @@ void alterar_cliente(void)
     FILE *arq_clientes;
     long int pos;
 
-    // MUDANÇA: Buffer para novos dados
+    // Buffer para novos dados
     char buffer[51];
 
     limparTela();
@@ -179,7 +179,7 @@ void alterar_cliente(void)
     printf("///     Alterar Dados do Cliente     ///\n");
     printf("----------------------------------------\n");
 
-    // MUDANÇA: Validação do CPF de alteração
+    // Validação do CPF de alteração
     do
     {
         printf("Informe o CPF do cliente que deseja alterar: ");
@@ -208,7 +208,7 @@ void alterar_cliente(void)
 
             printf("\nCliente encontrado. Informe os novos dados:\n");
 
-            // MUDANÇA: Loop de validação para Nome
+            // Loop de validação para Nome
             do
             {
                 printf("Nome atual: %s\nNovo Nome: ", cliente_lido.nome);
@@ -216,7 +216,7 @@ void alterar_cliente(void)
             } while (!validarNome(buffer));
             strcpy(cliente_lido.nome, buffer); // Copia
 
-            // MUDANÇA: Loop de validação para Telefone
+            // Loop de validação para Telefone
             do
             {
                 printf("Telefone atual: %s\nNovo Telefone: ", cliente_lido.telefone);
@@ -224,7 +224,7 @@ void alterar_cliente(void)
             } while (!validarTelefone(buffer));
             strcpy(cliente_lido.telefone, buffer); // Copia
 
-            // MUDANÇA: Loop de validação para Email
+            // Loop de validação para Email
             do
             {
                 printf("Email atual: %s\nNovo Email: ", cliente_lido.email);
@@ -264,7 +264,7 @@ void excluir_cliente(void)
     printf("///         Excluir Cliente          ///\n");
     printf("----------------------------------------\n");
 
-    // MUDANÇA: Validação do CPF de exclusão
+    // Validação do CPF de exclusão
     do
     {
         printf("Informe o CPF do cliente que deseja excluir: ");
@@ -354,7 +354,7 @@ void listar_clientes(void)
 void modulo_clientes(void)
 {
     int opcao;
-    char bufferOpcao[5]; // MUDANÇA: Buffer para ler a opção
+    char bufferOpcao[5]; // Buffer para ler a opção
 
     // garante que a pasta ./data exista antes de qualquer operação
     criarPastaData();
@@ -373,7 +373,7 @@ void modulo_clientes(void)
         printf("0. Voltar ao menu principal\n");
         printf("----------------------------------------\n");
 
-        // MUDANÇA: Leitura e validação da opção de menu
+        // Leitura e validação da opção de menu
         do
         {
             printf("Escolha uma opcao: ");
@@ -411,7 +411,7 @@ void modulo_clientes(void)
             break;
         case 0:
             break;
-            // MUDANÇA: Default não é mais necessário para "opção inválida"
+            // Default não é mais necessário para "opção inválida"
             // pois o loop 'do-while' já trata isso.
         }
     } while (opcao != 0);

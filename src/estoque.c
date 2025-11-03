@@ -5,12 +5,10 @@
 #include "estoque.h"
 #include "utils.h"
 #include "movimentacao.h"
-#include "validador.h" // MUDANÇA: Incluindo a biblioteca de validação
+#include "validador.h"
 
 #define PRODUTOS_FILE DATA_DIR PATH_SEPARATOR "produtos.dat"
 
-// Declaração da função auxiliar (Para uso interno)
-int id_produto_existe(int id);
 
 // ------------------------------------------
 // FUNÇÃO AUXILIAR: Checa a unicidade do ID |
@@ -52,7 +50,7 @@ void cadastrar_produto(void)
     printf("///       Cadastrar Novo Produto     ///\n");
     printf("----------------------------------------\n");
 
-    // MUDANÇA: Validação de ID único e positivo
+    // Validação de ID único e positivo
     do
     {
         printf("\nInforme o ID unico do produto: ");
@@ -67,7 +65,7 @@ void cadastrar_produto(void)
     } while (id_temp <= 0);
     novo_produto.id = id_temp;
 
-    // MUDANÇA: Validação do Nome do Produto
+    // Validação do Nome do Produto
     do
     {
         printf("Informe o nome do produto: ");
@@ -75,7 +73,7 @@ void cadastrar_produto(void)
     } while (!validarNome(buffer)); // Reutilizando validarNome
     strcpy(novo_produto.nome, buffer);
 
-    // MUDANÇA: Validação da Quantidade (deve ser não-negativa)
+    // Validação da Quantidade (deve ser não-negativa)
     do
     {
         printf("Informe a quantidade inicial em estoque: ");
@@ -88,7 +86,7 @@ void cadastrar_produto(void)
     } while (id_temp < 0);
     novo_produto.quantidade = id_temp;
 
-    // MUDANÇA: Validação da Data de Validade
+    // Validação da Data de Validade
     do
     {
         printf("Informe a data de validade (dd/mm/aaaa): ");
@@ -122,14 +120,14 @@ void pesquisar_produto(void)
     int id_busca;
     Produto produto_lido;
     FILE *arq_produtos;
-    char buffer[51]; // MUDANÇA: Buffer
+    char buffer[51]; // Buffer
 
     limparTela();
     printf("----------------------------------------\n");
     printf("///     Pesquisar Produto por ID     ///\n");
     printf("----------------------------------------\n");
 
-    // MUDANÇA: Validação do ID
+    // Validação do ID
     do
     {
         printf("Informe o ID do produto: ");
@@ -189,7 +187,7 @@ void movimentar_estoque(void)
     printf("0. Voltar\n");
     printf("----------------------------------------\n");
 
-    // MUDANÇA: Leitura segura da Opção
+    // Leitura segura da Opção
     do
     {
         printf(">>> Escolha a opcao: ");
@@ -204,7 +202,7 @@ void movimentar_estoque(void)
 
     if (opcao == 1 || opcao == 2)
     {
-        // MUDANÇA: Validação do ID
+        // Validação do ID
         do
         {
             printf("Informe o ID do produto para movimentar: ");
@@ -212,7 +210,7 @@ void movimentar_estoque(void)
             id = validarInteiroPositivo(bufferValor);
         } while (id <= 0);
 
-        // MUDANÇA: Validação da Quantidade
+        // Validação da Quantidade
         do
         {
             printf("Informe a quantidade: ");
@@ -368,7 +366,6 @@ void gerar_relatorios_estoque(void)
         printf("0. Voltar\n");
         printf("----------------------------------------\n");
 
-        // MUDANÇA: Leitura segura de Opção
         do
         {
             printf(">>> Escolha a opcao: ");
@@ -387,12 +384,10 @@ void gerar_relatorios_estoque(void)
             relatorio_itens_falta();
             break;
         case 2:
-            // Assumindo que exibir_historico_movimentacoes() existe em movimentacao.h
             exibir_historico_movimentacoes();
             break;
         case 0:
             break;
-            // Default não é mais necessário
         }
     } while (opcao != 0);
 }
@@ -405,7 +400,6 @@ void modulo_estoque(void)
 
     do
     {
-        // MUDANÇA: Substituindo TelaMenuEstoque() pelo menu inline para consistência
         limparTela();
         printf("----------------------------------------\n");
         printf("///          Modulo Estoque          ///\n");
@@ -418,7 +412,7 @@ void modulo_estoque(void)
         printf("0. Voltar ao menu principal\n");
         printf("----------------------------------------\n");
 
-        // MUDANÇA: Leitura segura de Opção
+        // Leitura segura de Opção
         do
         {
             printf(">>> Escolha a opcao: ");
@@ -450,7 +444,6 @@ void modulo_estoque(void)
             break;
         case 0:
             break;
-            // Default não é mais necessário
         }
     } while (opcao != 0);
 }

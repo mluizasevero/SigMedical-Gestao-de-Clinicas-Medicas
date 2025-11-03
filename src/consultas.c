@@ -4,7 +4,7 @@
 #include <ctype.h>
 #include "consultas.h"
 #include "utils.h"
-#include "validador.h" // MUDANÇA: Incluindo a biblioteca
+#include "validador.h"
 
 #define CONSULTAS_FILE DATA_DIR PATH_SEPARATOR "consultas.dat"
 
@@ -13,7 +13,7 @@ void agendar_consulta(void)
     Consulta nova_consulta;
     FILE *arq_consultas;
 
-    // MUDANÇA: Buffer para leitura segura
+    // Buffer para leitura segura
     char buffer[51];
 
     limparTela();
@@ -21,7 +21,7 @@ void agendar_consulta(void)
     printf("///       Agendar Nova Consulta       ///\n");
     printf("-----------------------------------------\n");
 
-    // MUDANÇA: Loop de validação para Nome do Paciente
+    // Loop de validação para Nome do Paciente
     do
     {
         printf("\nInforme o nome do paciente: ");
@@ -29,7 +29,7 @@ void agendar_consulta(void)
     } while (!validarNome(buffer));
     strcpy(nova_consulta.nome_paciente, buffer);
 
-    // MUDANÇA: Loop de validação para CPF
+    // Loop de validação para CPF
     do
     {
         printf("Informe o CPF do paciente: ");
@@ -41,7 +41,7 @@ void agendar_consulta(void)
     } while (!validarCPF(buffer));
     strcpy(nova_consulta.cpf_paciente, buffer);
 
-    // MUDANÇA: Loop de validação para Data
+    // Loop de validação para Data
     do
     {
         printf("Informe a data da consulta (dd/mm/aaaa): ");
@@ -49,7 +49,7 @@ void agendar_consulta(void)
     } while (!validarData(buffer));
     strcpy(nova_consulta.data, buffer);
 
-    // MUDANÇA: Loop de validação para Hora
+    // Loop de validação para Hora
     do
     {
         printf("Informe a hora da consulta (hh:mm): ");
@@ -57,7 +57,7 @@ void agendar_consulta(void)
     } while (!validarHora(buffer));
     strcpy(nova_consulta.hora, buffer);
 
-    // MUDANÇA: Loop de validação para Nome do Médico
+    // Loop de validação para Nome do Médico
     do
     {
         printf("Informe o nome do medico: ");
@@ -65,7 +65,7 @@ void agendar_consulta(void)
     } while (!validarNome(buffer));
     strcpy(nova_consulta.nome_medico, buffer);
 
-    // MUDANÇA: Loop de validação para Especialidade (usando validarNome)
+    // Loop de validação para Especialidade (usando validarNome)
     do
     {
         printf("Informe a especialidade do medico: ");
@@ -103,7 +103,7 @@ void pesquisar_consulta(void)
     printf("///       Pesquisar Consulta         ///\n");
     printf("----------------------------------------\n");
 
-    // MUDANÇA: Validação do CPF
+    // Validação do CPF
     do
     {
         printf("Informe o CPF do paciente: ");
@@ -153,7 +153,7 @@ void alterar_consulta(void)
     FILE *arq_consultas;
     long int pos;
 
-    // MUDANÇA: Buffer para leitura
+    // Buffer para leitura
     char buffer[51];
 
     limparTela();
@@ -161,14 +161,14 @@ void alterar_consulta(void)
     printf("///       Alterar Consulta           ///\n");
     printf("----------------------------------------\n");
 
-    // MUDANÇA: Validação do CPF
+    // Validação do CPF
     do
     {
         printf("Informe o CPF do paciente: ");
         lerString(cpf_busca, 15);
     } while (!validarCPF(cpf_busca));
 
-    // MUDANÇA: Validação da Data
+    // Validação da Data
     do
     {
         printf("Informe a DATA da consulta a alterar (dd/mm/aaaa): ");
@@ -194,7 +194,7 @@ void alterar_consulta(void)
 
             printf("\nConsulta encontrada. Informe os novos dados:\n");
 
-            // MUDANÇA: Validação da Nova Data
+            // Validação da Nova Data
             do
             {
                 printf("Data atual: %s\nNova Data (dd/mm/aaaa): ", consulta_lida.data);
@@ -202,7 +202,7 @@ void alterar_consulta(void)
             } while (!validarData(buffer));
             strcpy(consulta_lida.data, buffer);
 
-            // MUDANÇA: Validação da Nova Hora
+            // Validação da Nova Hora
             do
             {
                 printf("Hora atual: %s\nNova Hora (hh:mm): ", consulta_lida.hora);
@@ -241,14 +241,14 @@ void excluir_consulta(void)
     printf("///   Cancelar/Excluir Consulta    ///\n");
     printf("----------------------------------------\n");
 
-    // MUDANÇA: Validação do CPF
+    // Validação do CPF
     do
     {
         printf("Informe o CPF do paciente: ");
         lerString(cpf_busca, 15);
     } while (!validarCPF(cpf_busca));
 
-    // MUDANÇA: Validação da Data
+    // Validação da Data
     do
     {
         printf("Informe a DATA da consulta a excluir (dd/mm/aaaa): ");
@@ -273,12 +273,12 @@ void excluir_consulta(void)
             pos = ftell(arq_consultas) - sizeof(Consulta);
 
             char confirmacao;
-            char bufferConfirm[5]; // MUDANÇA: Buffer para confirmação
+            char bufferConfirm[5]; // Buffer para confirmação
 
             printf("\nConsulta encontrada:\n");
             printf("Paciente: %s\nData: %s | Hora: %s\n", consulta_lida.nome_paciente, consulta_lida.data, consulta_lida.hora);
 
-            // MUDANÇA: Loop de confirmação
+            // Loop de confirmação
             do
             {
                 printf("Deseja realmente cancelar esta consulta (S/N)? ");
@@ -330,14 +330,14 @@ void confirmar_presenca(void)
     printf("///     Confirmar Presenca           ///\n");
     printf("----------------------------------------\n");
 
-    // MUDANÇA: Validação do CPF
+    // Validação do CPF
     do
     {
         printf("Informe o CPF do paciente: ");
         lerString(cpf_busca, 15);
     } while (!validarCPF(cpf_busca));
 
-    // MUDANÇA: Validação da Data
+    // Validação da Data
     do
     {
         printf("Informe a data da consulta (dd/mm/aaaa): ");
@@ -393,7 +393,7 @@ void relatorio_consultas_medico(void)
     printf("///     Consultas por Medico         ///\n");
     printf("----------------------------------------\n");
 
-    // MUDANÇA: Validação do nome
+    // Validação do nome
     do
     {
         printf("Informe o nome do medico: ");
@@ -437,7 +437,7 @@ void relatorio_consultas_por_periodo(void)
     Consulta consulta_lida;
     FILE *arq_consultas;
 
-    // MUDANÇA: Variáveis para datas convertidas
+    // Variáveis para datas convertidas
     long data_inicio_int, data_fim_int, data_consulta_int;
 
     limparTela();
@@ -445,7 +445,7 @@ void relatorio_consultas_por_periodo(void)
     printf("///     Consultas por Periodo        ///\n");
     printf("----------------------------------------\n");
 
-    // MUDANÇA: Validação das datas
+    // Validação das datas
     do
     {
         printf("Informe a data de inicio (dd/mm/aaaa): ");
@@ -458,7 +458,7 @@ void relatorio_consultas_por_periodo(void)
         lerString(data_fim_str, 11);
     } while (!validarData(data_fim_str));
 
-    // MUDANÇA: Converte datas para inteiros para comparação correta
+    // Converte datas para inteiros para comparação correta
     data_inicio_int = converterDataParaInt(data_inicio_str);
     data_fim_int = converterDataParaInt(data_fim_str);
 
@@ -484,7 +484,7 @@ void relatorio_consultas_por_periodo(void)
         if (consulta_lida.ativo == 1)
         {
 
-            // MUDANÇA: Comparação numérica de datas (YYYYMMDD)
+            // Comparação numérica de datas (YYYYMMDD)
             data_consulta_int = converterDataParaInt(consulta_lida.data);
 
             if (data_consulta_int >= data_inicio_int && data_consulta_int <= data_fim_int)
@@ -514,7 +514,7 @@ void relatorio_consultas_por_periodo(void)
 void gerenciar_agendamentos(void)
 {
     int opcao;
-    char bufferOpcao[5]; // MUDANÇA: Buffer de leitura
+    char bufferOpcao[5]; // Buffer de leitura
 
     do
     {
@@ -528,7 +528,7 @@ void gerenciar_agendamentos(void)
         printf("0. Voltar\n");
         printf("----------------------------------------\n");
 
-        // MUDANÇA: Leitura de menu segura
+        // Leitura de menu segura
         do
         {
             printf(">>> Escolha a opcao: ");
@@ -562,7 +562,7 @@ void gerenciar_agendamentos(void)
 void gerar_relatorios_consultas(void)
 {
     int opcao;
-    char bufferOpcao[5]; // MUDANÇA: Buffer de leitura
+    char bufferOpcao[5]; // Buffer de leitura
 
     do
     {
@@ -577,7 +577,7 @@ void gerar_relatorios_consultas(void)
         printf("0. Voltar\n");
         printf("----------------------------------------\n");
 
-        // MUDANÇA: Leitura de menu segura
+        // Leitura de menu segura
         do
         {
             printf(">>> Escolha a opcao: ");
@@ -613,14 +613,12 @@ void gerar_relatorios_consultas(void)
 void modulo_consultas(void)
 {
     int opcao;
-    char bufferOpcao[5]; // MUDANÇA: Buffer de leitura
+    char bufferOpcao[5]; // Buffer de leitura
 
     criarPastaData();
 
     do
     {
-        // MUDANÇA: Substituí TelaMenuConsultas() (de utils.c) pelo
-        //          menu inline para consistência com modulo_clientes.c
         limparTela();
         printf("----------------------------------------\n");
         printf("///       Modulo de Consultas        ///\n");
@@ -632,7 +630,7 @@ void modulo_consultas(void)
         printf("0. Voltar ao menu principal\n");
         printf("----------------------------------------\n");
 
-        // MUDANÇA: Leitura de menu segura
+        // Leitura de menu segura
         do
         {
             printf(">>> Escolha a opcao: ");

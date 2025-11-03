@@ -21,4 +21,7 @@ void gerar_relatorios_estoque(void);
 void relatorio_itens_falta(void);
 void relatorio_validade_proxima(void);
 
+// Função auxiliar (Para uso interno)
+int id_produto_existe(int id);
+
 #endif

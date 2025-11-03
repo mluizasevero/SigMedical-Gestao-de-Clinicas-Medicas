@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h> // Adicionado para usar strncpy/strlen/etc.
+#include <string.h>
 #include "src/clientes.h"
 #include "src/medicos.h"
 #include "src/consultas.h"
