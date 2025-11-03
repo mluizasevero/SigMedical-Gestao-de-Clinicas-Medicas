@@ -289,18 +289,6 @@ int validarHora(const char *hora)
     return 1;
 }
 
-/**
- * Converte uma data "dd/mm/aaaa" para um int YYYYMMDD.
- */
-long converterDataParaInt(const char *dataStr)
-{
-    int dia, mes, ano;
-    if (sscanf(dataStr, "%d/%d/%d", &dia, &mes, &ano) == 3)
-    {
-        return (long)ano * 10000 + (long)mes * 100 + (long)dia;
-    }
-    return 0;
-}
 
 /**
  * Valida se a string contem apenas digitos e representa um inteiro positivo (e > 0).

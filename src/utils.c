@@ -76,6 +76,19 @@ void transformarEmMaiusculas(char *texto)
     }
 }
 
+long converterDataParaInt(const char *dataStr)
+/**
+ * Converte uma data "dd/mm/aaaa" para um int YYYYMMDD.
+ */
+{
+    int dia, mes, ano;
+    if (sscanf(dataStr, "%d/%d/%d", &dia, &mes, &ano) == 3)
+    {
+        return (long)ano * 10000 + (long)mes * 100 + (long)dia;
+    }
+    return 0;
+}
+
 // ======================================== //
 
 // =========== FUNÇÕES DE TELAS =========== //

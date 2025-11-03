@@ -47,13 +47,6 @@ int validarData(const char *data);
 int validarHora(const char *hora);
 
 /**
- * Converte uma data "dd/mm/aaaa" para um inteiro no formato YYYYMMDD.
- * Essencial para comparar datas corretamente (ex: relatórios por período).
- * Retorna um long int (ex: 20241231) ou 0 em caso de erro.
- */
-long converterDataParaInt(const char *dataStr);
-
-/**
  * Valida se a string contem apenas digitos e representa um inteiro positivo.
  * Retorna o inteiro validado ou -1 se for inválido.
  */

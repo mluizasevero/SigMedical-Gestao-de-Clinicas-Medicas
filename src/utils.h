@@ -69,6 +69,13 @@ void criarPastaData(void);
 void limparTela(void);
 void transformarEmMaiusculas(char *texto);
 
+/**
+ * Converte uma data "dd/mm/aaaa" para um inteiro no formato YYYYMMDD.
+ * Essencial para comparar datas corretamente (ex: relatórios por período).
+ * Retorna um long int (ex: 20241231) ou 0 em caso de erro.
+ */
+long converterDataParaInt(const char *dataStr);
+
 // ========================================== //
 
 
