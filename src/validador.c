@@ -187,6 +187,8 @@ int validarOpcaoMenu(int opcao, int min, int max)
 
 /**
  * Valida uma data no formato dd/mm/aaaa.
+ * Verifica formato, intervalo de dias, meses e anos,
+ * e considera anos bissextos para fevereiro.
  */
 int validarData(const char *data)
 {
@@ -204,31 +206,47 @@ int validarData(const char *data)
     }
 
     int dia, mes, ano;
-    // sscanf lê de uma string, %*c ignora o caractere (a barra)
     if (sscanf(data, "%d%*c%d%*c%d", &dia, &mes, &ano) != 3)
     {
         printf("! Erro: Data deve conter apenas numeros e barras.\n");
         return 0;
     }
 
-    // Validação de intervalos básicos (não checa dias de cada mês/anos bissextos)
-    if (dia < 1 || dia > 31)
-    {
-        printf("! Erro: Dia invalido (1-31).\n");
-        return 0;
-    }
+    // Intervalos básicos
     if (mes < 1 || mes > 12)
     {
         printf("! Erro: Mes invalido (1-12).\n");
         return 0;
     }
     if (ano < 1900 || ano > 2100)
-    { // Intervalo razoável
+    {
         printf("! Erro: Ano invalido (use 1900-2100).\n");
         return 0;
     }
 
-    return 1;
+    // Dias máximos por mês
+    int dias_no_mes[] = {0,31,28,31,30,31,30,31,31,30,31,30,31};
+
+    // Checa ano bissexto
+    int bissexto = (ano % 4 == 0 && (ano % 100 != 0 || ano % 400 == 0));
+    if (mes == 2 && bissexto)
+    {
+        if (dia < 1 || dia > 29)
+        {
+            printf("! Erro: Dia invalido para fevereiro em ano bissexto.\n");
+            return 0;
+        }
+    }
+    else
+    {
+        if (dia < 1 || dia > dias_no_mes[mes])
+        {
+            printf("! Erro: Dia invalido para o mes %02d.\n", mes);
+            return 0;
+        }
+    }
+
+    return 1; // Data válida
 }
 
 /**
