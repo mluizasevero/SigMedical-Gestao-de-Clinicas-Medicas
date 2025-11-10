@@ -82,4 +82,7 @@ Marcus Vinicius de Souza Azevedo
 infobasicifrn2017marcusv@gmail.com
 
 # To do
-1. Tudo em ordem (por enquanto)
+1. Cadastrar dados genéricos e commitar o `/data`
+2. Colocar os relatórios como tabela
+3. Colocar filtros em todos os relatórios (1 filtro por módulo)
+4. Ajeitar as telas
