@@ -95,237 +95,246 @@ long converterDataParaInt(const char *dataStr)
 
 void desenharCabecalhoBase(void)
 {
-    printf("///////////////////////////////////////////////////////////////////////////////\n");
-    printf("///                                                                         ///\n");
-    printf("///             Universidade Federal do Rio Grande do Norte (UFRN)          ///\n");
-    printf("///               Centro de Ensino Superior do Serido (CERES)               ///\n");
-    printf("///             Departamento de Computacao e Tecnologia (DCT)               ///\n");
-    printf("///                 Disciplina DCT1106 -- Programacao                       ///\n");
-    printf("///                                                                         ///\n");
-    printf("///       Projeto SigMedical :: Sistema de Gestao de Clinicas Medicas       ///\n");
-    printf("///                                                                         ///\n");
+    printf("╔════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║                                                                        ║\n");
+    printf("║             Universidade Federal do Rio Grande do Norte (UFRN)         ║\n");
+    printf("║               Centro de Ensino Superior do Serido (CERES)              ║\n");
+    printf("║             Departamento de Computacao e Tecnologia (DCT)              ║\n");
+    printf("║                 Disciplina DCT1106 -- Programacao                      ║\n");
+    printf("║                                                                        ║\n");
+    printf("║       Projeto SigMedical :: Sistema de Gestao de Clinicas Medicas      ║\n");
+    printf("║                                                                        ║\n");
+    printf("╚════════════════════════════════════════════════════════════════════════╝\n");
+
 }
 
 void telaEquipe(void)
 {
     limparTela();
-    const char *info =
-        "///          Este projeto foi desenvolvido por:                             ///\n"
-        "///                                                                         ///\n"
-        "///          Maria Luiza Severo                                             ///\n"
-        "///          E-mail: maria.severo.063@ufrn.edu.br                           ///\n"
-        "///                                                                         ///\n"
-        "///          Marcus Vinicius de Souza Azevedo                               ///\n"
-        "///          Email: infobasicifrn2017marcusv@gmail.com                      ///\n"
-        "///                                                                         ///\n"
-        "///          Thiago Gomes de Oliveira                                       ///\n"
-        "///          E-mail: Thiago.oliveira712@ufrn.edu.br                         ///";
+    desenharCabecalhoBase(); // Mantém seu cabeçalho padrão
 
-    desenharCabecalhoBase();
-    printf("%s\n", info);
-    printf("///////////////////////////////////////////////////////////////////////////////\n");
-}
+    printf("╔════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║                                                                        ║\n");
+    printf("║          Este projeto foi desenvolvido por:                            ║\n");
+    printf("║                                                                        ║\n");
+    printf("║          Maria Luiza Severo                                            ║\n");
+    printf("║          E-mail: maria.severo.063@ufrn.edu.br                          ║\n");
+    printf("║                                                                        ║\n");
+    printf("║          Marcus Vinicius de Souza Azevedo                              ║\n");
+    printf("║          E-mail: infobasicifrn2017marcusv@gmail.com                    ║\n");
+    printf("║                                                                        ║\n");
+    printf("║          Thiago Gomes de Oliveira                                      ║\n");
+    printf("║          E-mail: Thiago.oliveira712@ufrn.edu.br                        ║\n");
+    printf("║                                                                        ║\n");
+    printf("║          Luis Felipe Linhares Pereira                                  ║\n");
+    printf("║          E-mail: luis.felipe.linhares.701@ufrn.edu.br                  ║\n");
+    printf("╚════════════════════════════════════════════════════════════════════════╝\n");
+
+    }
 
 void TelaMenuPrincipal(void)
 {
     limparTela();
-    printf("----------------------------------------\n");
-    printf("///          MENU PRINCIPAL          ///\n");
-    printf("----------------------------------------\n");
-    printf("///                                  ///\n");
-    printf("///  1. Modulo Clientes              ///\n");
-    printf("///  2. Modulo Medicos               ///\n");
-    printf("///  3. Modulo Consultas             ///\n");
-    printf("///  4. Modulo Estoque               ///\n");
-    printf("///  5. Sobre a Equipe               ///\n");
-    printf("///  0. Sair                         ///\n");
-    printf("///                                  ///\n");
-    printf("----------------------------------------\n");
-    printf(">>> Escolha a opcao desejada: ");
+    printf("╔════════════════════════════════════════╗\n");
+    printf("║             MENU PRINCIPAL             ║\n");
+    printf("╠════════════════════════════════════════╣\n");
+    printf("║                                        ║\n");
+    printf("║ 1. Módulo Clientes                     ║\n");
+    printf("║ 2. Módulo Médicos                      ║\n");
+    printf("║ 3. Módulo Consultas                    ║\n");
+    printf("║ 4. Módulo Estoque                      ║\n");
+    printf("║ 5. Sobre a Equipe                      ║\n");
+    printf("║ 0. Sair                                ║\n");
+    printf("║                                        ║\n");
+    printf("╚════════════════════════════════════════╝\n");
+    printf(">>> Escolha a opção desejada: ");
+
 }
 
 void TelaMenuMedicos(void)
 {
     limparTela();
-    printf("----------------------------------------\n");
-    printf("///         Modulo de Medicos        ///\n");
-    printf("----------------------------------------\n");
-    printf("///                                  ///\n");
-    printf("///  1. Cadastrar Medico             ///\n");
-    printf("///  2. Pesquisar Medico             ///\n");
-    printf("///  3. Alterar Medico               ///\n");
-    printf("///  4. Excluir Medico               ///\n");
-    printf("///  5. Listar Medicos               ///\n");
-    printf("///  0. Voltar ao Menu Principal     ///\n");
-    printf("///                                  ///\n");
-    printf("----------------------------------------\n");
+    printf("╔════════════════════════════════════════╗\n");
+    printf("║         Modulo de Medicos              ║\n");
+    printf("╠════════════════════════════════════════╣\n");
+    printf("║                                        ║\n");
+    printf("║  1. Cadastrar Medico                   ║\n");
+    printf("║  2. Pesquisar Medico                   ║\n");
+    printf("║  3. Alterar Medico                     ║\n");
+    printf("║  4. Excluir Medico                     ║\n");
+    printf("║  5. Listar Medicos                     ║\n");
+    printf("║  0. Voltar ao Menu Principal           ║\n");
+    printf("║                                        ║\n");
+    printf("╚════════════════════════════════════════╝\n");
     printf(">>> Escolha a opcao desejada: ");
+
 }
 
 void TelaMenuClientes(void)
 {
     limparTela();
-    printf("----------------------------------------\n");
-    printf("///         Modulo de Clientes       ///\n");
-    printf("----------------------------------------\n");
-    printf("///                                  ///\n");
-    printf("///  1. Cadastrar Cliente            ///\n");
-    printf("///  2. Pesquisar Cliente            ///\n");
-    printf("///  3. Alterar Cliente              ///\n");
-    printf("///  4. Excluir Cliente              ///\n");
-    printf("///  5. Listar Clientes              ///\n");
-    printf("///  0. Voltar ao Menu Principal     ///\n");
-    printf("///                                  ///\n");
-    printf("----------------------------------------\n");
+    printf("╔════════════════════════════════════════╗\n");
+    printf("║         Modulo de Clientes             ║\n");
+    printf("╠════════════════════════════════════════╣\n");
+    printf("║                                        ║\n");
+    printf("║  1. Cadastrar Cliente                  ║\n");
+    printf("║  2. Pesquisar Cliente                  ║\n");
+    printf("║  3. Alterar Cliente                    ║\n");
+    printf("║  4. Excluir Cliente                    ║\n");
+    printf("║  5. Listar Clientes                    ║\n");
+    printf("║  0. Voltar ao Menu Principal           ║\n");
+    printf("║                                        ║\n");
+    printf("╚════════════════════════════════════════╝\n");
     printf(">>> Escolha a opcao desejada: ");
+
 }
 
 void TelaMenuConsultas(void)
 {
     limparTela();
-    printf("----------------------------------------\n");
-    printf("///        Modulo de Consultas       ///\n");
-    printf("----------------------------------------\n");
-    printf("///                                  ///\n");
-    printf("///  1. Agendar Nova Consulta        ///\n");
-    printf("///  2. Pesquisar Consultas          ///\n");
-    printf("///  3. Gerenciar Agendamentos       ///\n");
-    printf("///  4. Gerar Relatorios             ///\n");
-    printf("///  0. Voltar ao Menu Principal     ///\n");
-    printf("///                                  ///\n");
-    printf("----------------------------------------\n");
+    printf("╔════════════════════════════════════════╗\n");
+    printf("║         Modulo de Consultas            ║\n");
+    printf("╠════════════════════════════════════════╣\n");
+    printf("║                                        ║\n");
+    printf("║  1. Agendar Nova Consulta              ║\n");
+    printf("║  2. Pesquisar Consultas                ║\n");
+    printf("║  3. Gerenciar Agendamentos             ║\n");
+    printf("║  4. Gerar Relatorios                   ║\n");
+    printf("║  0. Voltar ao Menu Principal           ║\n");
+    printf("║                                        ║\n");
+    printf("╚════════════════════════════════════════╝\n");
     printf(">>> Escolha a opcao desejada: ");
+
 }
 
 void TelaMenuEstoque(void)
 {
     limparTela();
-    printf("----------------------------------------\n");
-    printf("///         Modulo de Estoque        ///\n");
-    printf("----------------------------------------\n");
-    printf("///                                  ///\n");
-    printf("///  1. Cadastrar Produto            ///\n");
-    printf("///  2. Pesquisar Produto            ///\n");
-    printf("///  3. Listar Produtos              ///\n");
-    printf("///  4. Movimentar Estoque           ///\n");
-    printf("///  5. Gerar Relatorios             ///\n");
-    printf("///  0. Voltar ao Menu Principal     ///\n");
-    printf("///                                  ///\n");
-    printf("----------------------------------------\n");
+    printf("╔════════════════════════════════════════╗\n");
+    printf("║         Modulo de Estoque              ║\n");
+    printf("╠════════════════════════════════════════╣\n");
+    printf("║                                        ║\n");
+    printf("║  1. Cadastrar Produto                  ║\n");
+    printf("║  2. Pesquisar Produto                  ║\n");
+    printf("║  3. Listar Produtos                    ║\n");
+    printf("║  4. Movimentar Estoque                 ║\n");
+    printf("║  5. Gerar Relatorios                   ║\n");
+    printf("║  0. Voltar ao Menu Principal           ║\n");
+    printf("║                                        ║\n");
+    printf("╚════════════════════════════════════════╝\n");
     printf(">>> Escolha a opcao desejada: ");
-}
+
+    }
 
 void TelaCadastrarMedicos()
 {
     limparTela();
-    printf("----------------------------------------\n");
-    printf("///         Cadastrar Médico         ///\n");
-    printf("----------------------------------------\n");
-    printf("///                                  ///\n");
-    printf("///  ID do Médico:                   ///\n");
-    printf("///  Nome completo:                  ///\n");
-    printf("///  CPF (apenas numeros):           ///\n");
-    printf("///  Especialidade:                  ///\n");
-    printf("///  Telefone:                       ///\n");
-    printf("///                                  ///\n");
-    printf("----------------------------------------\n");
-    printf("\n");
-}
+    printf("╔════════════════════════════════════╗\n");
+    printf("║         Cadastrar Médico           ║\n");
+    printf("╠════════════════════════════════════╣\n");
+    printf("║                                    ║\n");
+    printf("║  ID do Médico:                     ║\n");
+    printf("║  Nome completo:                    ║\n");
+    printf("║  CPF (apenas numeros):             ║\n");
+    printf("║  Especialidade:                    ║\n");
+    printf("║  Telefone:                         ║\n");
+    printf("║                                    ║\n");
+    printf("╚════════════════════════════════════╝\n");
 
 void TelaPesquisarMedicos()
 {
     limparTela();
-    printf("----------------------------------------\n");
-    printf("///         Pesquisar Médico         ///\n");
-    printf("----------------------------------------\n");
-    printf("///                                  ///\n");
-    printf("///  Informe o CPF do Médico:        ///\n");
-    printf("///                                  ///\n");
-    printf("----------------------------------------\n");
-    printf("\n");
-}
+    printf("╔════════════════════════════════════╗\n");
+    printf("║         Pesquisar Médico           ║\n");
+    printf("╠════════════════════════════════════╣\n");
+    printf("║                                    ║\n");
+    printf("║  Informe o CPF do Médico:          ║\n");
+    printf("║                                    ║\n");
+    printf("╚════════════════════════════════════╝\n");
+
+    }
 
 void TelaAlterarMedicos()
 {
     limparTela();
-    printf("----------------------------------------\n");
-    printf("///          Alterar Médico          ///\n");
-    printf("----------------------------------------\n");
-    printf("///                                  ///\n");
-    printf("///  Informe o CPF do Médico:        ///\n");
-    printf("///                                  ///\n");
-    printf("----------------------------------------\n");
-    printf("\n");
-}
+    printf("╔════════════════════════════════════╗\n");
+    printf("║          Alterar Médico            ║\n");
+    printf("╠════════════════════════════════════╣\n");
+    printf("║                                    ║\n");
+    printf("║  Informe o CPF do Médico:          ║\n");
+    printf("║                                    ║\n");
+    printf("╚════════════════════════════════════╝\n");
+
+    }
 
 void TelaExcluirMedicos()
 {
     limparTela();
-    printf("----------------------------------------\n");
-    printf("///          Excluir Médico          ///\n");
-    printf("----------------------------------------\n");
-    printf("///                                  ///\n");
-    printf("///  Informe o CPF do Médico:        ///\n");
-    printf("///                                  ///\n");
-    printf("----------------------------------------\n");
-    printf("\n");
+    printf("╔════════════════════════════════════╗\n");
+    printf("║          Excluir Médico            ║\n");
+    printf("╠════════════════════════════════════╣\n");
+    printf("║                                    ║\n");
+    printf("║  Informe o CPF do Médico:          ║\n");
+    printf("║                                    ║\n");
+    printf("╚════════════════════════════════════╝\n");
+
 }
 
 void TelaConfirmarExclusao()
 {
     limparTela();
-    printf("----------------------------------------\n");
-    printf("///      Confirmar Exclusão?         ///\n");
-    printf("----------------------------------------\n");
-    printf("///                                  ///\n");
-    printf("///     1. Sim (S/s)                 ///\n");
-    printf("///     2. Nao (N/n)                 ///\n");
-    printf("///                                  ///\n");
-    printf("----------------------------------------\n");
+    printf("╔════════════════════════════════════╗\n");
+    printf("║      Confirmar Exclusão?           ║\n");
+    printf("╠════════════════════════════════════╣\n");
+    printf("║                                    ║\n");
+    printf("║     1. Sim (S/s)                   ║\n");
+    printf("║     2. Nao (N/n)                   ║\n");
+    printf("║                                    ║\n");
+    printf("╚════════════════════════════════════╝\n");
     printf(">>> Escolha a opção desejada: ");
 }
 
 void TelaCadastrarClientes()
 {
     limparTela();
-    printf("----------------------------------------\n");
-    printf("///         Cadastrar Cliente        ///\n");
-    printf("----------------------------------------\n");
-    printf("///                                  ///\n");
-    printf("///  CPF:                            ///\n");
-    printf("///  Nome:                           ///\n");
-    printf("///  Telefone:                       ///\n");
-    printf("///  E-mail:                         ///\n");
-    printf("///                                  ///\n");
-    printf("----------------------------------------\n");
-    printf("\n");
+    printf("╔════════════════════════════════════╗\n");
+    printf("║         Cadastrar Cliente          ║\n");
+    printf("╠════════════════════════════════════╣\n");
+    printf("║                                    ║\n");
+    printf("║  CPF:                              ║\n");
+    printf("║  Nome:                             ║\n");
+    printf("║  Telefone:                         ║\n");
+    printf("║  E-mail:                           ║\n");
+    printf("║                                    ║\n");
+    printf("╚════════════════════════════════════╝\n");
+
 }
 
 void TelaPesquisarClientes()
 {
     limparTela();
-    printf("----------------------------------------\n");
-    printf("///         Pesquisar Cliente        ///\n");
-    printf("----------------------------------------\n");
-    printf("///                                  ///\n");
-    printf("///  Informe o CPF do cliente:       ///\n");
-    printf("///                                  ///\n");
-    printf("----------------------------------------\n");
-    printf("\n");
+    printf("╔════════════════════════════════════╗\n");
+    printf("║         Pesquisar Cliente          ║\n");
+    printf("╠════════════════════════════════════╣\n");
+    printf("║                                    ║\n");
+    printf("║  Informe o CPF do cliente:         ║\n");
+    printf("║                                    ║\n");
+    printf("╚════════════════════════════════════╝\n");
+
 }
 
 void TelaAlterarClientes()
 {
     limparTela();
-    printf("----------------------------------------\n");
-    printf("///          Alterar Cliente         ///\n");
-    printf("----------------------------------------\n");
-    printf("///                                  ///\n");
-    printf("///  Informe o CPF do cliente:       ///\n");
-    printf("///                                  ///\n");
-    printf("----------------------------------------\n");
-    printf("\n");
-}
+    printf("╔════════════════════════════════════╗\n");
+    printf("║          Alterar Cliente           ║\n");
+    printf("╠════════════════════════════════════╣\n");
+    printf("║                                    ║\n");
+    printf("║  Informe o CPF do cliente:         ║\n");
+    printf("║                                    ║\n");
+    printf("╚════════════════════════════════════╝\n");
+
+    }
 
 void TelaExcluirClientes()
 {
