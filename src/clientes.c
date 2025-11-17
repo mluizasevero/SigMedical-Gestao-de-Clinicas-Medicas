@@ -119,15 +119,8 @@ void pesquisar_cliente(void)
     printf("----------------------------------------\n");
 
     // Validação do CPF de pesquisa (opcional, mas bom)
-    do
-    {
-        printf("Informe o CPF do cliente para pesquisa: ");
-        lerString(cpf_pesquisa, 15);
-        if (!validarCPF(cpf_pesquisa))
-        {
-            printf("! Formato de CPF invalido. Tente novamente.\n");
-        }
-    } while (!validarCPF(cpf_pesquisa));
+    printf("Informe o CPF do cliente para pesquisa: ");
+    lerString(cpf_pesquisa, 15);
 
     // abre o arquivo em read binary
     arq_clientes = fopen(CLIENTES_FILE, "rb");
@@ -180,15 +173,8 @@ void alterar_cliente(void)
     printf("----------------------------------------\n");
 
     // Validação do CPF de alteração
-    do
-    {
-        printf("Informe o CPF do cliente que deseja alterar: ");
-        lerString(cpf_alteracao, 15);
-        if (!validarCPF(cpf_alteracao))
-        {
-            printf("! Formato de CPF invalido. Tente novamente.\n");
-        }
-    } while (!validarCPF(cpf_alteracao));
+    printf("Informe o CPF do cliente que deseja alterar: ");
+    lerString(cpf_alteracao, 15);
 
     // abre leitura e escrita binária
     arq_clientes = fopen(CLIENTES_FILE, "r+b");
@@ -264,16 +250,8 @@ void excluir_cliente(void)
     printf("///         Excluir Cliente          ///\n");
     printf("----------------------------------------\n");
 
-    // Validação do CPF de exclusão
-    do
-    {
-        printf("Informe o CPF do cliente que deseja excluir: ");
-        lerString(cpf_exclusao, 15);
-        if (!validarCPF(cpf_exclusao))
-        {
-            printf("! Formato de CPF invalido. Tente novamente.\n");
-        }
-    } while (!validarCPF(cpf_exclusao));
+    printf("Informe o CPF do cliente que deseja excluir: ");
+    lerString(cpf_exclusao, 15);
 
     arq_clientes = fopen(CLIENTES_FILE, "r+b");
     if (arq_clientes == NULL)

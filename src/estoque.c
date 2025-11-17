@@ -47,7 +47,7 @@ void cadastrar_produto(void)
 
     limparTela();
     printf("----------------------------------------\n");
-    printf("///       Cadastrar Novo Produto     ///\n");
+    printf("///      Cadastrar Novo Produto      ///\n");
     printf("----------------------------------------\n");
 
     // Validação de ID único e positivo

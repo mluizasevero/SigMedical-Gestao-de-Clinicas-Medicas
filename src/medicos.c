@@ -148,12 +148,8 @@ void pesquisar_medico(void)
     printf("///     Pesquisar Medico por CPF     ///\n");
     printf("----------------------------------------\n");
 
-    // Validação do CPF
-    do
-    {
-        printf("Informe o CPF do medico a ser pesquisado: ");
-        lerString(cpf_busca, 15);
-    } while (!validarCPF(cpf_busca)); // Validação de formato
+    printf("Informe o CPF do medico a ser pesquisado: ");
+    lerString(cpf_busca, 15);
 
     arq_medicos = fopen(MEDICOS_FILE, "rb");
     if (arq_medicos == NULL)
