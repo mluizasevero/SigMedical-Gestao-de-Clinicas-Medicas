@@ -85,4 +85,5 @@ infobasicifrn2017marcusv@gmail.com
 1. Cadastrar dados genéricos e commitar o `/data`
 2. Colocar os relatórios como tabela
 3. Colocar filtros em todos os relatórios (1 filtro por módulo)
-4. Deixar as telas massas
+4. Atualizar informações do projeto
+5. Ajeitar as telas

@@ -148,12 +148,8 @@ void pesquisar_medico(void)
     printf("///     Pesquisar Medico por CPF     ///\n");
     printf("----------------------------------------\n");
 
-    // Validação do CPF
-    do
-    {
-        printf("Informe o CPF do medico a ser pesquisado: ");
-        lerString(cpf_busca, 15);
-    } while (!validarCPF(cpf_busca)); // Validação de formato
+    printf("Informe o CPF do medico a ser pesquisado: ");
+    lerString(cpf_busca, 15);
 
     arq_medicos = fopen(MEDICOS_FILE, "rb");
     if (arq_medicos == NULL)
@@ -394,6 +390,305 @@ void listar_medicos(void)
     pressioneEnterParaContinuar();
 }
 
+// ---------------------------------------
+// RELATÓRIOS                            |
+// ---------------------------------------
+
+// Função auxiliar para exibir um título de seção
+void exibir_titulo_relatorio(const char* titulo) {
+    limparTela();
+    printf("---------------------------------------\n");
+    printf("///    %s    ///\n", titulo);
+    printf("---------------------------------------\n");
+}
+
+// Função auxiliar para exibir cabeçalho da tabela de médicos
+void exibir_cabecalho_tabela(void) {
+    printf("ID | Nome do Medico         | CPF           | Especialidade\n");
+    printf("---|------------------------|---------------|------------------\n");
+}
+
+// Função auxiliar para exibir mensagem se não houver resultados
+void exibir_mensagem_sem_resultado(int tem_registro) {
+    if (!tem_registro) {
+        printf("Nenhum registro encontrado.\n");
+    }
+}
+
+// Função para exibir o relatório completo de médicos ativos e inativos
+void relatorio_completo(void) {
+    Medico medico_lido;
+    FILE *arq_medicos;
+    int total_ativos = 0;
+    int total_inativos = 0;
+    int total_geral = 0;
+    int tem_registro = 0;
+
+    exibir_titulo_relatorio("Relatorio Completo de Medicos");
+
+    arq_medicos = fopen(MEDICOS_FILE, "rb");
+    if (arq_medicos == NULL)
+    {
+        printf("Nenhum medico cadastrado.\n");
+        pressioneEnterParaContinuar();
+        return;
+    }
+
+    // Primeira passagem para contagem
+    while (fread(&medico_lido, sizeof(Medico), 1, arq_medicos))
+    {
+        if (medico_lido.ativo == 1)
+        {
+            total_ativos++;
+        }
+        else
+        {
+            total_inativos++;
+        }
+        total_geral++;
+    }
+    fclose(arq_medicos);
+
+    // Impressão das estatísticas
+    printf("\n--- Estatisticas Gerais ---\n");
+    printf("Total de medicos cadastrados: %d\n", total_geral);
+    printf("Total de medicos ATIVOS:      %d\n", total_ativos);
+    printf("Total de medicos INATIVOS:    %d\n", total_inativos);
+    printf("---------------------------\n\n");
+
+    // Segunda passagem para listagem detalhada de ativos
+    arq_medicos = fopen(MEDICOS_FILE, "rb");
+    if (arq_medicos != NULL)
+    {
+        printf("--- Medicos ATIVOS ---\n");
+        if (total_ativos > 0) {
+            exibir_cabecalho_tabela();
+        }
+        while (fread(&medico_lido, sizeof(Medico), 1, arq_medicos))
+        {
+            if (medico_lido.ativo == 1)
+            {
+                printf("%-2d | %-22s | %-13s | %s\n",
+                       medico_lido.id, medico_lido.nome,
+                       medico_lido.cpf, medico_lido.especialidade);
+                tem_registro = 1;
+            }
+        }
+        exibir_mensagem_sem_resultado(tem_registro);
+        printf("\n");
+
+        // Reposiciona o ponteiro do arquivo para o início novamente
+        rewind(arq_medicos);
+        tem_registro = 0; // Reset para a próxima listagem
+
+        printf("--- Medicos INATIVOS ---\n");
+        if (total_inativos > 0) {
+             exibir_cabecalho_tabela();
+        }
+        while (fread(&medico_lido, sizeof(Medico), 1, arq_medicos))
+        {
+            if (medico_lido.ativo == 0)
+            {
+                printf("%-2d | %-22s | %-13s | %s\n",
+                       medico_lido.id, medico_lido.nome,
+                       medico_lido.cpf, medico_lido.especialidade);
+                tem_registro = 1;
+            }
+        }
+        exibir_mensagem_sem_resultado(tem_registro);
+        fclose(arq_medicos);
+    }
+
+    printf("\n--- Fim do Relatorio ---\n");
+    pressioneEnterParaContinuar();
+}
+
+// Função para exibir o relatório filtrado por especialidade
+void relatorio_por_especialidade(void) {
+    Medico medico_lido;
+    FILE *arq_medicos;
+    char especialidade_filtro[51];
+    int tem_registro = 0;
+
+    exibir_titulo_relatorio("Relatorio por Especialidade");
+
+    printf("Informe a especialidade para filtrar: ");
+    lerString(especialidade_filtro, 50);
+
+    arq_medicos = fopen(MEDICOS_FILE, "rb");
+    if (arq_medicos == NULL)
+    {
+        printf("Nenhum medico cadastrado.\n");
+        pressioneEnterParaContinuar();
+        return;
+    }
+
+    printf("\n--- Medicos com especialidade '%s' ---\n", especialidade_filtro);
+    exibir_cabecalho_tabela();
+
+    while (fread(&medico_lido, sizeof(Medico), 1, arq_medicos))
+    {
+        if (medico_lido.ativo == 1 && strcmp(medico_lido.especialidade, especialidade_filtro) == 0)
+        {
+            printf("%-2d | %-22s | %-13s | %s\n",
+                   medico_lido.id, medico_lido.nome,
+                   medico_lido.cpf, medico_lido.especialidade);
+            tem_registro = 1;
+        }
+    }
+    exibir_mensagem_sem_resultado(tem_registro);
+
+    fclose(arq_medicos);
+    printf("\n--- Fim do Relatorio ---\n");
+    pressioneEnterParaContinuar();
+}
+
+// Função para exibir o relatório filtrado por nome (parcial)
+void relatorio_por_nome(void) {
+    Medico medico_lido;
+    FILE *arq_medicos;
+    char nome_filtro[51];
+    int tem_registro = 0;
+
+    exibir_titulo_relatorio("Relatorio por Nome (Parcial)");
+
+    printf("Informe parte do nome para filtrar: ");
+    lerString(nome_filtro, 50);
+
+    arq_medicos = fopen(MEDICOS_FILE, "rb");
+    if (arq_medicos == NULL)
+    {
+        printf("Nenhum medico cadastrado.\n");
+        pressioneEnterParaContinuar();
+        return;
+    }
+
+    printf("\n--- Medicos com nome contendo '%s' ---\n", nome_filtro);
+    exibir_cabecalho_tabela();
+
+    while (fread(&medico_lido, sizeof(Medico), 1, arq_medicos))
+    {
+        if (medico_lido.ativo == 1 && strstr(medico_lido.nome, nome_filtro) != NULL)
+        {
+            printf("%-2d | %-22s | %-13s | %s\n",
+                   medico_lido.id, medico_lido.nome,
+                   medico_lido.cpf, medico_lido.especialidade);
+            tem_registro = 1;
+        }
+    }
+    exibir_mensagem_sem_resultado(tem_registro);
+
+    fclose(arq_medicos);
+    printf("\n--- Fim do Relatorio ---\n");
+    pressioneEnterParaContinuar();
+}
+
+// Função para exibir o relatório filtrado por status (ativo/inativo)
+void relatorio_por_status(void) {
+    Medico medico_lido;
+    FILE *arq_medicos;
+    int status_filtro;
+    int tem_registro = 0;
+    char status_texto[10];
+
+    exibir_titulo_relatorio("Relatorio por Status");
+
+    do {
+        printf("Deseja filtrar por (1) ATIVOS ou (2) INATIVOS? (1/2): ");
+        char buffer[3];
+        lerString(buffer, 2);
+        status_filtro = validarInteiroPositivo(buffer);
+        if (status_filtro != 1 && status_filtro != 2) {
+            printf("Opcao invalida. Por favor, digite 1 para ATIVO ou 2 para INATIVO.\n");
+        }
+    } while (status_filtro != 1 && status_filtro != 2);
+
+    if (status_filtro == 1) {
+        strcpy(status_texto, "ATIVO");
+    } else {
+        strcpy(status_texto, "INATIVO");
+    }
+
+    arq_medicos = fopen(MEDICOS_FILE, "rb");
+    if (arq_medicos == NULL)
+    {
+        printf("Nenhum medico cadastrado.\n");
+        pressioneEnterParaContinuar();
+        return;
+    }
+
+    printf("\n--- Medicos com status '%s' ---\n", status_texto);
+    exibir_cabecalho_tabela();
+
+    while (fread(&medico_lido, sizeof(Medico), 1, arq_medicos))
+    {
+        if (medico_lido.ativo == status_filtro)
+        {
+            printf("%-2d | %-22s | %-13s | %s\n",
+                   medico_lido.id, medico_lido.nome,
+                   medico_lido.cpf, medico_lido.especialidade);
+            tem_registro = 1;
+        }
+    }
+    exibir_mensagem_sem_resultado(tem_registro);
+
+    fclose(arq_medicos);
+    printf("\n--- Fim do Relatorio ---\n");
+    pressioneEnterParaContinuar();
+}
+
+
+// Sub-menu para os relatórios
+void submenu_relatorios(void) {
+    int opcao_relatorio;
+    char bufferOpcao[5];
+
+    do
+    {
+        limparTela();
+        printf("----------------------------------------\n");
+        printf("///      Submenu de Relatorios       ///\n");
+        printf("----------------------------------------\n");
+        printf("1. Relatorio Completo (Ativos e Inativos)\n");
+        printf("2. Relatorio por Especialidade\n");
+        printf("3. Relatorio por Nome (Parcial)\n");
+        printf("4. Relatorio por Status (Ativo/Inativo)\n");
+        printf("0. Voltar ao menu principal de medicos\n");
+        printf("----------------------------------------\n");
+
+        // Leitura segura de Opção
+        do
+        {
+            printf(">>> Escolha a opcao: ");
+            lerString(bufferOpcao, 5);
+            char *endptr;
+            opcao_relatorio = strtol(bufferOpcao, &endptr, 10);
+            if (endptr == bufferOpcao || *endptr != '\0')
+            {
+                opcao_relatorio = -1;
+            }
+        } while (!validarOpcaoMenu(opcao_relatorio, 0, 4));
+
+        switch (opcao_relatorio)
+        {
+        case 1:
+            relatorio_completo();
+            break;
+        case 2:
+            relatorio_por_especialidade();
+            break;
+        case 3:
+            relatorio_por_nome();
+            break;
+        case 4:
+            relatorio_por_status();
+            break;
+        case 0:
+            break;
+        }
+    } while (opcao_relatorio != 0);
+}
+
 // -------
 // MENU  |
 // -------
@@ -414,6 +709,8 @@ void modulo_medicos(void)
         printf("3. Alterar Medico\n");
         printf("4. Excluir Medico\n");
         printf("5. Listar Medicos\n");
+        // Substitui a antiga opção de relatório por uma nova que chama o submenu
+        printf("6. Relatorios\n");
         printf("0. Voltar ao menu principal\n");
         printf("----------------------------------------\n");
 
@@ -428,7 +725,7 @@ void modulo_medicos(void)
             {
                 opcao = -1;
             }
-        } while (!validarOpcaoMenu(opcao, 0, 5));
+        } while (!validarOpcaoMenu(opcao, 0, 6));
 
         switch (opcao)
         {
@@ -447,9 +744,12 @@ void modulo_medicos(void)
         case 5:
             listar_medicos();
             break;
+        // Chama o submenu de relatórios
+        case 6:
+            submenu_relatorios();
+            break;
         case 0:
             break;
-            // Default não é mais necessário
         }
     } while (opcao != 0);
 }

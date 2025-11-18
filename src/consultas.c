@@ -103,16 +103,8 @@ void pesquisar_consulta(void)
     printf("///       Pesquisar Consulta         ///\n");
     printf("----------------------------------------\n");
 
-    // Validação do CPF
-    do
-    {
-        printf("Informe o CPF do paciente: ");
-        lerString(cpf_pesquisa, 15);
-        if (!validarCPF(cpf_pesquisa))
-        {
-            printf("! Formato de CPF invalido. Tente novamente.\n");
-        }
-    } while (!validarCPF(cpf_pesquisa));
+    printf("Informe o CPF do paciente: ");
+    lerString(cpf_pesquisa, 15);
 
     arq_consultas = fopen(CONSULTAS_FILE, "rb");
     if (arq_consultas == NULL)
@@ -161,12 +153,8 @@ void alterar_consulta(void)
     printf("///       Alterar Consulta           ///\n");
     printf("----------------------------------------\n");
 
-    // Validação do CPF
-    do
-    {
-        printf("Informe o CPF do paciente: ");
-        lerString(cpf_busca, 15);
-    } while (!validarCPF(cpf_busca));
+    printf("Informe o CPF do paciente: ");
+    lerString(cpf_busca, 15);
 
     // Validação da Data
     do
@@ -241,13 +229,8 @@ void excluir_consulta(void)
     printf("///   Cancelar/Excluir Consulta    ///\n");
     printf("----------------------------------------\n");
 
-    // Validação do CPF
-    do
-    {
-        printf("Informe o CPF do paciente: ");
-        lerString(cpf_busca, 15);
-    } while (!validarCPF(cpf_busca));
-
+    printf("Informe o CPF do paciente: ");
+    lerString(cpf_busca, 15);
     // Validação da Data
     do
     {

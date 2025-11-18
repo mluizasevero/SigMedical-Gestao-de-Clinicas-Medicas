@@ -17,6 +17,15 @@ void pesquisar_medico(void);
 void alterar_medico(void);
 void excluir_medico(void);
 void listar_medicos(void);
+// Removendo a declaração antiga, pois o submenu é a nova entrada
+// void relatorio_medicos(void); 
+
+// Funções de relatório específicas
+void submenu_relatorios(void);
+void relatorio_completo(void);
+void relatorio_por_especialidade(void);
+void relatorio_por_nome(void);
+void relatorio_por_status(void);
 
 // Função auxiliar (Para uso interno)
 int medico_existe(const char *cpf, int id_a_ignorar);
