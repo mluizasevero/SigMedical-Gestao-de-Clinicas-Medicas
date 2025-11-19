@@ -57,9 +57,10 @@ void cadastrar_medico(void)
     int id_temp;
 
     limparTela();
-    printf("---------------------------------------\n");
-    printf("///      Cadastrar Novo Medico      ///\n");
-    printf("---------------------------------------\n");
+    printf("╔══════════════════════════════════════╗\n");
+    printf("║      Cadastrar Novo Medico           ║\n");
+    printf("╚══════════════════════════════════════╝\n");
+
 
     // Validação de ID único e positivo
     do
@@ -144,9 +145,9 @@ void pesquisar_medico(void)
     FILE *arq_medicos;
 
     limparTela();
-    printf("----------------------------------------\n");
-    printf("///     Pesquisar Medico por CPF     ///\n");
-    printf("----------------------------------------\n");
+    printf("╔════════════════════════════════════════╗\n");
+    printf("║     Pesquisar Medico por CPF           ║\n");
+    printf("╚════════════════════════════════════════╝\n");
 
     printf("Informe o CPF do medico a ser pesquisado: ");
     lerString(cpf_busca, 15);
@@ -196,9 +197,10 @@ void alterar_medico(void)
     char buffer[51];
 
     limparTela();
-    printf("---------------------------------------\n");
-    printf("///     Alterar Dados de Medico     ///\n");
-    printf("---------------------------------------\n");
+    printf("╔══════════════════════════════════════╗\n");
+    printf("║     Alterar Dados de Medico          ║\n");
+    printf("╚══════════════════════════════════════╝\n");
+
 
     // Validação do CPF de busca
     do
@@ -302,9 +304,10 @@ void excluir_medico(void)
     long int pos;
 
     limparTela();
-    printf("----------------------------------------\n");
-    printf("///          Excluir Medico          ///\n");
-    printf("----------------------------------------\n");
+    printf("╔════════════════════════════════════════╗\n");
+    printf("║          Excluir Medico                ║\n");
+    printf("╚════════════════════════════════════════╝\n");
+
 
     // Validação do CPF de busca
     do
@@ -356,9 +359,9 @@ void listar_medicos(void)
     int tem_medico = 0;
 
     limparTela();
-    printf("---------------------------------------\n");
-    printf("///       Listagem de Medicos       ///\n");
-    printf("---------------------------------------\n");
+    printf("╔══════════════════════════════════════╗\n");
+    printf("║       Listagem de Medicos            ║\n");
+    printf("╚══════════════════════════════════════╝\n");
 
     arq_medicos = fopen(MEDICOS_FILE, "rb");
     if (arq_medicos == NULL)
@@ -368,14 +371,16 @@ void listar_medicos(void)
         return;
     }
 
-    printf("ID | Nome do Medico         | CPF           | Especialidade\n");
-    printf("---|------------------------|---------------|------------------\n");
+    printf("╔════════════════════════════════════════════════════════════╗\n");
+    printf("║ ID ║ Nome do Medico        ║ CPF           ║ Especialidade ║\n");
+    printf("╠════════════════════════════════════════════════════════════╣\n");
+
 
     while (fread(&medico_lido, sizeof(Medico), 1, arq_medicos))
     {
         if (medico_lido.ativo == 1)
         {
-            printf("%-2d | %-22s | %-13s | %s\n",
+            printf("║ %-2d ║ %-22s║ %-11s║ %s\n",
                    medico_lido.id, medico_lido.nome,
                    medico_lido.cpf, medico_lido.especialidade);
             tem_medico = 1;
@@ -701,18 +706,16 @@ void modulo_medicos(void)
     do
     {
         limparTela();
-        printf("----------------------------------------\n");
-        printf("///         Modulo de Medicos        ///\n");
-        printf("----------------------------------------\n");
-        printf("1. Cadastrar Medico\n");
-        printf("2. Pesquisar Medico\n");
-        printf("3. Alterar Medico\n");
-        printf("4. Excluir Medico\n");
-        printf("5. Listar Medicos\n");
-        // Substitui a antiga opção de relatório por uma nova que chama o submenu
-        printf("6. Relatorios\n");
-        printf("0. Voltar ao menu principal\n");
-        printf("----------------------------------------\n");
+        printf("╔════════════════════════════════════════╗\n");
+        printf("║         Modulo de Medicos              ║\n");
+        printf("╠════════════════════════════════════════╣\n");
+        printf("║ 1. Cadastrar Medico                    ║\n");
+        printf("║ 2. Pesquisar Medico                    ║\n");
+        printf("║ 3. Alterar Medico                      ║\n");
+        printf("║ 4. Excluir Medico                      ║\n");
+        printf("║ 5. Listar Medicos                      ║\n");
+        printf("║ 0. Voltar ao menu principal            ║\n");
+        printf("╚════════════════════════════════════════╝\n");
 
         // Leitura segura de Opção
         do

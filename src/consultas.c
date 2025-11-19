@@ -17,9 +17,9 @@ void agendar_consulta(void)
     char buffer[51];
 
     limparTela();
-    printf("-----------------------------------------\n");
-    printf("///       Agendar Nova Consulta       ///\n");
-    printf("-----------------------------------------\n");
+    printf("╔════════════════════════════════════════╗\n");
+    printf("║         Agendar Nova Consulta          ║\n");
+    printf("╚════════════════════════════════════════╝\n");
 
     // Loop de validação para Nome do Paciente
     do
@@ -99,9 +99,9 @@ void pesquisar_consulta(void)
     FILE *arq_consultas;
 
     limparTela();
-    printf("----------------------------------------\n");
-    printf("///       Pesquisar Consulta         ///\n");
-    printf("----------------------------------------\n");
+    printf("╔════════════════════════════════════════╗\n");
+    printf("║         Pesquisar Consulta             ║\n");
+    printf("╚════════════════════════════════════════╝\n");
 
     printf("Informe o CPF do paciente: ");
     lerString(cpf_pesquisa, 15);
@@ -119,11 +119,13 @@ void pesquisar_consulta(void)
     {
         if (strcmp(consulta_lida.cpf_paciente, cpf_pesquisa) == 0 && consulta_lida.ativo == 1)
         {
-            printf("Paciente: %s\n", consulta_lida.nome_paciente);
-            printf("Data: %s | Hora: %s\n", consulta_lida.data, consulta_lida.hora);
-            printf("Medico: %s (%s)\n", consulta_lida.nome_medico, consulta_lida.especialidade);
-            printf("Status: %s\n", consulta_lida.status);
-            printf("----------------------------------------\n");
+           printf("╔════════════════════════════════════════╗\n");
+           printf("║ Paciente: %-33s ║\n", consulta_lida.nome_paciente);
+           printf("║ Data: %-10s | Hora: %-8s       ║\n", consulta_lida.data, consulta_lida.hora);
+           printf("║ Médico: %-25s (%-10s) ║\n", consulta_lida.nome_medico, consulta_lida.especialidade);
+           printf("║ Status: %-33s ║\n", consulta_lida.status);
+           printf("╚════════════════════════════════════════╝\n");
+
             encontrado = 1;
         }
     }
@@ -149,9 +151,9 @@ void alterar_consulta(void)
     char buffer[51];
 
     limparTela();
-    printf("----------------------------------------\n");
-    printf("///       Alterar Consulta           ///\n");
-    printf("----------------------------------------\n");
+    printf("╔════════════════════════════════════════╗\n");
+    printf("║          Alterar Consulta              ║\n");
+    printf("╚════════════════════════════════════════╝\n");
 
     printf("Informe o CPF do paciente: ");
     lerString(cpf_busca, 15);
@@ -225,9 +227,9 @@ void excluir_consulta(void)
     long int pos;
 
     limparTela();
-    printf("----------------------------------------\n");
-    printf("///   Cancelar/Excluir Consulta    ///\n");
-    printf("----------------------------------------\n");
+    printf("╔════════════════════════════════════════╗\n");
+    printf("║      Cancelar/Excluir Consulta         ║\n");
+    printf("╚════════════════════════════════════════╝\n");
 
     printf("Informe o CPF do paciente: ");
     lerString(cpf_busca, 15);
@@ -309,9 +311,9 @@ void confirmar_presenca(void)
     long int pos;
 
     limparTela();
-    printf("----------------------------------------\n");
-    printf("///     Confirmar Presenca           ///\n");
-    printf("----------------------------------------\n");
+    printf("╔════════════════════════════════════════╗\n");
+    printf("║        Confirmar Presença              ║\n");
+    printf("╚════════════════════════════════════════╝\n");
 
     // Validação do CPF
     do
@@ -372,9 +374,9 @@ void relatorio_consultas_medico(void)
     FILE *arq_consultas;
 
     limparTela();
-    printf("----------------------------------------\n");
-    printf("///     Consultas por Medico         ///\n");
-    printf("----------------------------------------\n");
+    printf("╔════════════════════════════════════════╗\n");
+    printf("║        Consultas por Médico            ║\n");
+    printf("╚════════════════════════════════════════╝\n");
 
     // Validação do nome
     do
@@ -424,9 +426,9 @@ void relatorio_consultas_por_periodo(void)
     long data_inicio_int, data_fim_int, data_consulta_int;
 
     limparTela();
-    printf("----------------------------------------\n");
-    printf("///     Consultas por Periodo        ///\n");
-    printf("----------------------------------------\n");
+    printf("╔════════════════════════════════════════╗\n");
+    printf("║        Consultas por Período           ║\n");
+    printf("╚════════════════════════════════════════╝\n");
 
     // Validação das datas
     do
@@ -472,11 +474,12 @@ void relatorio_consultas_por_periodo(void)
 
             if (data_consulta_int >= data_inicio_int && data_consulta_int <= data_fim_int)
             {
-                printf("----------------------------------------\n");
-                printf("Paciente: %s\n", consulta_lida.nome_paciente);
-                printf("Data: %s | Hora: %s\n", consulta_lida.data, consulta_lida.hora);
-                printf("Medico: %s\n", consulta_lida.nome_medico);
-                printf("Status: %s\n", consulta_lida.status);
+                printf("╔════════════════════════════════════════╗\n");
+                printf("║ Paciente: %-33s ║\n", consulta_lida.nome_paciente);
+                printf("║ Data: %-10s | Hora: %-8s       ║\n", consulta_lida.data, consulta_lida.hora);
+                printf("║ Médico: %-33s ║\n", consulta_lida.nome_medico);
+                printf("║ Status: %-33s ║\n", consulta_lida.status);
+                printf("╚════════════════════════════════════════╝\n");
                 encontrado = 1;
             }
         }
@@ -502,14 +505,14 @@ void gerenciar_agendamentos(void)
     do
     {
         limparTela();
-        printf("----------------------------------------\n");
-        printf("///   Gerenciar Agendamentos       ///\n");
-        printf("----------------------------------------\n");
-        printf("1. Alterar Data/Hora da Consulta\n");
-        printf("2. Cancelar/Excluir Consulta\n");
-        printf("3. Confirmar Presenca (Concluir)\n");
-        printf("0. Voltar\n");
-        printf("----------------------------------------\n");
+        printf("╔════════════════════════════════════════╗\n");
+        printf("║       Gerenciar Agendamentos           ║\n");
+        printf("╠════════════════════════════════════════╣\n");
+        printf("║ 1. Alterar Data/Hora da Consulta       ║\n");
+        printf("║ 2. Cancelar/Excluir Consulta           ║\n");
+        printf("║ 3. Confirmar Presença (Concluir)       ║\n");
+        printf("║ 0. Voltar                              ║\n");
+        printf("╚════════════════════════════════════════╝\n");
 
         // Leitura de menu segura
         do
@@ -550,15 +553,16 @@ void gerar_relatorios_consultas(void)
     do
     {
         limparTela();
-        printf("----------------------------------------\n");
-        printf("///     Gerar Relatorios           ///\n");
-        printf("----------------------------------------\n");
-        printf("1. Consultas por Medico\n");
-        printf("2. Consultas por Periodo\n");
-        printf("3. Consultas Agendadas\n");
-        printf("4. Consultas Canceladas\n");
-        printf("0. Voltar\n");
-        printf("----------------------------------------\n");
+        printf("╔════════════════════════════════════════╗\n");
+        printf("║           Gerar Relatórios             ║\n");
+        printf("╠════════════════════════════════════════╣\n");
+        printf("║ 1. Consultas por Médico                ║\n");
+        printf("║ 2. Consultas por Período               ║\n");
+        printf("║ 3. Consultas Agendadas                 ║\n");
+        printf("║ 4. Consultas Canceladas                ║\n");
+        printf("║ 0. Voltar                              ║\n");
+        printf("╚════════════════════════════════════════╝\n");
+
 
         // Leitura de menu segura
         do
@@ -603,15 +607,16 @@ void modulo_consultas(void)
     do
     {
         limparTela();
-        printf("----------------------------------------\n");
-        printf("///       Modulo de Consultas        ///\n");
-        printf("----------------------------------------\n");
-        printf("1. Agendar Consulta\n");
-        printf("2. Pesquisar Consultas do Paciente\n");
-        printf("3. Gerenciar Agendamentos\n");
-        printf("4. Gerar Relatorios\n");
-        printf("0. Voltar ao menu principal\n");
-        printf("----------------------------------------\n");
+        printf("╔════════════════════════════════════════╗\n");
+        printf("║           Módulo de Consultas          ║\n");
+        printf("╠════════════════════════════════════════╣\n");
+        printf("║ 1. Agendar Consulta                    ║\n");
+        printf("║ 2. Pesquisar Consultas do Paciente     ║\n");
+        printf("║ 3. Gerenciar Agendamentos              ║\n");
+        printf("║ 4. Gerar Relatórios                    ║\n");
+        printf("║ 0. Voltar ao menu principal            ║\n");
+        printf("╚════════════════════════════════════════╝\n");
+
 
         // Leitura de menu segura
         do

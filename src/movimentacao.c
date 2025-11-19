@@ -44,10 +44,11 @@ void exibir_historico_movimentacoes(void)
     FILE *arq_movimentacoes;
 
     limparTela();
-    printf("----------------------------------------\n");
-    printf("///    Historico de Movimentacoes    ///\n");
-    printf("----------------------------------------\n");
+    printf("╔════════════════════════════════════════╗\n");
+    printf("║    Historico de Movimentacoes          ║\n");
+    printf("╚════════════════════════════════════════╝\n");
 
+   
     arq_movimentacoes = fopen(MOVIMENTACOES_FILE, "rb");
     if (arq_movimentacoes == NULL)
     {
@@ -56,8 +57,10 @@ void exibir_historico_movimentacoes(void)
         return;
     }
 
-    printf("ID Produto | Tipo       | Quantidade | Data\n");
-    printf("-----------|------------|------------|------------\n");
+    printf("╔════════════════════════════════════════════════════════╗\n");
+    printf("║ ID Produto ║ Tipo       ║ Quantidade ║ Data            ║\n");
+    printf("╠════════════════════════════════════════════════════════╣\n");
+
 
     while (fread(&mov_lida, sizeof(Movimentacao), 1, arq_movimentacoes))
     {

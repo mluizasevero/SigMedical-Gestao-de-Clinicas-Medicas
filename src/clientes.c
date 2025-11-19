@@ -58,9 +58,10 @@ void cadastrar_cliente(void)
     char buffer[51]; // 50 + 1 para o \0
 
     limparTela();
-    printf("----------------------------------------\n");
-    printf("///     Cadastrar Novo Cliente       ///\n");
-    printf("----------------------------------------\n");
+    printf("╔════════════════════════════════════════╗\n");
+    printf("║      Cadastrar Novo Cliente            ║\n");
+    printf("╚════════════════════════════════════════╝\n");
+
 
     // Loop de validação para CPF
     do
@@ -133,9 +134,10 @@ void pesquisar_cliente(void)
     FILE *arq_clientes;
 
     limparTela();
-    printf("----------------------------------------\n");
-    printf("///       Pesquisar Cliente          ///\n");
-    printf("----------------------------------------\n");
+    printf("╔════════════════════════════════════════╗\n");
+    printf("║           Pesquisar Cliente            ║\n");
+    printf("╚════════════════════════════════════════╝\n");
+
 
     // Validação do CPF de pesquisa (opcional, mas bom)
     printf("Informe o CPF do cliente para pesquisa: ");
@@ -189,9 +191,10 @@ void alterar_cliente(void)
     char buffer[51];
 
     limparTela();
-    printf("----------------------------------------\n");
-    printf("///     Alterar Dados do Cliente     ///\n");
-    printf("----------------------------------------\n");
+    printf("╔════════════════════════════════════════╗\n");
+    printf("║        Alterar Dados do Cliente        ║\n");
+    printf("╚════════════════════════════════════════╝\n");
+
 
     // Validação do CPF de alteração
     printf("Informe o CPF do cliente que deseja alterar: ");
@@ -269,9 +272,10 @@ void excluir_cliente(void)
     long int pos;
 
     limparTela();
-    printf("----------------------------------------\n");
-    printf("///         Excluir Cliente          ///\n");
-    printf("----------------------------------------\n");
+    printf("╔════════════════════════════════════════╗\n");
+    printf("║             Excluir Cliente            ║\n");
+    printf("╚════════════════════════════════════════╝\n");
+
 
     printf("Informe o CPF do cliente que deseja excluir: ");
     lerString(cpf_exclusao, 15);
@@ -320,9 +324,10 @@ void listar_clientes(void)
     int nenhum_cliente = 1;
 
     limparTela();
-    printf("----------------------------------------\n");
-    printf("///       Listagem de Clientes       ///\n");
-    printf("----------------------------------------\n");
+    printf("╔════════════════════════════════════════╗\n");
+    printf("║          Listagem de Clientes          ║\n");
+    printf("╚════════════════════════════════════════╝\n");
+
 
     arq_clientes = fopen(CLIENTES_FILE, "rb");
     if (arq_clientes == NULL)
@@ -336,11 +341,12 @@ void listar_clientes(void)
     {
         if (cliente_lido.ativo == 1)
         {
-            printf("Nome: %s\n", cliente_lido.nome);
-            printf("CPF: %s\n", cliente_lido.cpf);
-            printf("Telefone: %s\n", cliente_lido.telefone);
-            printf("Email: %s\n", cliente_lido.email);
-            printf("----------------------------------------\n");
+            printf("╔════════════════════════════════════════╗\n");
+            printf("║ Nome: %s                               ║\n", cliente_lido.nome);
+            printf("║ CPF: %s                                ║\n", cliente_lido.cpf);
+            printf("║ Telefone: %s                           ║\n", cliente_lido.telefone);
+            printf("║ Email: %s                              ║\n", cliente_lido.email);
+            printf("╚════════════════════════════════════════╝\n");
             nenhum_cliente = 0;
         }
     }
@@ -606,18 +612,16 @@ void modulo_clientes(void)
     do
     {
         limparTela();
-        printf("----------------------------------------\n");
-        printf("///       Modulo de Clientes         ///\n");
-        printf("----------------------------------------\n");
-        printf("1. Cadastrar Cliente\n");
-        printf("2. Pesquisar Cliente\n");
-        printf("3. Alterar Cliente\n");
-        printf("4. Excluir Cliente\n");
-        printf("5. Listar Clientes\n");
-        // Adicionando a opção para relatórios
-        printf("6. Relatorios\n");
-        printf("0. Voltar ao menu principal\n");
-        printf("----------------------------------------\n");
+        printf("╔════════════════════════════════════════╗\n");
+        printf("║           Modulo de Clientes           ║\n");
+        printf("╠════════════════════════════════════════╣\n");
+        printf("║ 1. Cadastrar Cliente                   ║\n");
+        printf("║ 2. Pesquisar Cliente                   ║\n");
+        printf("║ 3. Alterar Cliente                     ║\n");
+        printf("║ 4. Excluir Cliente                     ║\n");
+        printf("║ 5. Listar Clientes                     ║\n");
+        printf("║ 0. Voltar ao menu principal            ║\n");
+        printf("╚════════════════════════════════════════╝\n");
 
         // Leitura e validação da opção de menu
         do
