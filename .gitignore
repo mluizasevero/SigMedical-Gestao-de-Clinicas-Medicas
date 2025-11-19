@@ -1,7 +1,5 @@
-# Prerequisites
+# Pre-requisites
 *.d
-*.dat
-/data
 sig*
 .vscode
 

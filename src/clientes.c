@@ -31,7 +31,24 @@ int verifica_cpf_cliente_cadastrado(const char *cpf)
     return 0; // Não encontrou
 }
 
-// ele salva um único cliente no final do arquivo binário
+// Função auxiliar para exibir um título de seção
+void exibir_titulo_relatorio_cliente(const char* titulo) {
+    limparTela();
+    printf("----------------------------------------\n");
+    printf("///    %s    ///\n", titulo);
+    printf("----------------------------------------\n");
+}
+
+// Função auxiliar para exibir mensagem se não houver resultados
+void exibir_mensagem_sem_resultado_cliente(int tem_registro) {
+    if (!tem_registro) {
+        printf("Nenhum registro encontrado.\n");
+    }
+}
+
+// ----------
+// CADASTRO |
+// ----------
 void cadastrar_cliente(void)
 {
     Cliente novo_cliente;
@@ -106,7 +123,9 @@ void cadastrar_cliente(void)
     pressioneEnterParaContinuar();
 }
 
-// lê o arquivo de forma sequencial para encontrar um cliente
+// -----------
+// PESQUISA  |
+// -----------
 void pesquisar_cliente(void)
 {
     char cpf_pesquisa[15];
@@ -121,15 +140,8 @@ void pesquisar_cliente(void)
 
 
     // Validação do CPF de pesquisa (opcional, mas bom)
-    do
-    {
-        printf("Informe o CPF do cliente para pesquisa: ");
-        lerString(cpf_pesquisa, 15);
-        if (!validarCPF(cpf_pesquisa))
-        {
-            printf("! Formato de CPF invalido. Tente novamente.\n");
-        }
-    } while (!validarCPF(cpf_pesquisa));
+    printf("Informe o CPF do cliente para pesquisa: ");
+    lerString(cpf_pesquisa, 15);
 
     // abre o arquivo em read binary
     arq_clientes = fopen(CLIENTES_FILE, "rb");
@@ -164,7 +176,9 @@ void pesquisar_cliente(void)
     pressioneEnterParaContinuar();
 }
 
-// encontra e altera um registro no arquivo.
+// ------------
+// ALTERAÇÃO  |
+// ------------
 void alterar_cliente(void)
 {
     char cpf_alteracao[15];
@@ -183,15 +197,8 @@ void alterar_cliente(void)
 
 
     // Validação do CPF de alteração
-    do
-    {
-        printf("Informe o CPF do cliente que deseja alterar: ");
-        lerString(cpf_alteracao, 15);
-        if (!validarCPF(cpf_alteracao))
-        {
-            printf("! Formato de CPF invalido. Tente novamente.\n");
-        }
-    } while (!validarCPF(cpf_alteracao));
+    printf("Informe o CPF do cliente que deseja alterar: ");
+    lerString(cpf_alteracao, 15);
 
     // abre leitura e escrita binária
     arq_clientes = fopen(CLIENTES_FILE, "r+b");
@@ -253,7 +260,9 @@ void alterar_cliente(void)
     pressioneEnterParaContinuar();
 }
 
-// encontra e marca um registro como inativo
+// -----------
+// EXCLUSÃO  |
+// ------------
 void excluir_cliente(void)
 {
     char cpf_exclusao[15];
@@ -268,16 +277,8 @@ void excluir_cliente(void)
     printf("╚════════════════════════════════════════╝\n");
 
 
-    // Validação do CPF de exclusão
-    do
-    {
-        printf("Informe o CPF do cliente que deseja excluir: ");
-        lerString(cpf_exclusao, 15);
-        if (!validarCPF(cpf_exclusao))
-        {
-            printf("! Formato de CPF invalido. Tente novamente.\n");
-        }
-    } while (!validarCPF(cpf_exclusao));
+    printf("Informe o CPF do cliente que deseja excluir: ");
+    lerString(cpf_exclusao, 15);
 
     arq_clientes = fopen(CLIENTES_FILE, "r+b");
     if (arq_clientes == NULL)
@@ -313,7 +314,9 @@ void excluir_cliente(void)
     pressioneEnterParaContinuar();
 }
 
-// mostra todos os clientes ativos no arquivo.
+// ---------------------------------------
+// LISTAGEM (Não requer input do usuário) |
+// ---------------------------------------
 void listar_clientes(void)
 {
     FILE *arq_clientes;
@@ -356,7 +359,248 @@ void listar_clientes(void)
     pressioneEnterParaContinuar();
 }
 
-// Módulo principal
+// ---------------------------------------
+// RELATÓRIOS                            |
+// ---------------------------------------
+
+// Função para exibir o relatório completo de clientes ativos e inativos
+void relatorio_completo_clientes(void) {
+    Cliente cliente_lido;
+    FILE *arq_clientes;
+    int total_ativos = 0;
+    int total_inativos = 0;
+    int total_geral = 0;
+    int tem_registro = 0;
+
+    exibir_titulo_relatorio_cliente("Relatorio Completo de Clientes");
+
+    arq_clientes = fopen(CLIENTES_FILE, "rb");
+    if (arq_clientes == NULL)
+    {
+        printf("Nenhum cliente cadastrado.\n");
+        pressioneEnterParaContinuar();
+        return;
+    }
+
+    // Primeira passagem para contagem
+    while (fread(&cliente_lido, sizeof(Cliente), 1, arq_clientes))
+    {
+        if (cliente_lido.ativo == 1)
+        {
+            total_ativos++;
+        }
+        else
+        {
+            total_inativos++;
+        }
+        total_geral++;
+    }
+    fclose(arq_clientes);
+
+    // Impressão das estatísticas
+    printf("\n--- Estatisticas Gerais ---\n");
+    printf("Total de clientes cadastrados: %d\n", total_geral);
+    printf("Total de clientes ATIVOS:      %d\n", total_ativos);
+    printf("Total de clientes INATIVOS:    %d\n", total_inativos);
+    printf("---------------------------\n\n");
+
+    // Segunda passagem para listagem detalhada de ativos
+    arq_clientes = fopen(CLIENTES_FILE, "rb");
+    if (arq_clientes != NULL)
+    {
+        printf("--- Clientes ATIVOS ---\n");
+        if (total_ativos > 0) {
+            printf("Nome do Cliente          | CPF           | Telefone      | Email\n");
+            printf("-------------------------|---------------|---------------|------------------\n");
+        }
+        while (fread(&cliente_lido, sizeof(Cliente), 1, arq_clientes))
+        {
+            if (cliente_lido.ativo == 1)
+            {
+                printf("%-22s | %-13s | %-13s | %s\n",
+                       cliente_lido.nome, cliente_lido.cpf,
+                       cliente_lido.telefone, cliente_lido.email);
+                tem_registro = 1;
+            }
+        }
+        exibir_mensagem_sem_resultado_cliente(tem_registro);
+        printf("\n");
+
+        // Reposiciona o ponteiro do arquivo para o início novamente
+        rewind(arq_clientes);
+        tem_registro = 0; // Reset para a próxima listagem
+
+        printf("--- Clientes INATIVOS ---\n");
+        if (total_inativos > 0) {
+            printf("Nome do Cliente          | CPF           | Telefone      | Email\n");
+            printf("-------------------------|---------------|---------------|------------------\n");
+        }
+        while (fread(&cliente_lido, sizeof(Cliente), 1, arq_clientes))
+        {
+            if (cliente_lido.ativo == 0)
+            {
+                printf("%-22s | %-13s | %-13s | %s\n",
+                       cliente_lido.nome, cliente_lido.cpf,
+                       cliente_lido.telefone, cliente_lido.email);
+                tem_registro = 1;
+            }
+        }
+        exibir_mensagem_sem_resultado_cliente(tem_registro);
+        fclose(arq_clientes);
+    }
+
+    printf("\n--- Fim do Relatorio ---\n");
+    pressioneEnterParaContinuar();
+}
+
+// Função para exibir o relatório filtrado por nome (parcial)
+void relatorio_por_nome_cliente(void) {
+    Cliente cliente_lido;
+    FILE *arq_clientes;
+    char nome_filtro[51];
+    int tem_registro = 0;
+
+    exibir_titulo_relatorio_cliente("Relatorio por Nome (Parcial)");
+
+    printf("Informe parte do nome para filtrar: ");
+    lerString(nome_filtro, 50);
+
+    arq_clientes = fopen(CLIENTES_FILE, "rb");
+    if (arq_clientes == NULL)
+    {
+        printf("Nenhum cliente cadastrado.\n");
+        pressioneEnterParaContinuar();
+        return;
+    }
+
+    printf("\n--- Clientes com nome contendo '%s' ---\n", nome_filtro);
+    printf("Nome do Cliente          | CPF           | Telefone      | Email\n");
+    printf("-------------------------|---------------|---------------|------------------\n");
+
+    while (fread(&cliente_lido, sizeof(Cliente), 1, arq_clientes))
+    {
+        if (cliente_lido.ativo == 1 && strstr(cliente_lido.nome, nome_filtro) != NULL)
+        {
+            printf("%-22s | %-13s | %-13s | %s\n",
+                   cliente_lido.nome, cliente_lido.cpf,
+                   cliente_lido.telefone, cliente_lido.email);
+            tem_registro = 1;
+        }
+    }
+    exibir_mensagem_sem_resultado_cliente(tem_registro);
+
+    fclose(arq_clientes);
+    printf("\n--- Fim do Relatorio ---\n");
+    pressioneEnterParaContinuar();
+}
+
+// Função para exibir o relatório filtrado por status (ativo/inativo)
+void relatorio_por_status_cliente(void) {
+    Cliente cliente_lido;
+    FILE *arq_clientes;
+    int status_filtro;
+    int tem_registro = 0;
+    char status_texto[10];
+
+    exibir_titulo_relatorio_cliente("Relatorio por Status");
+
+    do {
+        printf("Deseja filtrar por (1) ATIVOS ou (2) INATIVOS? (1/2): ");
+        char buffer[3];
+        lerString(buffer, 2);
+        status_filtro = validarInteiroPositivo(buffer);
+        if (status_filtro != 2 && status_filtro != 1) {
+            printf("Opcao invalida. Por favor, digite 1 para ATIVO ou 2 para INATIVO.\n");
+        }
+    } while (status_filtro != 2 && status_filtro != 1);
+
+    if (status_filtro == 1) {
+        strcpy(status_texto, "ATIVO");
+    } else {
+        strcpy(status_texto, "INATIVO");
+    }
+
+    arq_clientes = fopen(CLIENTES_FILE, "rb");
+    if (arq_clientes == NULL)
+    {
+        printf("Nenhum cliente cadastrado.\n");
+        pressioneEnterParaContinuar();
+        return;
+    }
+
+    printf("\n--- Clientes com status '%s' ---\n", status_texto);
+    printf("Nome do Cliente          | CPF           | Telefone      | Email\n");
+    printf("-------------------------|---------------|---------------|------------------\n");
+
+    while (fread(&cliente_lido, sizeof(Cliente), 1, arq_clientes))
+    {
+        if (cliente_lido.ativo == status_filtro)
+        {
+            printf("%-22s | %-13s | %-13s | %s\n",
+                   cliente_lido.nome, cliente_lido.cpf,
+                   cliente_lido.telefone, cliente_lido.email);
+            tem_registro = 1;
+        }
+    }
+    exibir_mensagem_sem_resultado_cliente(tem_registro);
+
+    fclose(arq_clientes);
+    printf("\n--- Fim do Relatorio ---\n");
+    pressioneEnterParaContinuar();
+}
+
+
+// Sub-menu para os relatórios de clientes
+void submenu_relatorios_clientes(void) {
+    int opcao_relatorio;
+    char bufferOpcao[5];
+
+    do
+    {
+        limparTela();
+        printf("----------------------------------------\n");
+        printf("///      Submenu de Relatorios       ///\n");
+        printf("----------------------------------------\n");
+        printf("1. Relatorio Completo (Ativos e Inativos)\n");
+        printf("2. Relatorio por Nome (Parcial)\n");
+        printf("3. Relatorio por Status (Ativo/Inativo)\n");
+        printf("0. Voltar ao menu principal de clientes\n");
+        printf("----------------------------------------\n");
+
+        // Leitura segura de Opção
+        do
+        {
+            printf(">>> Escolha a opcao: ");
+            lerString(bufferOpcao, 5);
+            char *endptr;
+            opcao_relatorio = strtol(bufferOpcao, &endptr, 10);
+            if (endptr == bufferOpcao || *endptr != '\0')
+            {
+                opcao_relatorio = -1;
+            }
+        } while (!validarOpcaoMenu(opcao_relatorio, 0, 3));
+
+        switch (opcao_relatorio)
+        {
+        case 1:
+            relatorio_completo_clientes();
+            break;
+        case 2:
+            relatorio_por_nome_cliente();
+            break;
+        case 3:
+            relatorio_por_status_cliente();
+            break;
+        case 0:
+            break;
+        }
+    } while (opcao_relatorio != 0);
+}
+
+
+// -------
+// MENU  |
+// -------
 void modulo_clientes(void)
 {
     int opcao;
@@ -396,7 +640,7 @@ void modulo_clientes(void)
                 opcao = -1; // Seta uma opção inválida para forçar o erro
             }
 
-        } while (!validarOpcaoMenu(opcao, 0, 5)); // Valida o intervalo
+        } while (!validarOpcaoMenu(opcao, 0, 6)); // Ajustando o valor máximo
 
         switch (opcao)
         {
@@ -414,6 +658,10 @@ void modulo_clientes(void)
             break;
         case 5:
             listar_clientes();
+            break;
+        // Adicionando o case para o submenu de relatórios
+        case 6:
+            submenu_relatorios_clientes();
             break;
         case 0:
             break;
