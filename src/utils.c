@@ -240,6 +240,7 @@ void TelaCadastrarMedicos()
     printf("║  Telefone:                         ║\n");
     printf("║                                    ║\n");
     printf("╚════════════════════════════════════╝\n");
+}
 
 void TelaPesquisarMedicos()
 {
