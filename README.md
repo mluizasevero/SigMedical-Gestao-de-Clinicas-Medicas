@@ -71,15 +71,49 @@ Esse comando usa o `gcc` para compilar e gerar um executável chamado `sig_medic
 1. Baixe ou clone o repositório.
 2. Compile o código C.
 
-# Criado por:
-Thiago Gomes de Oliveira
-thiago.oliveira.712@ufrn.edu.br
+# Desenvolvedores:
 
-Maria Luiza Severo de Lima
-maria.severo.063@ufrn.edu.br
+<div style="display: flex; gap: 20px; align-items: center;">
 
-Marcus Vinicius de Souza Azevedo
-infobasicifrn2017marcusv@gmail.com
+  <div style="text-align: center;">
+    <img src="https://avatars.githubusercontent.com/u/226151666?v=4" width="100" style="border-radius:50%;">
+    <p>
+      Maria Luiza Severo de Lima<br>
+      <a href="mailto:maria.severo.063@ufrn.edu.br">maria.severo.063@ufrn.edu.br</a><br>
+      <a href="https://github.com/mluizasevero" target="_blank">GitHub</a>
+    </p>
+  </div>
+
+  <div style="text-align: center;">
+    <img src="https://avatars.githubusercontent.com/u/226164279?v=4" width="100" style="border-radius:50%;">
+    <p>
+      Thiago Gomes de Oliveira<br>
+      <a href="mailto:thiago.oliveira.712@ufrn.edu.br">thiago.oliveira.712@ufrn.edu.br</a><br>
+      <a href="https://github.com/thiagogomes1805" target="_blank">GitHub</a>
+    </p>
+  </div>
+
+  <div style="text-align: center;">
+    <img src="https://avatars.githubusercontent.com/u/104383688?v=4" width="100" style="border-radius:50%;">
+    <p>
+      Marcus Vinicius de Souza Azevedo<br>
+      <a href="mailto:infobasicifrn2017marcusv@gmail.com">infobasicifrn2017marcusv@gmail.com</a><br>
+      <a href="https://github.com/MViniciusCoffe" target="_blank">GitHub</a>
+    </p>
+  </div>
+
+  <div style="text-align: center;">
+    <img src="https://avatars.githubusercontent.com/u/226083576?s=400&v=4" width="100" style="border-radius:50%;">
+    <p>
+      Luis Felipe Linhares Pereira<br>
+      <a href="mailto:luis.felipe.linhares.701@ufrn.edu.br">luis.felipe.linhares.701@ufrn.edu.br</a><br>
+      <a href="https://github.com/Luisfelipelinhares" target="_blank">GitHub</a>
+    </p>
+  </div>
+
+</div>
+
+
 
 # To do
 1. Cadastrar dados genéricos e commitar o `/data`
