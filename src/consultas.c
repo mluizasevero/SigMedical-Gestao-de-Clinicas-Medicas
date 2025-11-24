@@ -493,6 +493,106 @@ void relatorio_consultas_por_periodo(void)
     pressioneEnterParaContinuar();
 }
 
+void relatorio_consultas_paciente(void)
+{
+    char termo_busca[50];
+    int opcao_filtro;
+    int encontrado = 0;
+    char bufferOpcao[5];
+    Consulta consulta_lida;
+    FILE *arq_consultas;
+
+    limparTela();
+    printf("╔════════════════════════════════════════╗\n");
+    printf("║      Relatório de Consultas Paciente   ║\n");
+    printf("╚════════════════════════════════════════╝\n");
+    printf("Filtrar por:\n");
+    printf("1. Nome do Paciente\n");
+    printf("2. CPF do Paciente\n");
+    
+    // Validação da escolha do filtro
+    do
+    {
+        printf(">>> Escolha a opcao (1 ou 2): ");
+        lerString(bufferOpcao, 5);
+        opcao_filtro = atoi(bufferOpcao);
+    } while (opcao_filtro != 1 && opcao_filtro != 2);
+
+    if (opcao_filtro == 1)
+    {
+        // Busca por Nome
+        do
+        {
+            printf("\nInforme o Nome do paciente: ");
+            lerString(termo_busca, 50);
+        } while (!validarNome(termo_busca));
+        printf("\n--- Consultas encontradas para o NOME: %s ---\n", termo_busca);
+    }
+    else
+    {
+        // Busca por CPF
+        do
+        {
+            printf("\nInforme o CPF do paciente: ");
+            lerString(termo_busca, 15);
+        } while (!validarCPF(termo_busca));
+        printf("\n--- Consultas encontradas para o CPF: %s ---\n", termo_busca);
+    }
+
+    arq_consultas = fopen(CONSULTAS_FILE, "rb");
+    if (arq_consultas == NULL)
+    {
+        printf("\nNenhuma consulta no sistema ou erro ao abrir arquivo.\n");
+        pressioneEnterParaContinuar();
+        return;
+    }
+
+    while (fread(&consulta_lida, sizeof(Consulta), 1, arq_consultas))
+    {
+        // Verifica se está ativo
+        if (consulta_lida.ativo == 1)
+        {
+            int match = 0;
+
+            if (opcao_filtro == 1)
+            {
+                // Compara strings (pode usar strstr para busca parcial se desejar, aqui mantive exata)
+                if (strcmp(consulta_lida.nome_paciente, termo_busca) == 0)
+                {
+                    match = 1;
+                }
+            }
+            else
+            {
+                // Compara CPF
+                if (strcmp(consulta_lida.cpf_paciente, termo_busca) == 0)
+                {
+                    match = 1;
+                }
+            }
+
+            if (match)
+            {
+                printf("╔════════════════════════════════════════╗\n");
+                printf("║ Paciente: %-33s ║\n", consulta_lida.nome_paciente);
+                printf("║ CPF: %-38s ║\n", consulta_lida.cpf_paciente);
+                printf("║ Data: %-10s | Hora: %-8s       ║\n", consulta_lida.data, consulta_lida.hora);
+                printf("║ Médico: %-25s (%-10s) ║\n", consulta_lida.nome_medico, consulta_lida.especialidade);
+                printf("║ Status: %-33s ║\n", consulta_lida.status);
+                printf("╚════════════════════════════════════════╝\n");
+                encontrado = 1;
+            }
+        }
+    }
+    fclose(arq_consultas);
+
+    if (!encontrado)
+    {
+        printf("\nNenhuma consulta encontrada para os dados informados.\n");
+    }
+    pressioneEnterParaContinuar();
+}
+
 // ... (Funções relatorio_consultas_agendadas e relatorio_consultas_canceladas
 //     não recebem input, então não precisam de mudanças, exceto pela
 //     checagem de status em relatorio_consultas_canceladas que está correta) ...
@@ -557,12 +657,12 @@ void gerar_relatorios_consultas(void)
         printf("║           Gerar Relatórios             ║\n");
         printf("╠════════════════════════════════════════╣\n");
         printf("║ 1. Consultas por Médico                ║\n");
-        printf("║ 2. Consultas por Período               ║\n");
-        printf("║ 3. Consultas Agendadas                 ║\n");
-        printf("║ 4. Consultas Canceladas                ║\n");
+        printf("║ 2. Consultas por Paciente (Nome/CPF)   ║\n");
+        printf("║ 3. Consultas por Período               ║\n");
+        printf("║ 4. Consultas Agendadas (Geral)         ║\n");
+        printf("║ 5. Consultas Canceladas (Geral)        ║\n");
         printf("║ 0. Voltar                              ║\n");
         printf("╚════════════════════════════════════════╝\n");
-
 
         // Leitura de menu segura
         do
@@ -575,7 +675,7 @@ void gerar_relatorios_consultas(void)
             {
                 opcao = -1;
             }
-        } while (!validarOpcaoMenu(opcao, 0, 4));
+        } while (!validarOpcaoMenu(opcao, 0, 5));
 
         switch (opcao)
         {
@@ -583,13 +683,20 @@ void gerar_relatorios_consultas(void)
             relatorio_consultas_medico();
             break;
         case 2:
-            relatorio_consultas_por_periodo();
+            relatorio_consultas_paciente(); // Chamada da nova função
             break;
         case 3:
-            // relatorio_consultas_agendadas(); Ainda não implementado
+            relatorio_consultas_por_periodo();
             break;
         case 4:
-            // relatorio_consultas_canceladas(); Ainda não implementado
+            // relatorio_consultas_agendadas(); 
+            printf("\nFuncionalidade em desenvolvimento.\n");
+            pressioneEnterParaContinuar();
+            break;
+        case 5:
+            // relatorio_consultas_canceladas(); 
+            printf("\nFuncionalidade em desenvolvimento.\n");
+            pressioneEnterParaContinuar();
             break;
         case 0:
             break;
