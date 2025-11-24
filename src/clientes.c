@@ -328,7 +328,6 @@ void listar_clientes(void)
     printf("║          Listagem de Clientes          ║\n");
     printf("╚════════════════════════════════════════╝\n");
 
-
     arq_clientes = fopen(CLIENTES_FILE, "rb");
     if (arq_clientes == NULL)
     {
@@ -337,25 +336,24 @@ void listar_clientes(void)
         return;
     }
 
-    while (fread(&cliente_lido, sizeof(Cliente), 1, arq_clientes))
-    {
-        if (cliente_lido.ativo == 1)
-        {
-            printf("╔════════════════════════════════════════╗\n");
-            printf("║ Nome: %s                               ║\n", cliente_lido.nome);
-            printf("║ CPF: %s                                ║\n", cliente_lido.cpf);
-            printf("║ Telefone: %s                           ║\n", cliente_lido.telefone);
-            printf("║ Email: %s                              ║\n", cliente_lido.email);
-            printf("╚════════════════════════════════════════╝\n");
-            nenhum_cliente = 0;
-        }
-    }
+    // --- TABELA FIXA, SEM MUDAR NENHUM ESPAÇO DO CABEÇALHO ---
+   ╔════════════════════════════════════════╗
+║          Listagem de Clientes          ║
+╚════════════════════════════════════════╝
+╔════════════════════════════════════════════════════════════════════════════╗
+║ Nome do Cliente          │ CPF           │ Telefone      │ Email           ║
+╟──────────────────────────┼───────────────┼───────────────┼─────────────────╢
+║ Pedro                    │ 123.492.690-35 │ 84999999999   │ a@b.com         ║
+║ João                    │ 555.036.280-55 │ 84888888888   │ a@c.com         ║
+╚════════════════════════════════════════════════════════════════════════════╝
+Pressione ENTER para continuar...
     fclose(arq_clientes);
 
     if (nenhum_cliente)
     {
         printf("\nNenhum cliente ativo para exibir.\n");
     }
+
     pressioneEnterParaContinuar();
 }
 
