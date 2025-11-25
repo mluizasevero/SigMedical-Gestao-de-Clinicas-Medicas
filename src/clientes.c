@@ -335,18 +335,22 @@ void listar_clientes(void)
         pressioneEnterParaContinuar();
         return;
     }
+    // Cabeçalho da tabela
+    printf("╔════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║ Nome do Cliente          │ CPF           │ Telefone      │ Email           ║\n");
+    printf("╟──────────────────────────┼───────────────┼───────────────┼─────────────────╢\n");
 
-    // --- TABELA FIXA, SEM MUDAR NENHUM ESPAÇO DO CABEÇALHO ---
-   ╔════════════════════════════════════════╗
-║          Listagem de Clientes          ║
-╚════════════════════════════════════════╝
-╔════════════════════════════════════════════════════════════════════════════╗
-║ Nome do Cliente          │ CPF           │ Telefone      │ Email           ║
-╟──────────────────────────┼───────────────┼───────────────┼─────────────────╢
-║ Pedro                    │ 123.492.690-35 │ 84999999999   │ a@b.com         ║
-║ João                    │ 555.036.280-55 │ 84888888888   │ a@c.com         ║
-╚════════════════════════════════════════════════════════════════════════════╝
-Pressione ENTER para continuar...
+    // Leitura dos clientes
+    while (fread(&cliente_lido, sizeof(Cliente), 1, arq_clientes) == 1)
+    {
+        nenhum_cliente = 0;
+
+        printf("║ %-24s │ %-13s │ %-13s │ %-17s ║\n",
+               cliente_lido.nome,
+               cliente_lido.cpf,
+               cliente_lido.telefone,
+               cliente_lido.email);
+    }
     fclose(arq_clientes);
 
     if (nenhum_cliente)
