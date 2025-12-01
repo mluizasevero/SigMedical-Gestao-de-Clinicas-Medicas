@@ -328,7 +328,6 @@ void listar_clientes(void)
     printf("║          Listagem de Clientes          ║\n");
     printf("╚════════════════════════════════════════╝\n");
 
-
     arq_clientes = fopen(CLIENTES_FILE, "rb");
     if (arq_clientes == NULL)
     {
@@ -336,19 +335,21 @@ void listar_clientes(void)
         pressioneEnterParaContinuar();
         return;
     }
+    // Cabeçalho da tabela
+    printf("╔════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║ Nome do Cliente          │ CPF           │ Telefone      │ Email           ║\n");
+    printf("╟──────────────────────────┼───────────────┼───────────────┼─────────────────╢\n");
 
-    while (fread(&cliente_lido, sizeof(Cliente), 1, arq_clientes))
+    // Leitura dos clientes
+    while (fread(&cliente_lido, sizeof(Cliente), 1, arq_clientes) == 1)
     {
-        if (cliente_lido.ativo == 1)
-        {
-            printf("╔════════════════════════════════════════╗\n");
-            printf("║ Nome: %s                               ║\n", cliente_lido.nome);
-            printf("║ CPF: %s                                ║\n", cliente_lido.cpf);
-            printf("║ Telefone: %s                           ║\n", cliente_lido.telefone);
-            printf("║ Email: %s                              ║\n", cliente_lido.email);
-            printf("╚════════════════════════════════════════╝\n");
-            nenhum_cliente = 0;
-        }
+        nenhum_cliente = 0;
+
+        printf("║ %-24s │ %-13s │ %-13s │ %-17s ║\n",
+               cliente_lido.nome,
+               cliente_lido.cpf,
+               cliente_lido.telefone,
+               cliente_lido.email);
     }
     fclose(arq_clientes);
 
@@ -356,6 +357,7 @@ void listar_clientes(void)
     {
         printf("\nNenhum cliente ativo para exibir.\n");
     }
+
     pressioneEnterParaContinuar();
 }
 
