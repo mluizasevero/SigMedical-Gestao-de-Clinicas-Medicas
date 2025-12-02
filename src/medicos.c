@@ -46,6 +46,63 @@ int medico_existe(const char *cpf, int id_a_ignorar)
     return 0; // Não encontrado
 }
 
+// Estrutura para lista dinâmica
+typedef struct No {
+    Medico medico;
+    struct No *proximo;
+} No;
+
+// Função para criar um novo nó
+No* criar_no(Medico medico) {
+    No *novo_no = (No *)malloc(sizeof(No));
+    if (novo_no != NULL) {
+        novo_no->medico = medico;
+        novo_no->proximo = NULL;
+    }
+    return novo_no;
+}
+
+// Função para adicionar um médico à lista
+void adicionar_no(No **cabeca, Medico medico) {
+    No *novo_no = criar_no(medico);
+    if (*cabeca == NULL) {
+        *cabeca = novo_no;
+    } else {
+        No *temp = *cabeca;
+        while (temp->proximo != NULL) {
+            temp = temp->proximo;
+        }
+        temp->proximo = novo_no;
+    }
+}
+
+// Função para liberar a memória da lista
+void liberar_lista_medicos(No *cabeca) {
+    No *temp;
+    while (cabeca != NULL) {
+        temp = cabeca;
+        cabeca = cabeca->proximo;
+        free(temp);
+    }
+}
+
+// Função para carregar médicos do arquivo para a lista dinâmica
+No* carregar_medicos_para_lista() {
+    FILE *arq_medicos = fopen(MEDICOS_FILE, "rb");
+    if (arq_medicos == NULL) {
+        return NULL;
+    }
+
+    No *cabeca = NULL;
+    Medico medico_lido;
+    while (fread(&medico_lido, sizeof(Medico), 1, arq_medicos)) {
+        adicionar_no(&cabeca, medico_lido);
+    }
+
+    fclose(arq_medicos);
+    return cabeca;
+}
+
 // ----------
 // CADASTRO |
 // ----------
@@ -422,37 +479,28 @@ void exibir_mensagem_sem_resultado(int tem_registro) {
 
 // Função para exibir o relatório completo de médicos ativos e inativos
 void relatorio_completo(void) {
-    Medico medico_lido;
-    FILE *arq_medicos;
-    int total_ativos = 0;
-    int total_inativos = 0;
-    int total_geral = 0;
-    int tem_registro = 0;
-
     exibir_titulo_relatorio("Relatorio Completo de Medicos");
 
-    arq_medicos = fopen(MEDICOS_FILE, "rb");
-    if (arq_medicos == NULL)
-    {
+    No *lista_medicos = carregar_medicos_para_lista();
+    if (lista_medicos == NULL) {
         printf("Nenhum medico cadastrado.\n");
         pressioneEnterParaContinuar();
         return;
     }
 
-    // Primeira passagem para contagem
-    while (fread(&medico_lido, sizeof(Medico), 1, arq_medicos))
-    {
-        if (medico_lido.ativo == 1)
-        {
+    int total_ativos = 0, total_inativos = 0, total_geral = 0;
+
+    // Contagem de médicos
+    No *temp = lista_medicos;
+    while (temp != NULL) {
+        if (temp->medico.ativo == 1) {
             total_ativos++;
-        }
-        else
-        {
+        } else {
             total_inativos++;
         }
         total_geral++;
+        temp = temp->proximo;
     }
-    fclose(arq_medicos);
 
     // Impressão das estatísticas
     printf("\n--- Estatisticas Gerais ---\n");
@@ -461,48 +509,37 @@ void relatorio_completo(void) {
     printf("Total de medicos INATIVOS:    %d\n", total_inativos);
     printf("---------------------------\n\n");
 
-    // Segunda passagem para listagem detalhada de ativos
-    arq_medicos = fopen(MEDICOS_FILE, "rb");
-    if (arq_medicos != NULL)
-    {
-        printf("--- Medicos ATIVOS ---\n");
-        if (total_ativos > 0) {
-            exibir_cabecalho_tabela();
-        }
-        while (fread(&medico_lido, sizeof(Medico), 1, arq_medicos))
-        {
-            if (medico_lido.ativo == 1)
-            {
-                printf("%-2d | %-22s | %-13s | %s\n",
-                       medico_lido.id, medico_lido.nome,
-                       medico_lido.cpf, medico_lido.especialidade);
-                tem_registro = 1;
-            }
-        }
-        exibir_mensagem_sem_resultado(tem_registro);
-        printf("\n");
-
-        // Reposiciona o ponteiro do arquivo para o início novamente
-        rewind(arq_medicos);
-        tem_registro = 0; // Reset para a próxima listagem
-
-        printf("--- Medicos INATIVOS ---\n");
-        if (total_inativos > 0) {
-             exibir_cabecalho_tabela();
-        }
-        while (fread(&medico_lido, sizeof(Medico), 1, arq_medicos))
-        {
-            if (medico_lido.ativo == 0)
-            {
-                printf("%-2d | %-22s | %-13s | %s\n",
-                       medico_lido.id, medico_lido.nome,
-                       medico_lido.cpf, medico_lido.especialidade);
-                tem_registro = 1;
-            }
-        }
-        exibir_mensagem_sem_resultado(tem_registro);
-        fclose(arq_medicos);
+    // Listagem detalhada de médicos ativos
+    printf("--- Medicos ATIVOS ---\n");
+    if (total_ativos > 0) {
+        exibir_cabecalho_tabela();
     }
+    temp = lista_medicos;
+    while (temp != NULL) {
+        if (temp->medico.ativo == 1) {
+            printf("%-2d | %-22s | %-13s | %s\n",
+                   temp->medico.id, temp->medico.nome,
+                   temp->medico.cpf, temp->medico.especialidade);
+        }
+        temp = temp->proximo;
+    }
+
+    // Listagem detalhada de médicos inativos
+    printf("\n--- Medicos INATIVOS ---\n");
+    if (total_inativos > 0) {
+        exibir_cabecalho_tabela();
+    }
+    temp = lista_medicos;
+    while (temp != NULL) {
+        if (temp->medico.ativo == 0) {
+            printf("%-2d | %-22s | %-13s | %s\n",
+                   temp->medico.id, temp->medico.nome,
+                   temp->medico.cpf, temp->medico.especialidade);
+        }
+        temp = temp->proximo;
+    }
+
+    liberar_lista_medicos(lista_medicos);
 
     printf("\n--- Fim do Relatorio ---\n");
     pressioneEnterParaContinuar();
