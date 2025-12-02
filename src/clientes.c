@@ -641,6 +641,7 @@ void modulo_clientes(void)
         printf("║ 3. Alterar Cliente                     ║\n");
         printf("║ 4. Excluir Cliente                     ║\n");
         printf("║ 5. Listar Clientes                     ║\n");
+        printf("║ 6. Relatórios                          ║\n");
         printf("║ 0. Voltar ao menu principal            ║\n");
         printf("╚════════════════════════════════════════╝\n");
 

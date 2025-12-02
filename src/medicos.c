@@ -751,6 +751,7 @@ void modulo_medicos(void)
         printf("║ 3. Alterar Medico                      ║\n");
         printf("║ 4. Excluir Medico                      ║\n");
         printf("║ 5. Listar Medicos                      ║\n");
+        printf("║ 6. Relatórios                          ║\n");
         printf("║ 0. Voltar ao menu principal            ║\n");
         printf("╚════════════════════════════════════════╝\n");
 
