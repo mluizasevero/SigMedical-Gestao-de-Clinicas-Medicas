@@ -115,7 +115,7 @@ void cadastrar_medico(void)
 
     limparTela();
     printf("╔══════════════════════════════════════╗\n");
-    printf("║      Cadastrar Novo Medico           ║\n");
+    printf("║        Cadastrar Novo Medico         ║\n");
     printf("╚══════════════════════════════════════╝\n");
 
 
@@ -203,7 +203,7 @@ void pesquisar_medico(void)
 
     limparTela();
     printf("╔════════════════════════════════════════╗\n");
-    printf("║     Pesquisar Medico por CPF           ║\n");
+    printf("║        Pesquisar Medico por CPF        ║\n");
     printf("╚════════════════════════════════════════╝\n");
 
     printf("Informe o CPF do medico a ser pesquisado: ");
@@ -221,13 +221,13 @@ void pesquisar_medico(void)
     {
         if (strcmp(medico_lido.cpf, cpf_busca) == 0 && medico_lido.ativo == 1)
         {
-            printf("\n--- Medico Encontrado ---\n");
+            printf("\n═══ Medico Encontrado ═══\n");
             printf("ID: %d\n", medico_lido.id);
             printf("Nome: %s\n", medico_lido.nome);
             printf("CPF: %s\n", medico_lido.cpf);
             printf("Especialidade: %s\n", medico_lido.especialidade);
             printf("Telefone: %s\n", medico_lido.telefone);
-            printf("---------------------------\n");
+            printf("══════════════════════════\n");
             encontrado = 1;
             break;
         }
@@ -255,7 +255,7 @@ void alterar_medico(void)
 
     limparTela();
     printf("╔══════════════════════════════════════╗\n");
-    printf("║     Alterar Dados de Medico          ║\n");
+    printf("║       Alterar Dados de Medico        ║\n");
     printf("╚══════════════════════════════════════╝\n");
 
 
@@ -362,7 +362,7 @@ void excluir_medico(void)
 
     limparTela();
     printf("╔════════════════════════════════════════╗\n");
-    printf("║          Excluir Medico                ║\n");
+    printf("║             Excluir Medico             ║\n");
     printf("╚════════════════════════════════════════╝\n");
 
 
@@ -417,7 +417,7 @@ void listar_medicos(void)
 
     limparTela();
     printf("╔══════════════════════════════════════╗\n");
-    printf("║       Listagem de Medicos            ║\n");
+    printf("║         Listagem de Medicos          ║\n");
     printf("╚══════════════════════════════════════╝\n");
 
     arq_medicos = fopen(MEDICOS_FILE, "rb");
@@ -459,15 +459,12 @@ void listar_medicos(void)
 // Função auxiliar para exibir um título de seção
 void exibir_titulo_relatorio(const char* titulo) {
     limparTela();
-    printf("---------------------------------------\n");
-    printf("///    %s    ///\n", titulo);
-    printf("---------------------------------------\n");
-}
-
-// Função auxiliar para exibir cabeçalho da tabela de médicos
-void exibir_cabecalho_tabela(void) {
-    printf("ID | Nome do Medico         | CPF           | Especialidade\n");
-    printf("---|------------------------|---------------|------------------\n");
+    printf("╔═════════════════════════════════════════════╗\n");
+    int len = strlen(titulo);
+    int pad_left = (45 - len) / 2;
+    int pad_right = 45 - len - pad_left;
+    printf("║%*s%s%*s║\n", pad_left, "", titulo, pad_right, "");
+    printf("╚═════════════════════════════════════════════╝\n");
 }
 
 // Função auxiliar para exibir mensagem se não houver resultados
@@ -503,45 +500,47 @@ void relatorio_completo(void) {
     }
 
     // Impressão das estatísticas
-    printf("\n--- Estatisticas Gerais ---\n");
+    printf("\n═══ Estatisticas Gerais ═══\n");
     printf("Total de medicos cadastrados: %d\n", total_geral);
     printf("Total de medicos ATIVOS:      %d\n", total_ativos);
     printf("Total de medicos INATIVOS:    %d\n", total_inativos);
-    printf("---------------------------\n\n");
+    printf("═══════════════════════════\n\n");
 
     // Listagem detalhada de médicos ativos
-    printf("--- Medicos ATIVOS ---\n");
-    if (total_ativos > 0) {
-        exibir_cabecalho_tabela();
-    }
+    printf("═══ Medicos ATIVOS ═══\n");
+    printf("╔════╦════════════════════════╦═══════════════╦══════════════════╗\n");
+    printf("║ ID ║ Nome do Medico         ║ CPF           ║ Especialidade    ║\n");
+    printf("╠════╬════════════════════════╬═══════════════╬══════════════════╣\n");
     temp = lista_medicos;
     while (temp != NULL) {
         if (temp->medico.ativo == 1) {
-            printf("%-2d | %-22s | %-13s | %s\n",
+            printf("║ %-2d ║ %-22s ║ %-13s ║ %-16s ║\n",
                    temp->medico.id, temp->medico.nome,
                    temp->medico.cpf, temp->medico.especialidade);
         }
         temp = temp->proximo;
     }
+    printf("╚════╩════════════════════════╩═══════════════╩══════════════════╝\n");
 
     // Listagem detalhada de médicos inativos
-    printf("\n--- Medicos INATIVOS ---\n");
-    if (total_inativos > 0) {
-        exibir_cabecalho_tabela();
-    }
+    printf("\n═══ Medicos INATIVOS ═══\n");
+    printf("╔════╦════════════════════════╦═══════════════╦══════════════════╗\n");
+    printf("║ ID ║ Nome do Medico         ║ CPF           ║ Especialidade    ║\n");
+    printf("╠════╬════════════════════════╬═══════════════╬══════════════════╣\n");
     temp = lista_medicos;
     while (temp != NULL) {
         if (temp->medico.ativo == 0) {
-            printf("%-2d | %-22s | %-13s | %s\n",
+            printf("║ %-2d ║ %-22s ║ %-13s ║ %-16s ║\n",
                    temp->medico.id, temp->medico.nome,
                    temp->medico.cpf, temp->medico.especialidade);
         }
         temp = temp->proximo;
     }
+    printf("╚════╩════════════════════════╩═══════════════╩══════════════════╝\n");
 
     liberar_lista_medicos(lista_medicos);
 
-    printf("\n--- Fim do Relatorio ---\n");
+    printf("\n═══ Fim do Relatorio ═══\n");
     pressioneEnterParaContinuar();
 }
 
@@ -565,23 +564,26 @@ void relatorio_por_especialidade(void) {
         return;
     }
 
-    printf("\n--- Medicos com especialidade '%s' ---\n", especialidade_filtro);
-    exibir_cabecalho_tabela();
+    printf("\n═══ Medicos com especialidade '%s' ═══\n", especialidade_filtro);
+    printf("╔════╦════════════════════════╦═══════════════╦══════════════════╗\n");
+    printf("║ ID ║ Nome do Medico         ║ CPF           ║ Especialidade    ║\n");
+    printf("╠════╬════════════════════════╬═══════════════╬══════════════════╣\n");
 
     while (fread(&medico_lido, sizeof(Medico), 1, arq_medicos))
     {
         if (medico_lido.ativo == 1 && strcmp(medico_lido.especialidade, especialidade_filtro) == 0)
         {
-            printf("%-2d | %-22s | %-13s | %s\n",
+            printf("║ %-2d ║ %-22s ║ %-13s ║ %-16s ║\n",
                    medico_lido.id, medico_lido.nome,
                    medico_lido.cpf, medico_lido.especialidade);
             tem_registro = 1;
         }
     }
+    printf("╚════╩════════════════════════╩═══════════════╩══════════════════╝\n");
     exibir_mensagem_sem_resultado(tem_registro);
 
     fclose(arq_medicos);
-    printf("\n--- Fim do Relatorio ---\n");
+    printf("\n═══ Fim do Relatorio ═══\n");
     pressioneEnterParaContinuar();
 }
 
@@ -605,23 +607,26 @@ void relatorio_por_nome(void) {
         return;
     }
 
-    printf("\n--- Medicos com nome contendo '%s' ---\n", nome_filtro);
-    exibir_cabecalho_tabela();
+    printf("\n═══ Medicos com nome contendo '%s' ═══\n", nome_filtro);
+    printf("╔════╦════════════════════════╦═══════════════╦══════════════════╗\n");
+    printf("║ ID ║ Nome do Medico         ║ CPF           ║ Especialidade    ║\n");
+    printf("╠════╬════════════════════════╬═══════════════╬══════════════════╣\n");
 
     while (fread(&medico_lido, sizeof(Medico), 1, arq_medicos))
     {
         if (medico_lido.ativo == 1 && strstr(medico_lido.nome, nome_filtro) != NULL)
         {
-            printf("%-2d | %-22s | %-13s | %s\n",
+            printf("║ %-2d ║ %-22s ║ %-13s ║ %-16s ║\n",
                    medico_lido.id, medico_lido.nome,
                    medico_lido.cpf, medico_lido.especialidade);
             tem_registro = 1;
         }
     }
+    printf("╚════╩════════════════════════╩═══════════════╩══════════════════╝\n");
     exibir_mensagem_sem_resultado(tem_registro);
 
     fclose(arq_medicos);
-    printf("\n--- Fim do Relatorio ---\n");
+    printf("\n═══ Fim do Relatorio ═══\n");
     pressioneEnterParaContinuar();
 }
 
@@ -659,23 +664,26 @@ void relatorio_por_status(void) {
         return;
     }
 
-    printf("\n--- Medicos com status '%s' ---\n", status_texto);
-    exibir_cabecalho_tabela();
+    printf("\n═══ Medicos com status '%s' ═══\n", status_texto);
+    printf("╔════╦════════════════════════╦═══════════════╦══════════════════╗\n");
+    printf("║ ID ║ Nome do Medico         ║ CPF           ║ Especialidade    ║\n");
+    printf("╠════╬════════════════════════╬═══════════════╬══════════════════╣\n");
 
     while (fread(&medico_lido, sizeof(Medico), 1, arq_medicos))
     {
         if (medico_lido.ativo == status_filtro)
         {
-            printf("%-2d | %-22s | %-13s | %s\n",
+            printf("║ %-2d ║ %-22s ║ %-13s ║ %-16s ║\n",
                    medico_lido.id, medico_lido.nome,
                    medico_lido.cpf, medico_lido.especialidade);
             tem_registro = 1;
         }
     }
+    printf("╚════╩════════════════════════╩═══════════════╩══════════════════╝\n");
     exibir_mensagem_sem_resultado(tem_registro);
 
     fclose(arq_medicos);
-    printf("\n--- Fim do Relatorio ---\n");
+    printf("\n═══ Fim do Relatorio ═══\n");
     pressioneEnterParaContinuar();
 }
 
@@ -688,15 +696,15 @@ void submenu_relatorios(void) {
     do
     {
         limparTela();
-        printf("----------------------------------------\n");
-        printf("///      Submenu de Relatorios       ///\n");
-        printf("----------------------------------------\n");
-        printf("1. Relatorio Completo (Ativos e Inativos)\n");
-        printf("2. Relatorio por Especialidade\n");
-        printf("3. Relatorio por Nome (Parcial)\n");
-        printf("4. Relatorio por Status (Ativo/Inativo)\n");
-        printf("0. Voltar ao menu principal de medicos\n");
-        printf("----------------------------------------\n");
+        printf("╔═════════════════════════════════════════════╗\n");
+        printf("║            Submenu de Relatorios            ║\n");
+        printf("╠═════════════════════════════════════════════╣\n");
+        printf("║ 1. Relatorio Completo (Ativos e Inativos)   ║\n");
+        printf("║ 2. Relatorio por Especialidade              ║\n");
+        printf("║ 3. Relatorio por Nome (Parcial)             ║\n");
+        printf("║ 4. Relatorio por Status (Ativo/Inativo)     ║\n");
+        printf("║ 0. Voltar ao menu principal de medicos      ║\n");
+        printf("╚═════════════════════════════════════════════╝\n");
 
         // Leitura segura de Opção
         do
@@ -744,7 +752,7 @@ void modulo_medicos(void)
     {
         limparTela();
         printf("╔════════════════════════════════════════╗\n");
-        printf("║         Modulo de Medicos              ║\n");
+        printf("║           Modulo de Medicos            ║\n");
         printf("╠════════════════════════════════════════╣\n");
         printf("║ 1. Cadastrar Medico                    ║\n");
         printf("║ 2. Pesquisar Medico                    ║\n");

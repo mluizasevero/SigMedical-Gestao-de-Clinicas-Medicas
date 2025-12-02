@@ -8,6 +8,24 @@
 
 #define CONSULTAS_FILE DATA_DIR PATH_SEPARATOR "consultas.dat"
 
+// Função auxiliar para exibir um título de seção
+void exibir_titulo_relatorio_consulta(const char* titulo) {
+    limparTela();
+    printf("╔═════════════════════════════════════════════╗\n");
+    int len = strlen(titulo);
+    int pad_left = (45 - len) / 2;
+    int pad_right = 45 - len - pad_left;
+    printf("║%*s%s%*s║\n", pad_left, "", titulo, pad_right, "");
+    printf("╚═════════════════════════════════════════════╝\n");
+}
+
+// Função auxiliar para exibir mensagem se não houver resultados
+void exibir_mensagem_sem_resultado_consulta(int tem_registro) {
+    if (!tem_registro) {
+        printf("Nenhum registro encontrado.\n");
+    }
+}
+
 void agendar_consulta(void)
 {
     Consulta nova_consulta;
@@ -97,10 +115,12 @@ void pesquisar_consulta(void)
     int encontrado = 0;
     Consulta consulta_lida;
     FILE *arq_consultas;
+    char data_hora[18];
+    char medico_esp[51];
 
     limparTela();
     printf("╔════════════════════════════════════════╗\n");
-    printf("║         Pesquisar Consulta             ║\n");
+    printf("║           Pesquisar Consulta           ║\n");
     printf("╚════════════════════════════════════════╝\n");
 
     printf("Informe o CPF do paciente: ");
@@ -114,21 +134,23 @@ void pesquisar_consulta(void)
         return;
     }
 
-    printf("\n--- Consultas Encontradas para o CPF: %s ---\n", cpf_pesquisa);
+    printf("\n═══ Consultas Encontradas para o CPF: %s ═══\n", cpf_pesquisa);
+    printf("╔══════════════════════════╦═════════════════╦════════════════════════════════════╦══════════╗\n");
+    printf("║ Paciente                 ║ Data/Hora       ║ Medico (Especialidade)             ║ Status   ║\n");
+    printf("╠══════════════════════════╬═════════════════╬════════════════════════════════════╬══════════╣\n");
+
     while (fread(&consulta_lida, sizeof(Consulta), 1, arq_consultas))
     {
         if (strcmp(consulta_lida.cpf_paciente, cpf_pesquisa) == 0 && consulta_lida.ativo == 1)
         {
-           printf("╔════════════════════════════════════════╗\n");
-           printf("║ Paciente: %-33s ║\n", consulta_lida.nome_paciente);
-           printf("║ Data: %-10s | Hora: %-8s       ║\n", consulta_lida.data, consulta_lida.hora);
-           printf("║ Médico: %-25s (%-10s) ║\n", consulta_lida.nome_medico, consulta_lida.especialidade);
-           printf("║ Status: %-33s ║\n", consulta_lida.status);
-           printf("╚════════════════════════════════════════╝\n");
-
+            sprintf(data_hora, "%s %s", consulta_lida.data, consulta_lida.hora);
+            sprintf(medico_esp, "%s (%s)", consulta_lida.nome_medico, consulta_lida.especialidade);
+            printf("║ %-24s ║ %-15s ║ %-34s ║ %-8s ║\n",
+                   consulta_lida.nome_paciente, data_hora, medico_esp, consulta_lida.status);
             encontrado = 1;
         }
     }
+    printf("╚══════════════════════════╩═════════════════╩════════════════════════════════════╩══════════╝\n");
     fclose(arq_consultas);
 
     if (!encontrado)
@@ -152,7 +174,7 @@ void alterar_consulta(void)
 
     limparTela();
     printf("╔════════════════════════════════════════╗\n");
-    printf("║          Alterar Consulta              ║\n");
+    printf("║            Alterar Consulta            ║\n");
     printf("╚════════════════════════════════════════╝\n");
 
     printf("Informe o CPF do paciente: ");
@@ -228,7 +250,7 @@ void excluir_consulta(void)
 
     limparTela();
     printf("╔════════════════════════════════════════╗\n");
-    printf("║      Cancelar/Excluir Consulta         ║\n");
+    printf("║       Cancelar/Excluir Consulta        ║\n");
     printf("╚════════════════════════════════════════╝\n");
 
     printf("Informe o CPF do paciente: ");
@@ -312,7 +334,7 @@ void confirmar_presenca(void)
 
     limparTela();
     printf("╔════════════════════════════════════════╗\n");
-    printf("║        Confirmar Presença              ║\n");
+    printf("║           Confirmar Presença           ║\n");
     printf("╚════════════════════════════════════════╝\n");
 
     // Validação do CPF
@@ -369,14 +391,12 @@ void confirmar_presenca(void)
 void relatorio_consultas_medico(void)
 {
     char nome_medico_pesquisa[50];
-    int encontrado = 0;
+    int tem_registro = 0;
     Consulta consulta_lida;
     FILE *arq_consultas;
+    char data_hora[18];
 
-    limparTela();
-    printf("╔════════════════════════════════════════╗\n");
-    printf("║        Consultas por Médico            ║\n");
-    printf("╚════════════════════════════════════════╝\n");
+    exibir_titulo_relatorio_consulta("Consultas por Medico");
 
     // Validação do nome
     do
@@ -395,39 +415,43 @@ void relatorio_consultas_medico(void)
         return;
     }
 
+    printf("\n═══ Consultas para o Medico: %s ═══\n", nome_medico_pesquisa);
+    printf("╔══════════════════════════╦═══════════════╦═════════════════╦══════════╗\n");
+    printf("║ Paciente                 ║ CPF           ║ Data/Hora       ║ Status   ║\n");
+    printf("╠══════════════════════════╬═══════════════╬═════════════════╬══════════╣\n");
+
     while (fread(&consulta_lida, sizeof(Consulta), 1, arq_consultas))
     {
         if (consulta_lida.ativo == 1 && strcmp(consulta_lida.nome_medico, nome_medico_pesquisa) == 0)
         {
-            printf("----------------------------------------\n");
-            printf("Paciente: %s (CPF: %s)\n", consulta_lida.nome_paciente, consulta_lida.cpf_paciente);
-            printf("Data: %s | Hora: %s\n", consulta_lida.data, consulta_lida.hora);
-            printf("Status: %s\n", consulta_lida.status);
-            encontrado = 1;
+            sprintf(data_hora, "%s %s", consulta_lida.data, consulta_lida.hora);
+            printf("║ %-24s ║ %-13s ║ %-15s ║ %-8s ║\n",
+                   consulta_lida.nome_paciente, consulta_lida.cpf_paciente, data_hora, consulta_lida.status);
+            tem_registro = 1;
         }
     }
-    fclose(arq_consultas);
+    printf("╚══════════════════════════╩═══════════════╩═════════════════╩══════════╝\n");
+    exibir_mensagem_sem_resultado_consulta(tem_registro);
 
-    if (!encontrado)
-    {
-        printf("\nNenhuma consulta ativa encontrada para este medico.\n");
-    }
+    fclose(arq_consultas);
+    printf("\n═══ Fim do Relatorio ═══\n");
     pressioneEnterParaContinuar();
 }
 
 void relatorio_consultas_por_periodo(void)
 {
     char data_inicio_str[11], data_fim_str[11];
-    int encontrado = 0;
+    int tem_registro = 0;
     Consulta consulta_lida;
     FILE *arq_consultas;
+    char data_hora[18];
 
     // Variáveis para datas convertidas
     long data_inicio_int, data_fim_int, data_consulta_int;
 
     limparTela();
     printf("╔════════════════════════════════════════╗\n");
-    printf("║        Consultas por Período           ║\n");
+    printf("║         Consultas por Período          ║\n");
     printf("╚════════════════════════════════════════╝\n");
 
     // Validação das datas
@@ -464,6 +488,11 @@ void relatorio_consultas_por_periodo(void)
         return;
     }
 
+    printf("\n═══ Consultas no Periodo de %s a %s ═══\n", data_inicio_str, data_fim_str);
+    printf("╔══════════════════════════╦═════════════════╦══════════════════════════╦══════════╗\n");
+    printf("║ Paciente                 ║ Data/Hora       ║ Medico                   ║ Status   ║\n");
+    printf("╠══════════════════════════╬═════════════════╬══════════════════════════╬══════════╣\n");
+
     while (fread(&consulta_lida, sizeof(Consulta), 1, arq_consultas))
     {
         if (consulta_lida.ativo == 1)
@@ -474,22 +503,18 @@ void relatorio_consultas_por_periodo(void)
 
             if (data_consulta_int >= data_inicio_int && data_consulta_int <= data_fim_int)
             {
-                printf("╔════════════════════════════════════════╗\n");
-                printf("║ Paciente: %-33s ║\n", consulta_lida.nome_paciente);
-                printf("║ Data: %-10s | Hora: %-8s       ║\n", consulta_lida.data, consulta_lida.hora);
-                printf("║ Médico: %-33s ║\n", consulta_lida.nome_medico);
-                printf("║ Status: %-33s ║\n", consulta_lida.status);
-                printf("╚════════════════════════════════════════╝\n");
-                encontrado = 1;
+                sprintf(data_hora, "%s %s", consulta_lida.data, consulta_lida.hora);
+                printf("║ %-24s ║ %-15s ║ %-24s ║ %-8s ║\n",
+                       consulta_lida.nome_paciente, data_hora, consulta_lida.nome_medico, consulta_lida.status);
+                tem_registro = 1;
             }
         }
     }
-    fclose(arq_consultas);
+    printf("╚══════════════════════════╩═════════════════╩══════════════════════════╩══════════╝\n");
+    exibir_mensagem_sem_resultado_consulta(tem_registro);
 
-    if (!encontrado)
-    {
-        printf("Nenhuma consulta encontrada neste Periodo.\n");
-    }
+    fclose(arq_consultas);
+    printf("\n═══ Fim do Relatorio ═══\n");
     pressioneEnterParaContinuar();
 }
 
@@ -497,14 +522,16 @@ void relatorio_consultas_paciente(void)
 {
     char termo_busca[50];
     int opcao_filtro;
-    int encontrado = 0;
+    int tem_registro = 0;
     char bufferOpcao[5];
     Consulta consulta_lida;
     FILE *arq_consultas;
+    char data_hora[18];
+    char medico_esp[51];
 
     limparTela();
     printf("╔════════════════════════════════════════╗\n");
-    printf("║      Relatório de Consultas Paciente   ║\n");
+    printf("║    Relatório de Consultas Paciente     ║\n");
     printf("╚════════════════════════════════════════╝\n");
     printf("Filtrar por:\n");
     printf("1. Nome do Paciente\n");
@@ -519,14 +546,14 @@ void relatorio_consultas_paciente(void)
     } while (opcao_filtro != 1 && opcao_filtro != 2);
 
     if (opcao_filtro == 1)
-    {
+        {
         // Busca por Nome
         do
         {
             printf("\nInforme o Nome do paciente: ");
             lerString(termo_busca, 50);
         } while (!validarNome(termo_busca));
-        printf("\n--- Consultas encontradas para o NOME: %s ---\n", termo_busca);
+        printf("\n═══ Consultas encontradas para o NOME: %s ═══\n", termo_busca);
     }
     else
     {
@@ -536,7 +563,7 @@ void relatorio_consultas_paciente(void)
             printf("\nInforme o CPF do paciente: ");
             lerString(termo_busca, 15);
         } while (!validarCPF(termo_busca));
-        printf("\n--- Consultas encontradas para o CPF: %s ---\n", termo_busca);
+        printf("\n═══ Consultas encontradas para o CPF: %s ═══\n", termo_busca);
     }
 
     arq_consultas = fopen(CONSULTAS_FILE, "rb");
@@ -546,6 +573,10 @@ void relatorio_consultas_paciente(void)
         pressioneEnterParaContinuar();
         return;
     }
+
+    printf("╔══════════════════════════╦═══════════════╦═════════════════╦════════════════════════════════════╦══════════╗\n");
+    printf("║ Paciente                 ║ CPF           ║ Data/Hora       ║ Medico (Especialidade)             ║ Status   ║\n");
+    printf("╠══════════════════════════╬═══════════════╬═════════════════╬════════════════════════════════════╬══════════╣\n");
 
     while (fread(&consulta_lida, sizeof(Consulta), 1, arq_consultas))
     {
@@ -573,23 +604,19 @@ void relatorio_consultas_paciente(void)
 
             if (match)
             {
-                printf("╔════════════════════════════════════════╗\n");
-                printf("║ Paciente: %-33s ║\n", consulta_lida.nome_paciente);
-                printf("║ CPF: %-38s ║\n", consulta_lida.cpf_paciente);
-                printf("║ Data: %-10s | Hora: %-8s       ║\n", consulta_lida.data, consulta_lida.hora);
-                printf("║ Médico: %-25s (%-10s) ║\n", consulta_lida.nome_medico, consulta_lida.especialidade);
-                printf("║ Status: %-33s ║\n", consulta_lida.status);
-                printf("╚════════════════════════════════════════╝\n");
-                encontrado = 1;
+                sprintf(data_hora, "%s %s", consulta_lida.data, consulta_lida.hora);
+                sprintf(medico_esp, "%s (%s)", consulta_lida.nome_medico, consulta_lida.especialidade);
+                printf("║ %-24s ║ %-13s ║ %-15s ║ %-34s ║ %-8s ║\n",
+                       consulta_lida.nome_paciente, consulta_lida.cpf_paciente, data_hora, medico_esp, consulta_lida.status);
+                tem_registro = 1;
             }
         }
     }
-    fclose(arq_consultas);
+    printf("╚══════════════════════════╩═══════════════╩═════════════════╩════════════════════════════════════╩══════════╝\n");
+    exibir_mensagem_sem_resultado_consulta(tem_registro);
 
-    if (!encontrado)
-    {
-        printf("\nNenhuma consulta encontrada para os dados informados.\n");
-    }
+    fclose(arq_consultas);
+    printf("\n═══ Fim do Relatorio ═══\n");
     pressioneEnterParaContinuar();
 }
 
@@ -606,7 +633,7 @@ void gerenciar_agendamentos(void)
     {
         limparTela();
         printf("╔════════════════════════════════════════╗\n");
-        printf("║       Gerenciar Agendamentos           ║\n");
+        printf("║         Gerenciar Agendamentos         ║\n");
         printf("╠════════════════════════════════════════╣\n");
         printf("║ 1. Alterar Data/Hora da Consulta       ║\n");
         printf("║ 2. Cancelar/Excluir Consulta           ║\n");
@@ -654,7 +681,7 @@ void gerar_relatorios_consultas(void)
     {
         limparTela();
         printf("╔════════════════════════════════════════╗\n");
-        printf("║           Gerar Relatórios             ║\n");
+        printf("║            Gerar Relatórios            ║\n");
         printf("╠════════════════════════════════════════╣\n");
         printf("║ 1. Consultas por Médico                ║\n");
         printf("║ 2. Consultas por Paciente (Nome/CPF)   ║\n");
@@ -715,7 +742,7 @@ void modulo_consultas(void)
     {
         limparTela();
         printf("╔════════════════════════════════════════╗\n");
-        printf("║           Módulo de Consultas          ║\n");
+        printf("║          Módulo de Consultas           ║\n");
         printf("╠════════════════════════════════════════╣\n");
         printf("║ 1. Agendar Consulta                    ║\n");
         printf("║ 2. Pesquisar Consultas do Paciente     ║\n");

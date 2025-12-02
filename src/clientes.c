@@ -80,9 +80,12 @@ int verifica_cpf_cliente_cadastrado(const char *cpf)
 // Função auxiliar para exibir um título de seção
 void exibir_titulo_relatorio_cliente(const char* titulo) {
     limparTela();
-    printf("----------------------------------------\n");
-    printf("///    %s    ///\n", titulo);
-    printf("----------------------------------------\n");
+    printf("╔═════════════════════════════════════════════╗\n");
+    int len = strlen(titulo);
+    int pad_left = (45 - len) / 2;
+    int pad_right = 45 - len - pad_left;
+    printf("║%*s%s%*s║\n", pad_left, "", titulo, pad_right, "");
+    printf("╚═════════════════════════════════════════════╝\n");
 }
 
 // Função auxiliar para exibir mensagem se não houver resultados
@@ -105,7 +108,7 @@ void cadastrar_cliente(void)
 
     limparTela();
     printf("╔════════════════════════════════════════╗\n");
-    printf("║      Cadastrar Novo Cliente            ║\n");
+    printf("║         Cadastrar Novo Cliente         ║\n");
     printf("╚════════════════════════════════════════╝\n");
 
 
@@ -306,8 +309,8 @@ void alterar_cliente(void)
     pressioneEnterParaContinuar();
 }
 
-// -----------
-// EXCLUSÃO  |
+// ------------
+// EXCLUSÃO   |
 // ------------
 void excluir_cliente(void)
 {
@@ -382,21 +385,22 @@ void listar_clientes(void)
         return;
     }
     // Cabeçalho da tabela
-    printf("╔════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║ Nome do Cliente          │ CPF           │ Telefone      │ Email           ║\n");
-    printf("╟──────────────────────────┼───────────────┼───────────────┼─────────────────╢\n");
+    printf("╔══════════════════════════╦═══════════════╦═══════════════╦═════════════════╗\n");
+    printf("║ Nome do Cliente          ║ CPF           ║ Telefone      ║ Email           ║\n");
+    printf("╠══════════════════════════╬═══════════════╬═══════════════╬═════════════════╣\n");
 
     // Leitura dos clientes
     while (fread(&cliente_lido, sizeof(Cliente), 1, arq_clientes) == 1)
     {
         nenhum_cliente = 0;
 
-        printf("║ %-24s │ %-13s │ %-13s │ %-17s ║\n",
+        printf("║ %-24s ║ %-13s ║ %-13s ║ %-17s ║\n",
                cliente_lido.nome,
                cliente_lido.cpf,
                cliente_lido.telefone,
                cliente_lido.email);
     }
+    printf("╚══════════════════════════╩═══════════════╩═══════════════╩═════════════════╝\n");
     fclose(arq_clientes);
 
     if (nenhum_cliente)
@@ -437,40 +441,44 @@ void relatorio_completo_clientes(void) {
         }
     }
 
-    // Impressão das estatísticas
-    printf("\n--- Estatisticas Gerais ---\n");
+// Impressão das estatísticas
+    printf("\n═══ Estatisticas Gerais ═══\n");
     printf("Total de clientes cadastrados: %zu\n", lista.tamanho);
     printf("Total de clientes ATIVOS:      %d\n", total_ativos);
     printf("Total de clientes INATIVOS:    %d\n", total_inativos);
-    printf("---------------------------\n\n");
+    printf("═══════════════════════════\n\n");
 
     // Listagem detalhada de clientes ativos
-    printf("--- Clientes ATIVOS ---\n");
-    printf("Nome do Cliente          | CPF           | Telefone      | Email\n");
-    printf("-------------------------|---------------|---------------|------------------\n");
+    printf("═══ Clientes ATIVOS ═══\n");
+    printf("╔══════════════════════════╦═══════════════╦═══════════════╦═════════════════╗\n");
+    printf("║ Nome do Cliente          ║ CPF           ║ Telefone      ║ Email           ║\n");
+    printf("╠══════════════════════════╬═══════════════╬═══════════════╬═════════════════╣\n");
     for (size_t i = 0; i < lista.tamanho; i++) {
         if (lista.clientes[i].ativo == 1) {
-            printf("%-22s | %-13s | %-13s | %s\n",
+            printf("║ %-24s ║ %-13s ║ %-13s ║ %-17s ║\n",
                    lista.clientes[i].nome, lista.clientes[i].cpf,
                    lista.clientes[i].telefone, lista.clientes[i].email);
         }
     }
+    printf("╚══════════════════════════╩═══════════════╩═══════════════╩═════════════════╝\n");
 
     // Listagem detalhada de clientes inativos
-    printf("\n--- Clientes INATIVOS ---\n");
-    printf("Nome do Cliente          | CPF           | Telefone      | Email\n");
-    printf("-------------------------|---------------|---------------|------------------\n");
+    printf("\n═══ Clientes INATIVOS ═══\n");
+    printf("╔══════════════════════════╦═══════════════╦═══════════════╦═════════════════╗\n");
+    printf("║ Nome do Cliente          ║ CPF           ║ Telefone      ║ Email           ║\n");
+    printf("╠══════════════════════════╬═══════════════╬═══════════════╬═════════════════╣\n");
     for (size_t i = 0; i < lista.tamanho; i++) {
         if (lista.clientes[i].ativo == 0) {
-            printf("%-22s | %-13s | %-13s | %s\n",
+            printf("║ %-24s ║ %-13s ║ %-13s ║ %-17s ║\n",
                    lista.clientes[i].nome, lista.clientes[i].cpf,
                    lista.clientes[i].telefone, lista.clientes[i].email);
         }
     }
+    printf("╚══════════════════════════╩═══════════════╩═══════════════╩═════════════════╝\n");
 
     liberar_lista_clientes(&lista);
 
-    printf("\n--- Fim do Relatorio ---\n");
+    printf("\n═══ Fim do Relatorio ═══\n");
     pressioneEnterParaContinuar();
 }
 
@@ -494,24 +502,26 @@ void relatorio_por_nome_cliente(void) {
         return;
     }
 
-    printf("\n--- Clientes com nome contendo '%s' ---\n", nome_filtro);
-    printf("Nome do Cliente          | CPF           | Telefone      | Email\n");
-    printf("-------------------------|---------------|---------------|------------------\n");
+    printf("\n═══ Clientes com nome contendo '%s' ═══\n", nome_filtro);
+    printf("╔══════════════════════════╦═══════════════╦═══════════════╦═════════════════╗\n");
+    printf("║ Nome do Cliente          ║ CPF           ║ Telefone      ║ Email           ║\n");
+    printf("╠══════════════════════════╬═══════════════╬═══════════════╬═════════════════╣\n");
 
     while (fread(&cliente_lido, sizeof(Cliente), 1, arq_clientes))
     {
         if (cliente_lido.ativo == 1 && strstr(cliente_lido.nome, nome_filtro) != NULL)
         {
-            printf("%-22s | %-13s | %-13s | %s\n",
+            printf("║ %-24s ║ %-13s ║ %-13s ║ %-17s ║\n",
                    cliente_lido.nome, cliente_lido.cpf,
                    cliente_lido.telefone, cliente_lido.email);
             tem_registro = 1;
         }
     }
+    printf("╚══════════════════════════╩═══════════════╩═══════════════╩═════════════════╝\n");
     exibir_mensagem_sem_resultado_cliente(tem_registro);
 
     fclose(arq_clientes);
-    printf("\n--- Fim do Relatorio ---\n");
+    printf("\n═══ Fim do Relatorio ═══\n");
     pressioneEnterParaContinuar();
 }
 
@@ -549,24 +559,26 @@ void relatorio_por_status_cliente(void) {
         return;
     }
 
-    printf("\n--- Clientes com status '%s' ---\n", status_texto);
-    printf("Nome do Cliente          | CPF           | Telefone      | Email\n");
-    printf("-------------------------|---------------|---------------|------------------\n");
+    printf("\n═══ Clientes com status '%s' ═══\n", status_texto);
+    printf("╔══════════════════════════╦═══════════════╦═══════════════╦═════════════════╗\n");
+    printf("║ Nome do Cliente          ║ CPF           ║ Telefone      ║ Email           ║\n");
+    printf("╠══════════════════════════╬═══════════════╬═══════════════╬═════════════════╣\n");
 
     while (fread(&cliente_lido, sizeof(Cliente), 1, arq_clientes))
     {
         if (cliente_lido.ativo == status_filtro)
         {
-            printf("%-22s | %-13s | %-13s | %s\n",
+            printf("║ %-24s ║ %-13s ║ %-13s ║ %-17s ║\n",
                    cliente_lido.nome, cliente_lido.cpf,
                    cliente_lido.telefone, cliente_lido.email);
             tem_registro = 1;
         }
     }
+    printf("╚══════════════════════════╩═══════════════╩═══════════════╩═════════════════╝\n");
     exibir_mensagem_sem_resultado_cliente(tem_registro);
 
     fclose(arq_clientes);
-    printf("\n--- Fim do Relatorio ---\n");
+    printf("\n═══ Fim do Relatorio ═══\n");
     pressioneEnterParaContinuar();
 }
 
@@ -579,15 +591,14 @@ void submenu_relatorios_clientes(void) {
     do
     {
         limparTela();
-        printf("----------------------------------------\n");
-        printf("///      Submenu de Relatorios       ///\n");
-        printf("----------------------------------------\n");
-        printf("1. Relatorio Completo (Ativos e Inativos)\n");
-        printf("2. Relatorio por Nome (Parcial)\n");
-        printf("3. Relatorio por Status (Ativo/Inativo)\n");
-        printf("0. Voltar ao menu principal de clientes\n");
-        printf("----------------------------------------\n");
-
+        printf("╔═════════════════════════════════════════════╗\n");
+        printf("║            Submenu de Relatorios            ║\n");
+        printf("╠═════════════════════════════════════════════╣\n");
+        printf("║ 1. Relatorio Completo (Ativos e Inativos)   ║\n");
+        printf("║ 2. Relatorio por Nome (Parcial)             ║\n");
+        printf("║ 3. Relatorio por Status (Ativo/Inativo)     ║\n");
+        printf("║ 0. Voltar ao menu principal de clientes     ║\n");
+        printf("╚═════════════════════════════════════════════╝\n");
         // Leitura segura de Opção
         do
         {

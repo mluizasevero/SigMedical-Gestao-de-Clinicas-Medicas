@@ -13,9 +13,12 @@
 void exibir_titulo_relatorio_estoque(const char *titulo)
 {
     limparTela();
-    printf("-----------------------------------------------\n");
-    printf("///    %s    ///\n", titulo);
-    printf("-----------------------------------------------\n");
+    printf("╔═════════════════════════════════════════════╗\n");
+    int len = strlen(titulo);
+    int pad_left = (45 - len) / 2;
+    int pad_right = 45 - len - pad_left;
+    printf("║%*s%s%*s║\n", pad_left, "", titulo, pad_right, "");
+    printf("╚═════════════════════════════════════════════╝\n");
 }
 
 // Função auxiliar para exibir mensagem se não houver resultados
@@ -63,9 +66,9 @@ void cadastrar_produto(void)
     int id_temp;
 
     limparTela();
-    printf("╔════════════════════════════════════════╗\n");
-    printf("║        Cadastrar Novo Produto          ║\n");
-    printf("╚════════════════════════════════════════╝\n");
+    printf("╔═════════════════════════════════════════════╗\n");
+    printf("║           Cadastrar Novo Produto            ║\n");
+    printf("╚═════════════════════════════════════════════╝\n");
 
 
     // Validação de ID único e positivo
@@ -141,9 +144,9 @@ void pesquisar_produto(void)
     char buffer[51]; // Buffer
 
     limparTela();
-    printf("╔════════════════════════════════════════╗\n");
-    printf("║      Pesquisar Produto por ID          ║\n");
-    printf("╚════════════════════════════════════════╝\n");
+    printf("╔═════════════════════════════════════════════╗\n");
+    printf("║          Pesquisar Produto por ID           ║\n");
+    printf("╚═════════════════════════════════════════════╝\n");
 
 
     // Validação do ID
@@ -166,11 +169,12 @@ void pesquisar_produto(void)
     {
         if (produto_lido.id == id_busca && produto_lido.ativo == 1)
         {
-            printf("╔════════════════════════════════════════════════════════╗\n");
-            printf("║ ID  ║ Nome do Produto      ║ Qtde Estoque ║ Validade   ║\n");
-            printf("╠════════════════════════════════════════════════════════╣\n");
-            printf("║ %-3d ║ %-20s ║ %-12d ║ %-10s ║\n", 
+            printf("╔════╦════════════════════════╦══════════════╦════════════╗\n");
+            printf("║ ID ║ Nome do Produto        ║ Qtde Estoque ║ Validade   ║\n");
+            printf("╠════╬════════════════════════╬══════════════╬════════════╣\n");
+            printf("║ %-2d ║ %-22s ║ %-12d ║ %-10s ║\n", 
                     produto_lido.id, produto_lido.nome, produto_lido.quantidade, produto_lido.validade);
+            printf("╚════╩════════════════════════╩══════════════╩════════════╝\n");
             
             encontrado = 1;
             break;
@@ -198,13 +202,13 @@ void movimentar_estoque(void)
     char bufferValor[10];
 
     limparTela();
-    printf("╔════════════════════════════════════════╗\n");
-    printf("║         Movimentar Estoque             ║\n");
-    printf("╠════════════════════════════════════════╣\n");
-    printf("║ 1. Entrada de Material                 ║\n");
-    printf("║ 2. Saída de Material                   ║\n");
-    printf("║ 0. Voltar                              ║\n");
-    printf("╚════════════════════════════════════════╝\n");
+    printf("╔═════════════════════════════════════════════╗\n");
+    printf("║             Movimentar Estoque              ║\n");
+    printf("╠═════════════════════════════════════════════╣\n");
+    printf("║ 1. Entrada de Material                      ║\n");
+    printf("║ 2. Saída de Material                        ║\n");
+    printf("║ 0. Voltar                                   ║\n");
+    printf("╚═════════════════════════════════════════════╝\n");
 
     // Leitura segura da Opção
     do
@@ -297,9 +301,9 @@ void listar_produtos(void)
     int tem_produto = 0;
 
     limparTela();
-    printf("╔════════════════════════════════════════╗\n");
-    printf("║    Listagem de Produtos em Estoque     ║\n");
-    printf("╚════════════════════════════════════════╝\n");
+    printf("╔═════════════════════════════════════════════╗\n");
+    printf("║       Listagem de Produtos em Estoque       ║\n");
+    printf("╚═════════════════════════════════════════════╝\n");
 
 
     arq_produtos = fopen(PRODUTOS_FILE, "rb");
@@ -310,19 +314,20 @@ void listar_produtos(void)
         return;
     }
 
-    printf("╔═══════════════════════════════════════════════════════╗\n");
-    printf("║ID | Nome do Produto        | Qtde       | Validade    ║\n");
-    printf("╠═══════════════════════════════════════════════════════╣\n");
+    printf("╔════╦════════════════════════╦════════════╦════════════╗\n");
+    printf("║ ID ║ Nome do Produto        ║ Quantidade ║ Validade   ║\n");
+    printf("╠════╬════════════════════════╬════════════╬════════════╣\n");
     while (fread(&produto_lido, sizeof(Produto), 1, arq_produtos))
     {
         if (produto_lido.ativo == 1)
         {
-            printf("║%-2d | %-22s | %-10d | %s\n",
+            printf("║ %-2d ║ %-22s ║ %-10d ║ %-10s ║\n",
                    produto_lido.id, produto_lido.nome,
                    produto_lido.quantidade, produto_lido.validade);
             tem_produto = 1;
         }
     }
+    printf("╚════╩════════════════════════╩════════════╩════════════╝\n");
     fclose(arq_produtos);
 
     if (!tem_produto)
@@ -339,10 +344,7 @@ void relatorio_itens_falta(void)
     int encontrado = 0;
     const int LIMITE_MINIMO = 5;
 
-    limparTela();
-    printf("╔════════════════════════════════════════╗\n");
-    printf("║    Itens em Falta (Estoque Baixo)      ║\n");
-    printf("╚════════════════════════════════════════╝\n");
+    exibir_titulo_relatorio_estoque("Itens em Falta (Estoque Baixo)");
     printf("Itens com quantidade igual ou inferior a %d:\n\n", LIMITE_MINIMO);
 
     arq_produtos = fopen(PRODUTOS_FILE, "rb");
@@ -353,15 +355,20 @@ void relatorio_itens_falta(void)
         return;
     }
 
+    printf("╔════╦════════════════════════╦════════════╗\n");
+    printf("║ ID ║ Nome do Produto        ║ Quantidade ║\n");
+    printf("╠════╬════════════════════════╬════════════╣\n");
+
     while (fread(&produto_lido, sizeof(Produto), 1, arq_produtos))
     {
         if (produto_lido.ativo == 1 && produto_lido.quantidade <= LIMITE_MINIMO)
         {
-            printf("-> ID: %d | Nome: %s | Quantidade: %d\n",
+            printf("║ %-2d ║ %-22s ║ %-10d ║\n",
                    produto_lido.id, produto_lido.nome, produto_lido.quantidade);
             encontrado = 1;
         }
     }
+    printf("╚════╩════════════════════════╩════════════╝\n");
     fclose(arq_produtos);
 
     if (!encontrado)
@@ -382,11 +389,7 @@ void relatorio_validade_proxima(void)
 
     time_t t = time(NULL);
 
-    limparTela();
-    printf("------------------------------------------\n");
-    printf("/// Produtos com Validade Proxima (%d dias) ///\n", DIAS_LIMITE);
-    printf("------------------------------------------\n");
-    printf("Produtos com validade em ate %d dias:\n\n", DIAS_LIMITE);
+    exibir_titulo_relatorio_estoque("Produtos com Validade Proxima");
 
     arq_produtos = fopen(PRODUTOS_FILE, "rb");
     if (arq_produtos == NULL)
@@ -395,6 +398,11 @@ void relatorio_validade_proxima(void)
         pressioneEnterParaContinuar();
         return;
     }
+
+    printf("\n═══ Produtos com validade em ate %d dias ═══\n", DIAS_LIMITE);
+    printf("╔════╦════════════════════════╦════════════╦══════════════════╗\n");
+    printf("║ ID ║ Nome do Produto        ║ Validade   ║ Dias Restantes   ║\n");
+    printf("╠════╬════════════════════════╬════════════╬══════════════════╣\n");
 
     while (fread(&produto_lido, sizeof(Produto), 1, arq_produtos))
     {
@@ -418,7 +426,7 @@ void relatorio_validade_proxima(void)
 
                     if (diff_dias >= 0 && diff_dias <= DIAS_LIMITE)
                     {
-                        printf("-> ID: %d | Nome: %s | Validade: %s | Dias Restantes: %d\n",
+                        printf("║ %-2d ║ %-22s ║ %-10s ║ %-16d ║\n",
                                produto_lido.id, produto_lido.nome, produto_lido.validade, diff_dias);
                         encontrado = 1;
                     }
@@ -426,59 +434,15 @@ void relatorio_validade_proxima(void)
             }
         }
     }
+    printf("╚════╩════════════════════════╩════════════╩══════════════════╝\n");
     fclose(arq_produtos);
 
     if (!encontrado)
     {
         printf("Nenhum produto com validade proxima.\n");
     }
+    printf("\n═══ Fim do Relatorio ═══\n");
     pressioneEnterParaContinuar();
-}
-
-// Submenu de relatórios existente (atualizado para incluir o novo relatório)
-void gerar_relatorios_estoque(void)
-{
-    int opcao;
-    char bufferOpcao[5];
-
-    do
-    {
-        limparTela();
-        printf("╔════════════════════════════════════════╗\n");
-        printf("║         Relatórios de Estoque          ║\n");
-        printf("╠════════════════════════════════════════╣\n");
-        printf("║ 1. Itens em Falta (Estoque Baixo)      ║\n");
-        printf("║ 2. Histórico de Movimentações          ║\n");
-        printf("║ 0. Voltar                              ║\n");
-        printf("╚════════════════════════════════════════╝\n");
-
-        do
-        {
-            printf(">>> Escolha a opcao: ");
-            lerString(bufferOpcao, 5);
-            char *endptr;
-            opcao = strtol(bufferOpcao, &endptr, 10);
-            if (endptr == bufferOpcao || *endptr != '\0')
-            {
-                opcao = -1;
-            }
-        } while (!validarOpcaoMenu(opcao, 0, 3)); // Ajustando o limite
-
-        switch (opcao)
-        {
-        case 1:
-            relatorio_itens_falta();
-            break;
-        case 2:
-            relatorio_validade_proxima();
-            break;
-        case 3:
-            exibir_historico_movimentacoes();
-            break;
-        case 0:
-            break;
-        }
-    } while (opcao != 0);
 }
 
 // ---------------------------------------
@@ -521,32 +485,31 @@ void relatorio_completo_estoque(void)
     fclose(arq_produtos);
 
     // Impressão das estatísticas
-    printf("\n--- Estatisticas Gerais ---\n");
+    printf("\n═══ Estatisticas Gerais ═══\n");
     printf("Total de produtos cadastrados: %d\n", total_geral);
     printf("Total de produtos ATIVOS:      %d\n", total_ativos);
     printf("Total de produtos INATIVOS:    %d\n", total_inativos);
-    printf("---------------------------\n\n");
+    printf("═══════════════════════════\n\n");
 
     // Segunda passagem para listagem detalhada de ativos
     arq_produtos = fopen(PRODUTOS_FILE, "rb");
     if (arq_produtos != NULL)
     {
-        printf("--- Produtos ATIVOS ---\n");
-        if (total_ativos > 0)
-        {
-            printf("ID | Nome do Produto        | Quantidade | Validade\n");
-            printf("---|------------------------|------------|----------\n");
-        }
+        printf("═══ Produtos ATIVOS ═══\n");
+        printf("╔════╦════════════════════════╦════════════╦════════════╗\n");
+        printf("║ ID ║ Nome do Produto        ║ Quantidade ║ Validade   ║\n");
+        printf("╠════╬════════════════════════╬════════════╬════════════╣\n");
         while (fread(&produto_lido, sizeof(Produto), 1, arq_produtos))
         {
             if (produto_lido.ativo == 1)
             {
-                printf("%-2d | %-22s | %-10d | %s\n",
+                printf("║ %-2d ║ %-22s ║ %-10d ║ %-10s ║\n",
                        produto_lido.id, produto_lido.nome,
                        produto_lido.quantidade, produto_lido.validade);
                 tem_registro = 1;
             }
         }
+        printf("╚════╩════════════════════════╩════════════╩════════════╝\n");
         exibir_mensagem_sem_resultado_estoque(tem_registro);
         printf("\n");
 
@@ -554,27 +517,26 @@ void relatorio_completo_estoque(void)
         rewind(arq_produtos);
         tem_registro = 0; // Reset para a próxima listagem
 
-        printf("--- Produtos INATIVOS ---\n");
-        if (total_inativos > 0)
-        {
-            printf("ID | Nome do Produto        | Quantidade | Validade\n");
-            printf("---|------------------------|------------|----------\n");
-        }
+        printf("═══ Produtos INATIVOS ═══\n");
+        printf("╔════╦════════════════════════╦════════════╦════════════╗\n");
+        printf("║ ID ║ Nome do Produto        ║ Quantidade ║ Validade   ║\n");
+        printf("╠════╬════════════════════════╬════════════╬════════════╣\n");
         while (fread(&produto_lido, sizeof(Produto), 1, arq_produtos))
         {
             if (produto_lido.ativo == 0)
             {
-                printf("%-2d | %-22s | %-10d | %s\n",
+                printf("║ %-2d ║ %-22s ║ %-10d ║ %-10s ║\n",
                        produto_lido.id, produto_lido.nome,
                        produto_lido.quantidade, produto_lido.validade);
                 tem_registro = 1;
             }
         }
+        printf("╚════╩════════════════════════╩════════════╩════════════╝\n");
         exibir_mensagem_sem_resultado_estoque(tem_registro);
         fclose(arq_produtos);
     }
 
-    printf("\n--- Fim do Relatorio ---\n");
+    printf("\n═══ Fim do Relatorio ═══\n");
     pressioneEnterParaContinuar();
 }
 
@@ -599,24 +561,26 @@ void relatorio_por_nome_estoque(void)
         return;
     }
 
-    printf("\n--- Produtos com nome contendo '%s' ---\n", nome_filtro);
-    printf("ID | Nome do Produto        | Quantidade | Validade\n");
-    printf("---|------------------------|------------|----------\n");
+    printf("\n═══ Produtos com nome contendo '%s' ═══\n", nome_filtro);
+    printf("╔════╦════════════════════════╦════════════╦════════════╗\n");
+    printf("║ ID ║ Nome do Produto        ║ Quantidade ║ Validade   ║\n");
+    printf("╠════╬════════════════════════╬════════════╬════════════╣\n");
 
     while (fread(&produto_lido, sizeof(Produto), 1, arq_produtos))
     {
         if (produto_lido.ativo == 1 && strstr(produto_lido.nome, nome_filtro) != NULL)
         {
-            printf("%-2d | %-22s | %-10d | %s\n",
+            printf("║ %-2d ║ %-22s ║ %-10d ║ %-10s ║\n",
                    produto_lido.id, produto_lido.nome,
                    produto_lido.quantidade, produto_lido.validade);
             tem_registro = 1;
         }
     }
+    printf("╚════╩════════════════════════╩════════════╩════════════╝\n");
     exibir_mensagem_sem_resultado_estoque(tem_registro);
 
     fclose(arq_produtos);
-    printf("\n--- Fim do Relatorio ---\n");
+    printf("\n═══ Fim do Relatorio ═══\n");
     pressioneEnterParaContinuar();
 }
 
@@ -660,24 +624,26 @@ void relatorio_por_status_estoque(void)
         return;
     }
 
-    printf("\n--- Produtos com status '%s' ---\n", status_texto);
-    printf("ID | Nome do Produto        | Quantidade | Validade\n");
-    printf("---|------------------------|------------|----------\n");
+    printf("\n═══ Produtos com status '%s' ═══\n", status_texto);
+    printf("╔════╦════════════════════════╦════════════╦════════════╗\n");
+    printf("║ ID ║ Nome do Produto        ║ Quantidade ║ Validade   ║\n");
+    printf("╠════╬════════════════════════╬════════════╬════════════╣\n");
 
     while (fread(&produto_lido, sizeof(Produto), 1, arq_produtos))
     {
         if (produto_lido.ativo == status_filtro)
         {
-            printf("%-2d | %-22s | %-10d | %s\n",
+            printf("║ %-2d ║ %-22s ║ %-10d ║ %-10s ║\n",
                    produto_lido.id, produto_lido.nome,
                    produto_lido.quantidade, produto_lido.validade);
             tem_registro = 1;
         }
     }
+    printf("╚════╩════════════════════════╩════════════╩════════════╝\n");
     exibir_mensagem_sem_resultado_estoque(tem_registro);
 
     fclose(arq_produtos);
-    printf("\n--- Fim do Relatorio ---\n");
+    printf("\n═══ Fim do Relatorio ═══\n");
     pressioneEnterParaContinuar();
 }
 
@@ -690,16 +656,16 @@ void submenu_relatorios_estoque(void)
     do
     {
         limparTela();
-        printf("----------------------------------------\n");
-        printf("///      Submenu de Relatorios       ///\n");
-        printf("----------------------------------------\n");
-        printf("1. Relatorio Completo (Ativos e Inativos)\n");
-        printf("2. Relatorio por Nome (Parcial)\n");
-        printf("3. Relatorio por Status (Ativo/Inativo)\n");
-        printf("4. Itens em Falta (Estoque Baixo)\n");
-        printf("5. Produtos com Validade Proxima\n");
-        printf("0. Voltar ao menu principal de estoque\n");
-        printf("----------------------------------------\n");
+        printf("╔═════════════════════════════════════════════╗\n");
+        printf("║            Submenu de Relatorios            ║\n");
+        printf("╠═════════════════════════════════════════════╣\n");
+        printf("║ 1. Relatorio Completo (Ativos e Inativos)   ║\n");
+        printf("║ 2. Relatorio por Nome (Parcial)             ║\n");
+        printf("║ 3. Relatorio por Status (Ativo/Inativo)     ║\n");
+        printf("║ 4. Itens em Falta (Estoque Baixo)           ║\n");
+        printf("║ 5. Produtos com Validade Proxima            ║\n");
+        printf("║ 0. Voltar ao menu principal de estoque      ║\n");
+        printf("╚═════════════════════════════════════════════╝\n");
 
         // Leitura segura de Opção
         do
@@ -749,16 +715,16 @@ void modulo_estoque(void)
     do
     {
         limparTela();
-        printf("╔════════════════════════════════════════╗\n");
-        printf("║           Módulo de Estoque            ║\n");
-        printf("╠════════════════════════════════════════╣\n");
-        printf("║ 1. Cadastrar Produto                   ║\n");
-        printf("║ 2. Pesquisar Produto (por ID)          ║\n");
-        printf("║ 3. Listar Produtos                     ║\n");
-        printf("║ 4. Movimentar Estoque (Entrada/Saída)  ║\n");
-        printf("║ 5. Gerar Relatórios                    ║\n");
-        printf("║ 0. Voltar ao menu principal            ║\n");
-        printf("╚════════════════════════════════════════╝\n");
+        printf("╔═════════════════════════════════════════════╗\n");
+        printf("║              Módulo de Estoque              ║\n");
+        printf("╠═════════════════════════════════════════════╣\n");
+        printf("║ 1. Cadastrar Produto                        ║\n");
+        printf("║ 2. Pesquisar Produto (por ID)               ║\n");
+        printf("║ 3. Listar Produtos                          ║\n");
+        printf("║ 4. Movimentar Estoque (Entrada/Saída)       ║\n");
+        printf("║ 5. Gerar Relatórios                         ║\n");
+        printf("║ 0. Voltar ao menu principal                 ║\n");
+        printf("╚═════════════════════════════════════════════╝\n");
 
         // Leitura segura de Opção
         do

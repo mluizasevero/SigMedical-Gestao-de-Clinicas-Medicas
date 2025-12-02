@@ -45,7 +45,7 @@ void exibir_historico_movimentacoes(void)
 
     limparTela();
     printf("╔════════════════════════════════════════╗\n");
-    printf("║    Historico de Movimentacoes          ║\n");
+    printf("║       Historico de Movimentacoes       ║\n");
     printf("╚════════════════════════════════════════╝\n");
 
    
@@ -57,9 +57,9 @@ void exibir_historico_movimentacoes(void)
         return;
     }
 
-    printf("╔════════════════════════════════════════════════════════╗\n");
+    printf("╔════════════╦════════════╦════════════╦═════════════════╗\n");
     printf("║ ID Produto ║ Tipo       ║ Quantidade ║ Data            ║\n");
-    printf("╠════════════════════════════════════════════════════════╣\n");
+    printf("╠════════════╬════════════╬════════════╬═════════════════╣\n");
 
 
     while (fread(&mov_lida, sizeof(Movimentacao), 1, arq_movimentacoes))
