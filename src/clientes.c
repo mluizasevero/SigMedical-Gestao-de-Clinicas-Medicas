@@ -8,6 +8,52 @@
 // Definição de CLIENTES FILE fora de utils.h
 #define CLIENTES_FILE DATA_DIR PATH_SEPARATOR "clientes.dat"
 
+// Estrutura para lista dinâmica direta
+typedef struct {
+    Cliente *clientes;
+    size_t tamanho;
+    size_t capacidade;
+} ListaClientes;
+
+// Função para inicializar a lista dinâmica direta
+void inicializar_lista(ListaClientes *lista, size_t capacidade_inicial) {
+    lista->clientes = (Cliente *)malloc(capacidade_inicial * sizeof(Cliente));
+    lista->tamanho = 0;
+    lista->capacidade = capacidade_inicial;
+}
+
+// Função para adicionar um cliente à lista dinâmica direta
+void adicionar_cliente(ListaClientes *lista, Cliente cliente) {
+    if (lista->tamanho == lista->capacidade) {
+        lista->capacidade *= 2;
+        lista->clientes = (Cliente *)realloc(lista->clientes, lista->capacidade * sizeof(Cliente));
+    }
+    lista->clientes[lista->tamanho++] = cliente;
+}
+
+// Função para liberar a memória da lista dinâmica direta
+void liberar_lista_clientes(ListaClientes *lista) {
+    free(lista->clientes);
+    lista->clientes = NULL;
+    lista->tamanho = 0;
+    lista->capacidade = 0;
+}
+
+// Função para carregar clientes do arquivo para a lista dinâmica direta
+void carregar_clientes_para_lista(ListaClientes *lista) {
+    FILE *arq_clientes = fopen(CLIENTES_FILE, "rb");
+    if (arq_clientes == NULL) {
+        return;
+    }
+
+    Cliente cliente_lido;
+    while (fread(&cliente_lido, sizeof(Cliente), 1, arq_clientes)) {
+        adicionar_cliente(lista, cliente_lido);
+    }
+
+    fclose(arq_clientes);
+}
+
 // Função interna para verificar se um CPF já existe
 // Retorna 1 se já existe, 0 se não
 int verifica_cpf_cliente_cadastrado(const char *cpf)
@@ -367,89 +413,62 @@ void listar_clientes(void)
 
 // Função para exibir o relatório completo de clientes ativos e inativos
 void relatorio_completo_clientes(void) {
-    Cliente cliente_lido;
-    FILE *arq_clientes;
-    int total_ativos = 0;
-    int total_inativos = 0;
-    int total_geral = 0;
-    int tem_registro = 0;
-
     exibir_titulo_relatorio_cliente("Relatorio Completo de Clientes");
 
-    arq_clientes = fopen(CLIENTES_FILE, "rb");
-    if (arq_clientes == NULL)
-    {
+    ListaClientes lista;
+    inicializar_lista(&lista, 10);
+    carregar_clientes_para_lista(&lista);
+
+    if (lista.tamanho == 0) {
         printf("Nenhum cliente cadastrado.\n");
+        liberar_lista_clientes(&lista);
         pressioneEnterParaContinuar();
         return;
     }
 
-    // Primeira passagem para contagem
-    while (fread(&cliente_lido, sizeof(Cliente), 1, arq_clientes))
-    {
-        if (cliente_lido.ativo == 1)
-        {
+    int total_ativos = 0, total_inativos = 0;
+
+    // Contagem de clientes
+    for (size_t i = 0; i < lista.tamanho; i++) {
+        if (lista.clientes[i].ativo == 1) {
             total_ativos++;
-        }
-        else
-        {
+        } else {
             total_inativos++;
         }
-        total_geral++;
     }
-    fclose(arq_clientes);
 
     // Impressão das estatísticas
     printf("\n--- Estatisticas Gerais ---\n");
-    printf("Total de clientes cadastrados: %d\n", total_geral);
+    printf("Total de clientes cadastrados: %zu\n", lista.tamanho);
     printf("Total de clientes ATIVOS:      %d\n", total_ativos);
     printf("Total de clientes INATIVOS:    %d\n", total_inativos);
     printf("---------------------------\n\n");
 
-    // Segunda passagem para listagem detalhada de ativos
-    arq_clientes = fopen(CLIENTES_FILE, "rb");
-    if (arq_clientes != NULL)
-    {
-        printf("--- Clientes ATIVOS ---\n");
-        if (total_ativos > 0) {
-            printf("Nome do Cliente          | CPF           | Telefone      | Email\n");
-            printf("-------------------------|---------------|---------------|------------------\n");
+    // Listagem detalhada de clientes ativos
+    printf("--- Clientes ATIVOS ---\n");
+    printf("Nome do Cliente          | CPF           | Telefone      | Email\n");
+    printf("-------------------------|---------------|---------------|------------------\n");
+    for (size_t i = 0; i < lista.tamanho; i++) {
+        if (lista.clientes[i].ativo == 1) {
+            printf("%-22s | %-13s | %-13s | %s\n",
+                   lista.clientes[i].nome, lista.clientes[i].cpf,
+                   lista.clientes[i].telefone, lista.clientes[i].email);
         }
-        while (fread(&cliente_lido, sizeof(Cliente), 1, arq_clientes))
-        {
-            if (cliente_lido.ativo == 1)
-            {
-                printf("%-22s | %-13s | %-13s | %s\n",
-                       cliente_lido.nome, cliente_lido.cpf,
-                       cliente_lido.telefone, cliente_lido.email);
-                tem_registro = 1;
-            }
-        }
-        exibir_mensagem_sem_resultado_cliente(tem_registro);
-        printf("\n");
-
-        // Reposiciona o ponteiro do arquivo para o início novamente
-        rewind(arq_clientes);
-        tem_registro = 0; // Reset para a próxima listagem
-
-        printf("--- Clientes INATIVOS ---\n");
-        if (total_inativos > 0) {
-            printf("Nome do Cliente          | CPF           | Telefone      | Email\n");
-            printf("-------------------------|---------------|---------------|------------------\n");
-        }
-        while (fread(&cliente_lido, sizeof(Cliente), 1, arq_clientes))
-        {
-            if (cliente_lido.ativo == 0)
-            {
-                printf("%-22s | %-13s | %-13s | %s\n",
-                       cliente_lido.nome, cliente_lido.cpf,
-                       cliente_lido.telefone, cliente_lido.email);
-                tem_registro = 1;
-            }
-        }
-        exibir_mensagem_sem_resultado_cliente(tem_registro);
-        fclose(arq_clientes);
     }
+
+    // Listagem detalhada de clientes inativos
+    printf("\n--- Clientes INATIVOS ---\n");
+    printf("Nome do Cliente          | CPF           | Telefone      | Email\n");
+    printf("-------------------------|---------------|---------------|------------------\n");
+    for (size_t i = 0; i < lista.tamanho; i++) {
+        if (lista.clientes[i].ativo == 0) {
+            printf("%-22s | %-13s | %-13s | %s\n",
+                   lista.clientes[i].nome, lista.clientes[i].cpf,
+                   lista.clientes[i].telefone, lista.clientes[i].email);
+        }
+    }
+
+    liberar_lista_clientes(&lista);
 
     printf("\n--- Fim do Relatorio ---\n");
     pressioneEnterParaContinuar();
