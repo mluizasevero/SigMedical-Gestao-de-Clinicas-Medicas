@@ -11,6 +11,7 @@ SOURCES = projeto_final.c \
           src/consultas.c \
           src/estoque.c \
           src/movimentacao.c \
+          src/relatorios.c \
 		  src/validador.c
 
 
