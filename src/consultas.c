@@ -116,7 +116,8 @@ void pesquisar_consulta(void)
     Consulta consulta_lida;
     FILE *arq_consultas;
     char data_hora[18];
-    char medico_esp[51];
+    /* Espaço suficiente para "nome_medico (especialidade)" quando cada campo pode ter até 50 chars */
+    char medico_esp[105];
 
     limparTela();
     printf("╔════════════════════════════════════════╗\n");
@@ -143,8 +144,8 @@ void pesquisar_consulta(void)
     {
         if (strcmp(consulta_lida.cpf_paciente, cpf_pesquisa) == 0 && consulta_lida.ativo == 1)
         {
-            sprintf(data_hora, "%s %s", consulta_lida.data, consulta_lida.hora);
-            sprintf(medico_esp, "%s (%s)", consulta_lida.nome_medico, consulta_lida.especialidade);
+            snprintf(data_hora, sizeof(data_hora), "%s %s", consulta_lida.data, consulta_lida.hora);
+            snprintf(medico_esp, sizeof(medico_esp), "%s (%s)", consulta_lida.nome_medico, consulta_lida.especialidade);
             printf("║ %-24s ║ %-15s ║ %-34s ║ %-8s ║\n",
                    consulta_lida.nome_paciente, data_hora, medico_esp, consulta_lida.status);
             encontrado = 1;
@@ -503,7 +504,7 @@ void relatorio_consultas_por_periodo(void)
 
             if (data_consulta_int >= data_inicio_int && data_consulta_int <= data_fim_int)
             {
-                sprintf(data_hora, "%s %s", consulta_lida.data, consulta_lida.hora);
+                snprintf(data_hora, sizeof(data_hora), "%s %s", consulta_lida.data, consulta_lida.hora);
                 printf("║ %-24s ║ %-15s ║ %-24s ║ %-8s ║\n",
                        consulta_lida.nome_paciente, data_hora, consulta_lida.nome_medico, consulta_lida.status);
                 tem_registro = 1;
@@ -527,7 +528,7 @@ void relatorio_consultas_paciente(void)
     Consulta consulta_lida;
     FILE *arq_consultas;
     char data_hora[18];
-    char medico_esp[51];
+    char medico_esp[105];
 
     limparTela();
     printf("╔════════════════════════════════════════╗\n");
@@ -604,8 +605,8 @@ void relatorio_consultas_paciente(void)
 
             if (match)
             {
-                sprintf(data_hora, "%s %s", consulta_lida.data, consulta_lida.hora);
-                sprintf(medico_esp, "%s (%s)", consulta_lida.nome_medico, consulta_lida.especialidade);
+                snprintf(data_hora, sizeof(data_hora), "%s %s", consulta_lida.data, consulta_lida.hora);
+                snprintf(medico_esp, sizeof(medico_esp), "%s (%s)", consulta_lida.nome_medico, consulta_lida.especialidade);
                 printf("║ %-24s ║ %-13s ║ %-15s ║ %-34s ║ %-8s ║\n",
                        consulta_lida.nome_paciente, consulta_lida.cpf_paciente, data_hora, medico_esp, consulta_lida.status);
                 tem_registro = 1;
