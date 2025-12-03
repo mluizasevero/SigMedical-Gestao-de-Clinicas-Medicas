@@ -6,10 +6,9 @@
 #include "utils.h"
 #include "movimentacao.h"
 #include "validador.h"
+#include "estoque_relatorios.h"
 
 #define PRODUTOS_FILE DATA_DIR PATH_SEPARATOR "produtos.dat"
-
-#include "relatorios.h"
 
 // ------------------------------------------
 // FUNÇÃO AUXILIAR: Checa a unicidade do ID |
@@ -317,14 +316,14 @@ void listar_produtos(void)
 
 void relatorio_itens_falta(void)
 {
-    relatorios_estoque_itens_falta();
+    relatorio_estoque_itens_falta();
 }
 
 // Função para relatório de produtos com validade próxima
 // Assumindo que a data de validade está no formato "dd/mm/aaaa"
 void relatorio_validade_proxima(void)
 {
-    relatorios_estoque_validade_proxima();
+    relatorio_estoque_validade_proxima();
 }
 
 // ---------------------------------------
@@ -333,23 +332,23 @@ void relatorio_validade_proxima(void)
 
 void relatorio_completo_estoque(void)
 {
-    relatorios_estoque_completo();
+    relatorio_estoque_completo();
 }
 
 void relatorio_por_nome_estoque(void)
 {
-    relatorios_estoque_por_nome();
+    relatorio_estoque_por_nome();
 }
 
 // Função para exibir o relatório filtrado por status (ativo/inativo)
 void relatorio_por_status_estoque(void)
 {
-    relatorios_estoque_por_status();
+    relatorio_estoque_por_status();
 }
 
 void submenu_relatorios_estoque(void)
 {
-    relatorios_submenu_estoque();
+    relatorio_estoque_submenu();
 }
 
 // -------

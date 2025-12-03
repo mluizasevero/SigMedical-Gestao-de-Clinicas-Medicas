@@ -4,7 +4,7 @@
 #include "medicos.h"
 #include "utils.h"
 #include "validador.h"
-#include "relatorios.h"
+#include "medicos_relatorios.h"
 
 #define MEDICOS_FILE DATA_DIR PATH_SEPARATOR "medicos.dat"
 
@@ -466,31 +466,11 @@ void listar_medicos(void)
 // RELATÓRIOS                            |
 // ---------------------------------------
 
-// Relatórios agora centralizados em src/relatorios.c
-
-void relatorio_completo(void)
-{
-    relatorios_medicos_completo();
-}
-
-void relatorio_por_especialidade(void)
-{
-    relatorios_medicos_por_especialidade();
-}
-
-void relatorio_por_nome(void)
-{
-    relatorios_medicos_por_nome();
-}
-
-void relatorio_por_status(void)
-{
-    relatorios_medicos_por_status();
-}
+// Relatórios agora em relatorio_medicos.c
 
 void submenu_relatorios(void)
 {
-    relatorios_submenu_medicos();
+    relatorio_medicos_submenu();
 }
 
 // -------

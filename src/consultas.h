@@ -23,10 +23,5 @@ void excluir_consulta(void);
 void confirmar_presenca(void);
 
 void gerar_relatorios_consultas(void);
-void relatorio_consultas_medico(void);
-void relatorio_consultas_por_periodo(void);
-void relatorio_consultas_paciente(void);
-void relatorio_consultas_agendadas(void);
-void relatorio_consultas_canceladas(void);
 
 #endif

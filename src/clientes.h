@@ -18,10 +18,4 @@ void alterar_cliente(void);
 void excluir_cliente(void);
 void listar_clientes(void);
 
-// Declarações para os novos relatórios
-void submenu_relatorios_clientes(void);
-void relatorio_completo_clientes(void);
-void relatorio_por_nome_cliente(void);
-void relatorio_por_status_cliente(void);
-
 #endif

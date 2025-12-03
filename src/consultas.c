@@ -5,7 +5,7 @@
 #include "consultas.h"
 #include "utils.h"
 #include "validador.h"
-#include "relatorios.h"
+#include "consultas_relatorios.h"
 
 #define CONSULTAS_FILE DATA_DIR PATH_SEPARATOR "consultas.dat"
 
@@ -372,21 +372,6 @@ void confirmar_presenca(void)
     pressioneEnterParaContinuar();
 }
 
-void relatorio_consultas_medico(void)
-{
-    relatorios_consultas_medico();
-}
-
-void relatorio_consultas_por_periodo(void)
-{
-    relatorios_consultas_por_periodo();
-}
-
-void relatorio_consultas_paciente(void)
-{
-    relatorios_consultas_paciente();
-}
-
 // ... (Funções relatorio_consultas_agendadas e relatorio_consultas_canceladas
 //     não recebem input, então não precisam de mudanças, exceto pela
 //     checagem de status em relatorio_consultas_canceladas que está correta) ...
@@ -441,61 +426,7 @@ void gerenciar_agendamentos(void)
 
 void gerar_relatorios_consultas(void)
 {
-    int opcao;
-    char bufferOpcao[5]; // Buffer de leitura
-
-    do
-    {
-        limparTela();
-        printf("╔════════════════════════════════════════╗\n");
-        printf("║            Gerar Relatórios            ║\n");
-        printf("╠════════════════════════════════════════╣\n");
-        printf("║ 1. Consultas por Médico                ║\n");
-        printf("║ 2. Consultas por Paciente (Nome/CPF)   ║\n");
-        printf("║ 3. Consultas por Período               ║\n");
-        printf("║ 4. Consultas Agendadas (Geral)         ║\n");
-        printf("║ 5. Consultas Canceladas (Geral)        ║\n");
-        printf("║ 0. Voltar                              ║\n");
-        printf("╚════════════════════════════════════════╝\n");
-
-        // Leitura de menu segura
-        do
-        {
-            printf(">>> Escolha a opcao: ");
-            lerString(bufferOpcao, 5);
-            char *endptr;
-            opcao = strtol(bufferOpcao, &endptr, 10);
-            if (endptr == bufferOpcao || *endptr != '\0')
-            {
-                opcao = -1;
-            }
-        } while (!validarOpcaoMenu(opcao, 0, 5));
-
-        switch (opcao)
-        {
-        case 1:
-            relatorio_consultas_medico();
-            break;
-        case 2:
-            relatorio_consultas_paciente(); // Chamada da nova função
-            break;
-        case 3:
-            relatorio_consultas_por_periodo();
-            break;
-        case 4:
-            // relatorio_consultas_agendadas();
-            printf("\nFuncionalidade em desenvolvimento.\n");
-            pressioneEnterParaContinuar();
-            break;
-        case 5:
-            // relatorio_consultas_canceladas();
-            printf("\nFuncionalidade em desenvolvimento.\n");
-            pressioneEnterParaContinuar();
-            break;
-        case 0:
-            break;
-        }
-    } while (opcao != 0);
+    relatorio_consultas_submenu();
 }
 
 void modulo_consultas(void)
