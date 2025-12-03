@@ -30,6 +30,32 @@ static void exibir_mensagem_sem_resultado_estoque(int tem_registro)
     }
 }
 
+// Função auxiliar para verificar se um produto está vencido
+// Retorna 1 se vencido, 0 se ainda válido
+static int produto_vencido(const char *validade)
+{
+    int dia, mes, ano;
+    if (sscanf(validade, "%d/%d/%d", &dia, &mes, &ano) != 3)
+    {
+        return 0; // Se não conseguir parsear, considera válido
+    }
+
+    time_t t = time(NULL);
+    struct tm tm_validade = {0};
+    tm_validade.tm_mday = dia;
+    tm_validade.tm_mon = mes - 1;
+    tm_validade.tm_year = ano - 1900;
+
+    time_t t_validade = mktime(&tm_validade);
+    if (t_validade == -1)
+    {
+        return 0;
+    }
+
+    double diff_segundos = difftime(t_validade, t);
+    return (diff_segundos < 0) ? 1 : 0; // Se diferença negativa, está vencido
+}
+
 void relatorio_estoque_itens_falta(void)
 {
     Produto produto_lido;
@@ -38,7 +64,7 @@ void relatorio_estoque_itens_falta(void)
     const int LIMITE_MINIMO = 5;
 
     exibir_titulo_relatorio_estoque("Itens em Falta (Estoque Baixo)");
-    printf("Itens com quantidade igual ou inferior a %d:\n\n", LIMITE_MINIMO);
+    printf("Itens com quantidade igual ou inferior a %d (excluindo vencidos):\n\n", LIMITE_MINIMO);
 
     arq_produtos = fopen(PRODUTOS_FILE, "rb");
     if (arq_produtos == NULL)
@@ -48,25 +74,28 @@ void relatorio_estoque_itens_falta(void)
         return;
     }
 
-    printf("╔════╦════════════════════════╦════════════╗\n");
-    printf("║ ID ║ Nome do Produto        ║ Quantidade ║\n");
-    printf("╠════╬════════════════════════╬════════════╣\n");
+    printf("╔════╦════════════════════════╦════════════╦════════════╗\n");
+    printf("║ ID ║ Nome do Produto        ║ Quantidade ║ Validade   ║\n");
+    printf("╠════╬════════════════════════╬════════════╬════════════╣\n");
 
     while (fread(&produto_lido, sizeof(Produto), 1, arq_produtos))
     {
-        if (produto_lido.ativo == 1 && produto_lido.quantidade <= LIMITE_MINIMO)
+        // Só mostra se está ativo, com estoque baixo E não está vencido
+        if (produto_lido.ativo == 1 && 
+            produto_lido.quantidade <= LIMITE_MINIMO && 
+            !produto_vencido(produto_lido.validade))
         {
-            printf("║ %-2d ║ %-22s ║ %-10d ║\n",
-                   produto_lido.id, produto_lido.nome, produto_lido.quantidade);
+            printf("║ %-2d ║ %-22s ║ %-10d ║ %-10s ║\n",
+                   produto_lido.id, produto_lido.nome, produto_lido.quantidade, produto_lido.validade);
             encontrado = 1;
         }
     }
-    printf("╚════╩════════════════════════╩════════════╝\n");
+    printf("╚════╩════════════════════════╩════════════╩════════════╝\n");
     fclose(arq_produtos);
 
     if (!encontrado)
     {
-        printf("Nenhum item em falta no estoque.\n");
+        printf("\nNenhum item em falta no estoque (produtos validos).\n");
     }
     pressioneEnterParaContinuar();
 }
@@ -319,6 +348,68 @@ void relatorio_estoque_por_status(void)
     pressioneEnterParaContinuar();
 }
 
+void relatorio_estoque_produtos_vencidos(void)
+{
+    Produto produto_lido;
+    FILE *arq_produtos;
+    int encontrado = 0;
+    time_t t = time(NULL);
+
+    exibir_titulo_relatorio_estoque("Produtos Vencidos");
+
+    arq_produtos = fopen(PRODUTOS_FILE, "rb");
+    if (arq_produtos == NULL)
+    {
+        printf("Nenhum produto cadastrado.\n");
+        pressioneEnterParaContinuar();
+        return;
+    }
+
+    printf("\n═══ Produtos com validade expirada ═══\n");
+    printf("╔════╦════════════════════════╦════════════╦════════════╦══════════════════╗\n");
+    printf("║ ID ║ Nome do Produto        ║ Quantidade ║ Validade   ║ Dias Vencido     ║\n");
+    printf("╠════╬════════════════════════╬════════════╬════════════╬══════════════════╣\n");
+
+    while (fread(&produto_lido, sizeof(Produto), 1, arq_produtos))
+    {
+        if (produto_lido.ativo == 1)
+        {
+            int dia, mes, ano;
+            if (sscanf(produto_lido.validade, "%d/%d/%d", &dia, &mes, &ano) == 3)
+            {
+                struct tm tm_validade = {0};
+                tm_validade.tm_mday = dia;
+                tm_validade.tm_mon = mes - 1;
+                tm_validade.tm_year = ano - 1900;
+
+                time_t t_validade = mktime(&tm_validade);
+                if (t_validade != -1)
+                {
+                    double diff_segundos = difftime(t_validade, t);
+                    int diff_dias = (int)(diff_segundos / (60 * 60 * 24));
+
+                    if (diff_dias < 0)
+                    {
+                        printf("║ %-2d ║ %-22s ║ %-10d ║ %-10s ║ %-16d ║\n",
+                               produto_lido.id, produto_lido.nome, produto_lido.quantidade, 
+                               produto_lido.validade, -diff_dias);
+                        encontrado = 1;
+                    }
+                }
+            }
+        }
+    }
+    printf("╚════╩════════════════════════╩════════════╩════════════╩══════════════════╝\n");
+    fclose(arq_produtos);
+
+    if (!encontrado)
+    {
+        printf("\nNenhum produto vencido encontrado.\n");
+    }
+    printf("\n═══ Fim do Relatorio ═══\n");
+    pressioneEnterParaContinuar();
+}
+
 void relatorio_estoque_submenu(void)
 {
     int opcao_relatorio;
@@ -335,6 +426,7 @@ void relatorio_estoque_submenu(void)
         printf("║ 3. Relatorio por Status (Ativo/Inativo)     ║\n");
         printf("║ 4. Itens em Falta (Estoque Baixo)           ║\n");
         printf("║ 5. Produtos com Validade Proxima            ║\n");
+        printf("║ 6. Produtos Vencidos                        ║\n");
         printf("║ 0. Voltar ao menu principal de estoque      ║\n");
         printf("╚═════════════════════════════════════════════╝\n");
 
@@ -349,7 +441,7 @@ void relatorio_estoque_submenu(void)
             {
                 opcao_relatorio = -1;
             }
-        } while (!validarOpcaoMenu(opcao_relatorio, 0, 5));
+        } while (!validarOpcaoMenu(opcao_relatorio, 0, 6));
 
         switch (opcao_relatorio)
         {
@@ -367,6 +459,9 @@ void relatorio_estoque_submenu(void)
             break;
         case 5:
             relatorio_estoque_validade_proxima();
+            break;
+        case 6:
+            relatorio_estoque_produtos_vencidos();
             break;
         case 0:
             break;
