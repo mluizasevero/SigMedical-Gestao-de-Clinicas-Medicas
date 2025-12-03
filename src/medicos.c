@@ -530,25 +530,27 @@ void listar_medicos(void)
         return;
     }
 
-    printf("╔════════════════════════════════════════════════════════════╗\n");
-    printf("║ ID ║ Nome do Medico        ║ CPF           ║ Especialidade ║\n");
-    printf("╠════════════════════════════════════════════════════════════╣\n");
+    // Cabeçalho da tabela
+    printf("╔════╦════════════════════════╦═══════════════╦══════════════════════════╦═══════════════╗\n");
+    printf("║ ID ║ Nome do Medico         ║ CPF           ║ Especialidade            ║ Telefone      ║\n");
+    printf("╠════╬════════════════════════╬═══════════════╬══════════════════════════╬═══════════════╣\n");
 
     while (fread(&medico_lido, sizeof(Medico), 1, arq_medicos))
     {
         if (medico_lido.ativo == 1)
         {
-            printf("║ %-2d ║ %-22s║ %-11s║ %s\n",
+            printf("║ %-2d ║ %-22s ║ %-13s ║ %-24s ║ %-13s ║\n",
                    medico_lido.id, medico_lido.nome,
-                   medico_lido.cpf, medico_lido.especialidade);
+                   medico_lido.cpf, medico_lido.especialidade, medico_lido.telefone);
             tem_medico = 1;
         }
     }
+    printf("╚════╩════════════════════════╩═══════════════╩══════════════════════════╩═══════════════╝\n");
     fclose(arq_medicos);
 
     if (!tem_medico)
     {
-        printf("Nenhum medico ativo encontrado.\n");
+        printf("\nNenhum medico ativo encontrado.\n");
     }
     pressioneEnterParaContinuar();
 }
