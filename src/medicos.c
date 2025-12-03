@@ -4,6 +4,7 @@
 #include "medicos.h"
 #include "utils.h"
 #include "validador.h"
+#include "medicos_relatorios.h"
 
 #define MEDICOS_FILE DATA_DIR PATH_SEPARATOR "medicos.dat"
 
@@ -46,16 +47,50 @@ int medico_existe(const char *cpf, int id_a_ignorar)
     return 0; // Não encontrado
 }
 
+/**
+ * Busca um médico pelo nome no arquivo.
+ * Retorna 1 se encontrado (ativo), 0 se não encontrado.
+ * Se especialidade_retorno não for NULL, copia a especialidade do médico encontrado.
+ */
+int buscar_medico_por_nome(const char *nome, char *especialidade_retorno)
+{
+    Medico medico_lido;
+    FILE *arq_medicos = fopen(MEDICOS_FILE, "rb");
+
+    if (arq_medicos == NULL)
+    {
+        return 0; // Se o arquivo não existe, médico não está cadastrado
+    }
+
+    while (fread(&medico_lido, sizeof(Medico), 1, arq_medicos))
+    {
+        if (medico_lido.ativo == 1 && strcmp(medico_lido.nome, nome) == 0)
+        {
+            if (especialidade_retorno != NULL)
+            {
+                strcpy(especialidade_retorno, medico_lido.especialidade);
+            }
+            fclose(arq_medicos);
+            return 1; // Médico encontrado
+        }
+    }
+    fclose(arq_medicos);
+    return 0; // Não encontrado
+}
+
 // Estrutura para lista dinâmica
-typedef struct No {
+typedef struct No
+{
     Medico medico;
     struct No *proximo;
 } No;
 
 // Função para criar um novo nó
-No* criar_no(Medico medico) {
+No *criar_no(Medico medico)
+{
     No *novo_no = (No *)malloc(sizeof(No));
-    if (novo_no != NULL) {
+    if (novo_no != NULL)
+    {
         novo_no->medico = medico;
         novo_no->proximo = NULL;
     }
@@ -63,13 +98,18 @@ No* criar_no(Medico medico) {
 }
 
 // Função para adicionar um médico à lista
-void adicionar_no(No **cabeca, Medico medico) {
+void adicionar_no(No **cabeca, Medico medico)
+{
     No *novo_no = criar_no(medico);
-    if (*cabeca == NULL) {
+    if (*cabeca == NULL)
+    {
         *cabeca = novo_no;
-    } else {
+    }
+    else
+    {
         No *temp = *cabeca;
-        while (temp->proximo != NULL) {
+        while (temp->proximo != NULL)
+        {
             temp = temp->proximo;
         }
         temp->proximo = novo_no;
@@ -77,9 +117,11 @@ void adicionar_no(No **cabeca, Medico medico) {
 }
 
 // Função para liberar a memória da lista
-void liberar_lista_medicos(No *cabeca) {
+void liberar_lista_medicos(No *cabeca)
+{
     No *temp;
-    while (cabeca != NULL) {
+    while (cabeca != NULL)
+    {
         temp = cabeca;
         cabeca = cabeca->proximo;
         free(temp);
@@ -87,15 +129,18 @@ void liberar_lista_medicos(No *cabeca) {
 }
 
 // Função para carregar médicos do arquivo para a lista dinâmica
-No* carregar_medicos_para_lista() {
+No *carregar_medicos_para_lista()
+{
     FILE *arq_medicos = fopen(MEDICOS_FILE, "rb");
-    if (arq_medicos == NULL) {
+    if (arq_medicos == NULL)
+    {
         return NULL;
     }
 
     No *cabeca = NULL;
     Medico medico_lido;
-    while (fread(&medico_lido, sizeof(Medico), 1, arq_medicos)) {
+    while (fread(&medico_lido, sizeof(Medico), 1, arq_medicos))
+    {
         adicionar_no(&cabeca, medico_lido);
     }
 
@@ -115,19 +160,24 @@ void cadastrar_medico(void)
 
     limparTela();
     printf("╔══════════════════════════════════════╗\n");
-    printf("║      Cadastrar Novo Medico           ║\n");
+    printf("║        Cadastrar Novo Medico         ║\n");
     printf("╚══════════════════════════════════════╝\n");
-
+    printf("(Digite 0 a qualquer momento para cancelar)\n");
 
     // Validação de ID único e positivo
     do
     {
         printf("\nInforme o ID do medico (inteiro positivo): ");
         lerString(buffer, 5);
+        if (verificarCancelamento(buffer))
+        {
+            pressioneEnterParaContinuar();
+            return;
+        }
         id_temp = validarInteiroPositivo(buffer);
 
         if (id_temp > 0 && medico_existe("", id_temp) == 2)
-        { // Checa apenas a unicidade do ID
+        {
             printf("! Erro: ID %d ja cadastrado ou ativo. Use outro ID.\n", id_temp);
             id_temp = -1;
         }
@@ -139,6 +189,11 @@ void cadastrar_medico(void)
     {
         printf("Informe o nome completo: ");
         lerString(buffer, 50);
+        if (verificarCancelamento(buffer))
+        {
+            pressioneEnterParaContinuar();
+            return;
+        }
     } while (!validarNome(buffer));
     strcpy(novo_medico.nome, buffer);
 
@@ -147,12 +202,18 @@ void cadastrar_medico(void)
     {
         printf("Informe o CPF (apenas numeros, 11 digitos): ");
         lerString(buffer, 15);
+        if (verificarCancelamento(buffer))
+        {
+            pressioneEnterParaContinuar();
+            return;
+        }
         if (!validarCPF(buffer))
-        { 
+        {
+            printf("! CPF invalido. Tente novamente.\n");
             continue;
         }
         if (medico_existe(buffer, -1))
-        { // -1 para não ignorar nenhum ID
+        {
             printf("! Erro: CPF ja cadastrado.\n");
         }
     } while (!validarCPF(buffer) || medico_existe(buffer, -1));
@@ -163,7 +224,12 @@ void cadastrar_medico(void)
     {
         printf("Informe a especialidade: ");
         lerString(buffer, 50);
-    } while (!validarNome(buffer)); // Reutilizando validarNome
+        if (verificarCancelamento(buffer))
+        {
+            pressioneEnterParaContinuar();
+            return;
+        }
+    } while (!validarNome(buffer));
     strcpy(novo_medico.especialidade, buffer);
 
     // Validação do Telefone
@@ -171,6 +237,11 @@ void cadastrar_medico(void)
     {
         printf("Informe o telefone (DDNNNNNNNN): ");
         lerString(buffer, 15);
+        if (verificarCancelamento(buffer))
+        {
+            pressioneEnterParaContinuar();
+            return;
+        }
     } while (!validarTelefone(buffer));
     strcpy(novo_medico.telefone, buffer);
 
@@ -203,11 +274,24 @@ void pesquisar_medico(void)
 
     limparTela();
     printf("╔════════════════════════════════════════╗\n");
-    printf("║     Pesquisar Medico por CPF           ║\n");
+    printf("║        Pesquisar Medico por CPF        ║\n");
     printf("╚════════════════════════════════════════╝\n");
+    printf("(Digite 0 para cancelar)\n");
 
-    printf("Informe o CPF do medico a ser pesquisado: ");
-    lerString(cpf_busca, 15);
+    do
+    {
+        printf("Informe o CPF do medico a ser pesquisado: ");
+        lerString(cpf_busca, 15);
+        if (verificarCancelamento(cpf_busca))
+        {
+            pressioneEnterParaContinuar();
+            return;
+        }
+        if (!validarCPF(cpf_busca))
+        {
+            printf("! CPF invalido. Tente novamente.\n");
+        }
+    } while (!validarCPF(cpf_busca));
 
     arq_medicos = fopen(MEDICOS_FILE, "rb");
     if (arq_medicos == NULL)
@@ -221,13 +305,13 @@ void pesquisar_medico(void)
     {
         if (strcmp(medico_lido.cpf, cpf_busca) == 0 && medico_lido.ativo == 1)
         {
-            printf("\n--- Medico Encontrado ---\n");
+            printf("\n═══ Medico Encontrado ═══\n");
             printf("ID: %d\n", medico_lido.id);
             printf("Nome: %s\n", medico_lido.nome);
             printf("CPF: %s\n", medico_lido.cpf);
             printf("Especialidade: %s\n", medico_lido.especialidade);
             printf("Telefone: %s\n", medico_lido.telefone);
-            printf("---------------------------\n");
+            printf("══════════════════════════\n");
             encontrado = 1;
             break;
         }
@@ -255,15 +339,24 @@ void alterar_medico(void)
 
     limparTela();
     printf("╔══════════════════════════════════════╗\n");
-    printf("║     Alterar Dados de Medico          ║\n");
+    printf("║       Alterar Dados de Medico        ║\n");
     printf("╚══════════════════════════════════════╝\n");
-
+    printf("(Digite 0 para cancelar)\n");
 
     // Validação do CPF de busca
     do
     {
         printf("Informe o CPF do medico que deseja alterar: ");
         lerString(cpf_busca, 15);
+        if (verificarCancelamento(cpf_busca))
+        {
+            pressioneEnterParaContinuar();
+            return;
+        }
+        if (!validarCPF(cpf_busca))
+        {
+            printf("! CPF invalido. Tente novamente.\n");
+        }
     } while (!validarCPF(cpf_busca));
 
     arq_medicos = fopen(MEDICOS_FILE, "r+b");
@@ -362,15 +455,24 @@ void excluir_medico(void)
 
     limparTela();
     printf("╔════════════════════════════════════════╗\n");
-    printf("║          Excluir Medico                ║\n");
+    printf("║             Excluir Medico             ║\n");
     printf("╚════════════════════════════════════════╝\n");
-
+    printf("(Digite 0 para cancelar)\n");
 
     // Validação do CPF de busca
     do
     {
         printf("Informe o CPF do medico que deseja excluir: ");
         lerString(cpf_busca, 15);
+        if (verificarCancelamento(cpf_busca))
+        {
+            pressioneEnterParaContinuar();
+            return;
+        }
+        if (!validarCPF(cpf_busca))
+        {
+            printf("! CPF invalido. Tente novamente.\n");
+        }
     } while (!validarCPF(cpf_busca));
 
     arq_medicos = fopen(MEDICOS_FILE, "r+b");
@@ -417,7 +519,7 @@ void listar_medicos(void)
 
     limparTela();
     printf("╔══════════════════════════════════════╗\n");
-    printf("║       Listagem de Medicos            ║\n");
+    printf("║         Listagem de Medicos          ║\n");
     printf("╚══════════════════════════════════════╝\n");
 
     arq_medicos = fopen(MEDICOS_FILE, "rb");
@@ -428,26 +530,27 @@ void listar_medicos(void)
         return;
     }
 
-    printf("╔════════════════════════════════════════════════════════════╗\n");
-    printf("║ ID ║ Nome do Medico        ║ CPF           ║ Especialidade ║\n");
-    printf("╠════════════════════════════════════════════════════════════╣\n");
-
+    // Cabeçalho da tabela
+    printf("╔════╦════════════════════════╦═══════════════╦══════════════════════════╦═══════════════╗\n");
+    printf("║ ID ║ Nome do Medico         ║ CPF           ║ Especialidade            ║ Telefone      ║\n");
+    printf("╠════╬════════════════════════╬═══════════════╬══════════════════════════╬═══════════════╣\n");
 
     while (fread(&medico_lido, sizeof(Medico), 1, arq_medicos))
     {
         if (medico_lido.ativo == 1)
         {
-            printf("║ %-2d ║ %-22s║ %-11s║ %s\n",
+            printf("║ %-2d ║ %-22s ║ %-13s ║ %-24s ║ %-13s ║\n",
                    medico_lido.id, medico_lido.nome,
-                   medico_lido.cpf, medico_lido.especialidade);
+                   medico_lido.cpf, medico_lido.especialidade, medico_lido.telefone);
             tem_medico = 1;
         }
     }
+    printf("╚════╩════════════════════════╩═══════════════╩══════════════════════════╩═══════════════╝\n");
     fclose(arq_medicos);
 
     if (!tem_medico)
     {
-        printf("Nenhum medico ativo encontrado.\n");
+        printf("\nNenhum medico ativo encontrado.\n");
     }
     pressioneEnterParaContinuar();
 }
@@ -456,279 +559,11 @@ void listar_medicos(void)
 // RELATÓRIOS                            |
 // ---------------------------------------
 
-// Função auxiliar para exibir um título de seção
-void exibir_titulo_relatorio(const char* titulo) {
-    limparTela();
-    printf("---------------------------------------\n");
-    printf("///    %s    ///\n", titulo);
-    printf("---------------------------------------\n");
-}
+// Relatórios agora em relatorio_medicos.c
 
-// Função auxiliar para exibir cabeçalho da tabela de médicos
-void exibir_cabecalho_tabela(void) {
-    printf("ID | Nome do Medico         | CPF           | Especialidade\n");
-    printf("---|------------------------|---------------|------------------\n");
-}
-
-// Função auxiliar para exibir mensagem se não houver resultados
-void exibir_mensagem_sem_resultado(int tem_registro) {
-    if (!tem_registro) {
-        printf("Nenhum registro encontrado.\n");
-    }
-}
-
-// Função para exibir o relatório completo de médicos ativos e inativos
-void relatorio_completo(void) {
-    exibir_titulo_relatorio("Relatorio Completo de Medicos");
-
-    No *lista_medicos = carregar_medicos_para_lista();
-    if (lista_medicos == NULL) {
-        printf("Nenhum medico cadastrado.\n");
-        pressioneEnterParaContinuar();
-        return;
-    }
-
-    int total_ativos = 0, total_inativos = 0, total_geral = 0;
-
-    // Contagem de médicos
-    No *temp = lista_medicos;
-    while (temp != NULL) {
-        if (temp->medico.ativo == 1) {
-            total_ativos++;
-        } else {
-            total_inativos++;
-        }
-        total_geral++;
-        temp = temp->proximo;
-    }
-
-    // Impressão das estatísticas
-    printf("\n--- Estatisticas Gerais ---\n");
-    printf("Total de medicos cadastrados: %d\n", total_geral);
-    printf("Total de medicos ATIVOS:      %d\n", total_ativos);
-    printf("Total de medicos INATIVOS:    %d\n", total_inativos);
-    printf("---------------------------\n\n");
-
-    // Listagem detalhada de médicos ativos
-    printf("--- Medicos ATIVOS ---\n");
-    if (total_ativos > 0) {
-        exibir_cabecalho_tabela();
-    }
-    temp = lista_medicos;
-    while (temp != NULL) {
-        if (temp->medico.ativo == 1) {
-            printf("%-2d | %-22s | %-13s | %s\n",
-                   temp->medico.id, temp->medico.nome,
-                   temp->medico.cpf, temp->medico.especialidade);
-        }
-        temp = temp->proximo;
-    }
-
-    // Listagem detalhada de médicos inativos
-    printf("\n--- Medicos INATIVOS ---\n");
-    if (total_inativos > 0) {
-        exibir_cabecalho_tabela();
-    }
-    temp = lista_medicos;
-    while (temp != NULL) {
-        if (temp->medico.ativo == 0) {
-            printf("%-2d | %-22s | %-13s | %s\n",
-                   temp->medico.id, temp->medico.nome,
-                   temp->medico.cpf, temp->medico.especialidade);
-        }
-        temp = temp->proximo;
-    }
-
-    liberar_lista_medicos(lista_medicos);
-
-    printf("\n--- Fim do Relatorio ---\n");
-    pressioneEnterParaContinuar();
-}
-
-// Função para exibir o relatório filtrado por especialidade
-void relatorio_por_especialidade(void) {
-    Medico medico_lido;
-    FILE *arq_medicos;
-    char especialidade_filtro[51];
-    int tem_registro = 0;
-
-    exibir_titulo_relatorio("Relatorio por Especialidade");
-
-    printf("Informe a especialidade para filtrar: ");
-    lerString(especialidade_filtro, 50);
-
-    arq_medicos = fopen(MEDICOS_FILE, "rb");
-    if (arq_medicos == NULL)
-    {
-        printf("Nenhum medico cadastrado.\n");
-        pressioneEnterParaContinuar();
-        return;
-    }
-
-    printf("\n--- Medicos com especialidade '%s' ---\n", especialidade_filtro);
-    exibir_cabecalho_tabela();
-
-    while (fread(&medico_lido, sizeof(Medico), 1, arq_medicos))
-    {
-        if (medico_lido.ativo == 1 && strcmp(medico_lido.especialidade, especialidade_filtro) == 0)
-        {
-            printf("%-2d | %-22s | %-13s | %s\n",
-                   medico_lido.id, medico_lido.nome,
-                   medico_lido.cpf, medico_lido.especialidade);
-            tem_registro = 1;
-        }
-    }
-    exibir_mensagem_sem_resultado(tem_registro);
-
-    fclose(arq_medicos);
-    printf("\n--- Fim do Relatorio ---\n");
-    pressioneEnterParaContinuar();
-}
-
-// Função para exibir o relatório filtrado por nome (parcial)
-void relatorio_por_nome(void) {
-    Medico medico_lido;
-    FILE *arq_medicos;
-    char nome_filtro[51];
-    int tem_registro = 0;
-
-    exibir_titulo_relatorio("Relatorio por Nome (Parcial)");
-
-    printf("Informe parte do nome para filtrar: ");
-    lerString(nome_filtro, 50);
-
-    arq_medicos = fopen(MEDICOS_FILE, "rb");
-    if (arq_medicos == NULL)
-    {
-        printf("Nenhum medico cadastrado.\n");
-        pressioneEnterParaContinuar();
-        return;
-    }
-
-    printf("\n--- Medicos com nome contendo '%s' ---\n", nome_filtro);
-    exibir_cabecalho_tabela();
-
-    while (fread(&medico_lido, sizeof(Medico), 1, arq_medicos))
-    {
-        if (medico_lido.ativo == 1 && strstr(medico_lido.nome, nome_filtro) != NULL)
-        {
-            printf("%-2d | %-22s | %-13s | %s\n",
-                   medico_lido.id, medico_lido.nome,
-                   medico_lido.cpf, medico_lido.especialidade);
-            tem_registro = 1;
-        }
-    }
-    exibir_mensagem_sem_resultado(tem_registro);
-
-    fclose(arq_medicos);
-    printf("\n--- Fim do Relatorio ---\n");
-    pressioneEnterParaContinuar();
-}
-
-// Função para exibir o relatório filtrado por status (ativo/inativo)
-void relatorio_por_status(void) {
-    Medico medico_lido;
-    FILE *arq_medicos;
-    int status_filtro;
-    int tem_registro = 0;
-    char status_texto[10];
-
-    exibir_titulo_relatorio("Relatorio por Status");
-
-    do {
-        printf("Deseja filtrar por (1) ATIVOS ou (2) INATIVOS? (1/2): ");
-        char buffer[3];
-        lerString(buffer, 2);
-        status_filtro = validarInteiroPositivo(buffer);
-        if (status_filtro != 1 && status_filtro != 2) {
-            printf("Opcao invalida. Por favor, digite 1 para ATIVO ou 2 para INATIVO.\n");
-        }
-    } while (status_filtro != 1 && status_filtro != 2);
-
-    if (status_filtro == 1) {
-        strcpy(status_texto, "ATIVO");
-    } else {
-        strcpy(status_texto, "INATIVO");
-    }
-
-    arq_medicos = fopen(MEDICOS_FILE, "rb");
-    if (arq_medicos == NULL)
-    {
-        printf("Nenhum medico cadastrado.\n");
-        pressioneEnterParaContinuar();
-        return;
-    }
-
-    printf("\n--- Medicos com status '%s' ---\n", status_texto);
-    exibir_cabecalho_tabela();
-
-    while (fread(&medico_lido, sizeof(Medico), 1, arq_medicos))
-    {
-        if (medico_lido.ativo == status_filtro)
-        {
-            printf("%-2d | %-22s | %-13s | %s\n",
-                   medico_lido.id, medico_lido.nome,
-                   medico_lido.cpf, medico_lido.especialidade);
-            tem_registro = 1;
-        }
-    }
-    exibir_mensagem_sem_resultado(tem_registro);
-
-    fclose(arq_medicos);
-    printf("\n--- Fim do Relatorio ---\n");
-    pressioneEnterParaContinuar();
-}
-
-
-// Sub-menu para os relatórios
-void submenu_relatorios(void) {
-    int opcao_relatorio;
-    char bufferOpcao[5];
-
-    do
-    {
-        limparTela();
-        printf("----------------------------------------\n");
-        printf("///      Submenu de Relatorios       ///\n");
-        printf("----------------------------------------\n");
-        printf("1. Relatorio Completo (Ativos e Inativos)\n");
-        printf("2. Relatorio por Especialidade\n");
-        printf("3. Relatorio por Nome (Parcial)\n");
-        printf("4. Relatorio por Status (Ativo/Inativo)\n");
-        printf("0. Voltar ao menu principal de medicos\n");
-        printf("----------------------------------------\n");
-
-        // Leitura segura de Opção
-        do
-        {
-            printf(">>> Escolha a opcao: ");
-            lerString(bufferOpcao, 5);
-            char *endptr;
-            opcao_relatorio = strtol(bufferOpcao, &endptr, 10);
-            if (endptr == bufferOpcao || *endptr != '\0')
-            {
-                opcao_relatorio = -1;
-            }
-        } while (!validarOpcaoMenu(opcao_relatorio, 0, 4));
-
-        switch (opcao_relatorio)
-        {
-        case 1:
-            relatorio_completo();
-            break;
-        case 2:
-            relatorio_por_especialidade();
-            break;
-        case 3:
-            relatorio_por_nome();
-            break;
-        case 4:
-            relatorio_por_status();
-            break;
-        case 0:
-            break;
-        }
-    } while (opcao_relatorio != 0);
+void submenu_relatorios(void)
+{
+    relatorio_medicos_submenu();
 }
 
 // -------
@@ -744,13 +579,14 @@ void modulo_medicos(void)
     {
         limparTela();
         printf("╔════════════════════════════════════════╗\n");
-        printf("║         Modulo de Medicos              ║\n");
+        printf("║           Modulo de Medicos            ║\n");
         printf("╠════════════════════════════════════════╣\n");
         printf("║ 1. Cadastrar Medico                    ║\n");
         printf("║ 2. Pesquisar Medico                    ║\n");
         printf("║ 3. Alterar Medico                      ║\n");
         printf("║ 4. Excluir Medico                      ║\n");
         printf("║ 5. Listar Medicos                      ║\n");
+        printf("║ 6. Relatórios                          ║\n");
         printf("║ 0. Voltar ao menu principal            ║\n");
         printf("╚════════════════════════════════════════╝\n");
 

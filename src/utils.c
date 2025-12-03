@@ -68,14 +68,6 @@ void pressioneEnterParaContinuar(void)
     limpar_buffer();
 }
 
-void transformarEmMaiusculas(char *texto)
-{
-    for (int i = 0; texto[i] != '\0'; i++)
-    {
-        texto[i] = (char)toupper((unsigned char)texto[i]);
-    }
-}
-
 long converterDataParaInt(const char *dataStr)
 /**
  * Converte uma data "dd/mm/aaaa" para um int YYYYMMDD.
@@ -105,7 +97,6 @@ void desenharCabecalhoBase(void)
     printf("║       Projeto SigMedical :: Sistema de Gestao de Clinicas Medicas      ║\n");
     printf("║                                                                        ║\n");
     printf("╚════════════════════════════════════════════════════════════════════════╝\n");
-
 }
 
 void telaEquipe(void)
@@ -129,8 +120,7 @@ void telaEquipe(void)
     printf("║          Luis Felipe Linhares Pereira                                  ║\n");
     printf("║          E-mail: luis.felipe.linhares.701@ufrn.edu.br                  ║\n");
     printf("╚════════════════════════════════════════════════════════════════════════╝\n");
-
-    }
+}
 
 void TelaMenuPrincipal(void)
 {
@@ -148,7 +138,6 @@ void TelaMenuPrincipal(void)
     printf("║                                        ║\n");
     printf("╚════════════════════════════════════════╝\n");
     printf(">>> Escolha a opção desejada: ");
-
 }
 
 void TelaMenuMedicos(void)
@@ -167,7 +156,6 @@ void TelaMenuMedicos(void)
     printf("║                                        ║\n");
     printf("╚════════════════════════════════════════╝\n");
     printf(">>> Escolha a opcao desejada: ");
-
 }
 
 void TelaMenuClientes(void)
@@ -186,7 +174,6 @@ void TelaMenuClientes(void)
     printf("║                                        ║\n");
     printf("╚════════════════════════════════════════╝\n");
     printf(">>> Escolha a opcao desejada: ");
-
 }
 
 void TelaMenuConsultas(void)
@@ -204,7 +191,6 @@ void TelaMenuConsultas(void)
     printf("║                                        ║\n");
     printf("╚════════════════════════════════════════╝\n");
     printf(">>> Escolha a opcao desejada: ");
-
 }
 
 void TelaMenuEstoque(void)
@@ -223,8 +209,7 @@ void TelaMenuEstoque(void)
     printf("║                                        ║\n");
     printf("╚════════════════════════════════════════╝\n");
     printf(">>> Escolha a opcao desejada: ");
-
-    }
+}
 
 void TelaCadastrarMedicos()
 {

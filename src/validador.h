@@ -3,6 +3,12 @@
 #define VALIDADORES_H
 
 /**
+ * Verifica se o usuário digitou "0" para cancelar a operação.
+ * Retorna 1 se for cancelamento, 0 caso contrário.
+ */
+int verificarCancelamento(const char *entrada);
+
+/**
  * Valida um CPF (formato e dígitos verificadores).
  * Retorna 1 se válido, 0 se inválido.
  */
