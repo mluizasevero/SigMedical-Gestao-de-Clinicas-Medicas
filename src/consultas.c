@@ -9,8 +9,6 @@
 
 #define CONSULTAS_FILE DATA_DIR PATH_SEPARATOR "consultas.dat"
 
-// Relatórios agora centralizados em src/relatorios.c
-
 void agendar_consulta(void)
 {
     Consulta nova_consulta;
@@ -485,12 +483,12 @@ void gerar_relatorios_consultas(void)
             relatorio_consultas_por_periodo();
             break;
         case 4:
-            // relatorio_consultas_agendadas(); 
+            // relatorio_consultas_agendadas();
             printf("\nFuncionalidade em desenvolvimento.\n");
             pressioneEnterParaContinuar();
             break;
         case 5:
-            // relatorio_consultas_canceladas(); 
+            // relatorio_consultas_canceladas();
             printf("\nFuncionalidade em desenvolvimento.\n");
             pressioneEnterParaContinuar();
             break;
@@ -519,7 +517,6 @@ void modulo_consultas(void)
         printf("║ 4. Gerar Relatórios                    ║\n");
         printf("║ 0. Voltar ao menu principal            ║\n");
         printf("╚════════════════════════════════════════╝\n");
-
 
         // Leitura de menu segura
         do

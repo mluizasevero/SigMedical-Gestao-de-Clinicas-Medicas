@@ -51,7 +51,6 @@ void cadastrar_produto(void)
     printf("║           Cadastrar Novo Produto            ║\n");
     printf("╚═════════════════════════════════════════════╝\n");
 
-
     // Validação de ID único e positivo
     do
     {
@@ -129,7 +128,6 @@ void pesquisar_produto(void)
     printf("║          Pesquisar Produto por ID           ║\n");
     printf("╚═════════════════════════════════════════════╝\n");
 
-
     // Validação do ID
     do
     {
@@ -153,10 +151,10 @@ void pesquisar_produto(void)
             printf("╔════╦════════════════════════╦══════════════╦════════════╗\n");
             printf("║ ID ║ Nome do Produto        ║ Qtde Estoque ║ Validade   ║\n");
             printf("╠════╬════════════════════════╬══════════════╬════════════╣\n");
-            printf("║ %-2d ║ %-22s ║ %-12d ║ %-10s ║\n", 
-                    produto_lido.id, produto_lido.nome, produto_lido.quantidade, produto_lido.validade);
+            printf("║ %-2d ║ %-22s ║ %-12d ║ %-10s ║\n",
+                   produto_lido.id, produto_lido.nome, produto_lido.quantidade, produto_lido.validade);
             printf("╚════╩════════════════════════╩══════════════╩════════════╝\n");
-            
+
             encontrado = 1;
             break;
         }
@@ -285,7 +283,6 @@ void listar_produtos(void)
     printf("╔═════════════════════════════════════════════╗\n");
     printf("║       Listagem de Produtos em Estoque       ║\n");
     printf("╚═════════════════════════════════════════════╝\n");
-
 
     arq_produtos = fopen(PRODUTOS_FILE, "rb");
     if (arq_produtos == NULL)

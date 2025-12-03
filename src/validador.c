@@ -225,7 +225,7 @@ int validarData(const char *data)
     }
 
     // Dias máximos por mês
-    int dias_no_mes[] = {0,31,28,31,30,31,30,31,31,30,31,30,31};
+    int dias_no_mes[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
     // Checa ano bissexto
     int bissexto = (ano % 4 == 0 && (ano % 100 != 0 || ano % 400 == 0));
@@ -288,7 +288,6 @@ int validarHora(const char *hora)
 
     return 1;
 }
-
 
 /**
  * Valida se a string contem apenas digitos e representa um inteiro positivo (e > 0).

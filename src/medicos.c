@@ -48,15 +48,18 @@ int medico_existe(const char *cpf, int id_a_ignorar)
 }
 
 // Estrutura para lista dinâmica
-typedef struct No {
+typedef struct No
+{
     Medico medico;
     struct No *proximo;
 } No;
 
 // Função para criar um novo nó
-No* criar_no(Medico medico) {
+No *criar_no(Medico medico)
+{
     No *novo_no = (No *)malloc(sizeof(No));
-    if (novo_no != NULL) {
+    if (novo_no != NULL)
+    {
         novo_no->medico = medico;
         novo_no->proximo = NULL;
     }
@@ -64,13 +67,18 @@ No* criar_no(Medico medico) {
 }
 
 // Função para adicionar um médico à lista
-void adicionar_no(No **cabeca, Medico medico) {
+void adicionar_no(No **cabeca, Medico medico)
+{
     No *novo_no = criar_no(medico);
-    if (*cabeca == NULL) {
+    if (*cabeca == NULL)
+    {
         *cabeca = novo_no;
-    } else {
+    }
+    else
+    {
         No *temp = *cabeca;
-        while (temp->proximo != NULL) {
+        while (temp->proximo != NULL)
+        {
             temp = temp->proximo;
         }
         temp->proximo = novo_no;
@@ -78,9 +86,11 @@ void adicionar_no(No **cabeca, Medico medico) {
 }
 
 // Função para liberar a memória da lista
-void liberar_lista_medicos(No *cabeca) {
+void liberar_lista_medicos(No *cabeca)
+{
     No *temp;
-    while (cabeca != NULL) {
+    while (cabeca != NULL)
+    {
         temp = cabeca;
         cabeca = cabeca->proximo;
         free(temp);
@@ -88,15 +98,18 @@ void liberar_lista_medicos(No *cabeca) {
 }
 
 // Função para carregar médicos do arquivo para a lista dinâmica
-No* carregar_medicos_para_lista() {
+No *carregar_medicos_para_lista()
+{
     FILE *arq_medicos = fopen(MEDICOS_FILE, "rb");
-    if (arq_medicos == NULL) {
+    if (arq_medicos == NULL)
+    {
         return NULL;
     }
 
     No *cabeca = NULL;
     Medico medico_lido;
-    while (fread(&medico_lido, sizeof(Medico), 1, arq_medicos)) {
+    while (fread(&medico_lido, sizeof(Medico), 1, arq_medicos))
+    {
         adicionar_no(&cabeca, medico_lido);
     }
 
@@ -118,7 +131,6 @@ void cadastrar_medico(void)
     printf("╔══════════════════════════════════════╗\n");
     printf("║        Cadastrar Novo Medico         ║\n");
     printf("╚══════════════════════════════════════╝\n");
-
 
     // Validação de ID único e positivo
     do
@@ -149,7 +161,7 @@ void cadastrar_medico(void)
         printf("Informe o CPF (apenas numeros, 11 digitos): ");
         lerString(buffer, 15);
         if (!validarCPF(buffer))
-        { 
+        {
             continue;
         }
         if (medico_existe(buffer, -1))
@@ -259,7 +271,6 @@ void alterar_medico(void)
     printf("║       Alterar Dados de Medico        ║\n");
     printf("╚══════════════════════════════════════╝\n");
 
-
     // Validação do CPF de busca
     do
     {
@@ -366,7 +377,6 @@ void excluir_medico(void)
     printf("║             Excluir Medico             ║\n");
     printf("╚════════════════════════════════════════╝\n");
 
-
     // Validação do CPF de busca
     do
     {
@@ -433,7 +443,6 @@ void listar_medicos(void)
     printf("║ ID ║ Nome do Medico        ║ CPF           ║ Especialidade ║\n");
     printf("╠════════════════════════════════════════════════════════════╣\n");
 
-
     while (fread(&medico_lido, sizeof(Medico), 1, arq_medicos))
     {
         if (medico_lido.ativo == 1)
@@ -459,24 +468,28 @@ void listar_medicos(void)
 
 // Relatórios agora centralizados em src/relatorios.c
 
-void relatorio_completo(void) {
+void relatorio_completo(void)
+{
     relatorios_medicos_completo();
 }
 
-void relatorio_por_especialidade(void) {
+void relatorio_por_especialidade(void)
+{
     relatorios_medicos_por_especialidade();
 }
 
-void relatorio_por_nome(void) {
+void relatorio_por_nome(void)
+{
     relatorios_medicos_por_nome();
 }
 
-void relatorio_por_status(void) {
+void relatorio_por_status(void)
+{
     relatorios_medicos_por_status();
 }
 
-
-void submenu_relatorios(void) {
+void submenu_relatorios(void)
+{
     relatorios_submenu_medicos();
 }
 
