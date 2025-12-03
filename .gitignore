@@ -2,6 +2,7 @@
 *.d
 sig*
 .vscode
+projeto_final
 
 # Object files
 *.o
