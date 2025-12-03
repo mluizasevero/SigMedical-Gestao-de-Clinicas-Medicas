@@ -162,16 +162,22 @@ void cadastrar_medico(void)
     printf("╔══════════════════════════════════════╗\n");
     printf("║        Cadastrar Novo Medico         ║\n");
     printf("╚══════════════════════════════════════╝\n");
+    printf("(Digite 0 a qualquer momento para cancelar)\n");
 
     // Validação de ID único e positivo
     do
     {
         printf("\nInforme o ID do medico (inteiro positivo): ");
         lerString(buffer, 5);
+        if (verificarCancelamento(buffer))
+        {
+            pressioneEnterParaContinuar();
+            return;
+        }
         id_temp = validarInteiroPositivo(buffer);
 
         if (id_temp > 0 && medico_existe("", id_temp) == 2)
-        { // Checa apenas a unicidade do ID
+        {
             printf("! Erro: ID %d ja cadastrado ou ativo. Use outro ID.\n", id_temp);
             id_temp = -1;
         }
@@ -183,6 +189,11 @@ void cadastrar_medico(void)
     {
         printf("Informe o nome completo: ");
         lerString(buffer, 50);
+        if (verificarCancelamento(buffer))
+        {
+            pressioneEnterParaContinuar();
+            return;
+        }
     } while (!validarNome(buffer));
     strcpy(novo_medico.nome, buffer);
 
@@ -191,12 +202,18 @@ void cadastrar_medico(void)
     {
         printf("Informe o CPF (apenas numeros, 11 digitos): ");
         lerString(buffer, 15);
+        if (verificarCancelamento(buffer))
+        {
+            pressioneEnterParaContinuar();
+            return;
+        }
         if (!validarCPF(buffer))
         {
+            printf("! CPF invalido. Tente novamente.\n");
             continue;
         }
         if (medico_existe(buffer, -1))
-        { // -1 para não ignorar nenhum ID
+        {
             printf("! Erro: CPF ja cadastrado.\n");
         }
     } while (!validarCPF(buffer) || medico_existe(buffer, -1));
@@ -207,7 +224,12 @@ void cadastrar_medico(void)
     {
         printf("Informe a especialidade: ");
         lerString(buffer, 50);
-    } while (!validarNome(buffer)); // Reutilizando validarNome
+        if (verificarCancelamento(buffer))
+        {
+            pressioneEnterParaContinuar();
+            return;
+        }
+    } while (!validarNome(buffer));
     strcpy(novo_medico.especialidade, buffer);
 
     // Validação do Telefone
@@ -215,6 +237,11 @@ void cadastrar_medico(void)
     {
         printf("Informe o telefone (DDNNNNNNNN): ");
         lerString(buffer, 15);
+        if (verificarCancelamento(buffer))
+        {
+            pressioneEnterParaContinuar();
+            return;
+        }
     } while (!validarTelefone(buffer));
     strcpy(novo_medico.telefone, buffer);
 
@@ -249,9 +276,22 @@ void pesquisar_medico(void)
     printf("╔════════════════════════════════════════╗\n");
     printf("║        Pesquisar Medico por CPF        ║\n");
     printf("╚════════════════════════════════════════╝\n");
+    printf("(Digite 0 para cancelar)\n");
 
-    printf("Informe o CPF do medico a ser pesquisado: ");
-    lerString(cpf_busca, 15);
+    do
+    {
+        printf("Informe o CPF do medico a ser pesquisado: ");
+        lerString(cpf_busca, 15);
+        if (verificarCancelamento(cpf_busca))
+        {
+            pressioneEnterParaContinuar();
+            return;
+        }
+        if (!validarCPF(cpf_busca))
+        {
+            printf("! CPF invalido. Tente novamente.\n");
+        }
+    } while (!validarCPF(cpf_busca));
 
     arq_medicos = fopen(MEDICOS_FILE, "rb");
     if (arq_medicos == NULL)
@@ -301,12 +341,22 @@ void alterar_medico(void)
     printf("╔══════════════════════════════════════╗\n");
     printf("║       Alterar Dados de Medico        ║\n");
     printf("╚══════════════════════════════════════╝\n");
+    printf("(Digite 0 para cancelar)\n");
 
     // Validação do CPF de busca
     do
     {
         printf("Informe o CPF do medico que deseja alterar: ");
         lerString(cpf_busca, 15);
+        if (verificarCancelamento(cpf_busca))
+        {
+            pressioneEnterParaContinuar();
+            return;
+        }
+        if (!validarCPF(cpf_busca))
+        {
+            printf("! CPF invalido. Tente novamente.\n");
+        }
     } while (!validarCPF(cpf_busca));
 
     arq_medicos = fopen(MEDICOS_FILE, "r+b");
@@ -407,12 +457,22 @@ void excluir_medico(void)
     printf("╔════════════════════════════════════════╗\n");
     printf("║             Excluir Medico             ║\n");
     printf("╚════════════════════════════════════════╝\n");
+    printf("(Digite 0 para cancelar)\n");
 
     // Validação do CPF de busca
     do
     {
         printf("Informe o CPF do medico que deseja excluir: ");
         lerString(cpf_busca, 15);
+        if (verificarCancelamento(cpf_busca))
+        {
+            pressioneEnterParaContinuar();
+            return;
+        }
+        if (!validarCPF(cpf_busca))
+        {
+            printf("! CPF invalido. Tente novamente.\n");
+        }
     } while (!validarCPF(cpf_busca));
 
     arq_medicos = fopen(MEDICOS_FILE, "r+b");

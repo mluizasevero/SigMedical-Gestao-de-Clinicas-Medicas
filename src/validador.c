@@ -4,6 +4,20 @@
 #include <stdlib.h>
 
 /**
+ * Verifica se o usuário digitou "0" para cancelar a operação.
+ * Retorna 1 se for cancelamento, 0 caso contrário.
+ */
+int verificarCancelamento(const char *entrada)
+{
+    if (strcmp(entrada, "0") == 0)
+    {
+        printf("\n>>> Operacao cancelada pelo usuario.\n");
+        return 1;
+    }
+    return 0;
+}
+
+/**
  * Valida um CPF (formato e dígitos verificadores).
  */
 int validarCPF(const char *cpf)

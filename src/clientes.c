@@ -47,12 +47,18 @@ void cadastrar_cliente(void)
     printf("╔════════════════════════════════════════╗\n");
     printf("║         Cadastrar Novo Cliente         ║\n");
     printf("╚════════════════════════════════════════╝\n");
+    printf("(Digite 0 a qualquer momento para cancelar)\n");
 
     // Loop de validação para CPF
     do
     {
         printf("\nInforme o CPF do cliente (apenas numeros ou com ./): ");
-        lerString(buffer, 15); // Usa lerString (tamanho 15)
+        lerString(buffer, 15);
+        if (verificarCancelamento(buffer))
+        {
+            pressioneEnterParaContinuar();
+            return;
+        }
         if (!validarCPF(buffer))
         {
             printf("! CPF invalido. Formato ou digitos verificadores incorretos. Tente novamente.\n");
@@ -62,34 +68,48 @@ void cadastrar_cliente(void)
             printf("! CPF ja cadastrado no sistema. Tente novamente.\n");
         }
     } while (!validarCPF(buffer) || verifica_cpf_cliente_cadastrado(buffer));
-    strcpy(novo_cliente.cpf, buffer); // Copia o dado validado
+    strcpy(novo_cliente.cpf, buffer);
 
     // Loop de validação para Nome
     do
     {
         printf("Informe o nome do cliente: ");
-        lerString(buffer, 50); // Usa lerString (tamanho 50)
-        // A função validarNome já imprime o erro se houver
+        lerString(buffer, 50);
+        if (verificarCancelamento(buffer))
+        {
+            pressioneEnterParaContinuar();
+            return;
+        }
     } while (!validarNome(buffer));
-    strcpy(novo_cliente.nome, buffer); // Copia o dado validado
+    strcpy(novo_cliente.nome, buffer);
 
     // Loop de validação para Telefone
     do
     {
         printf("Informe o telefone do cliente (com DDD): ");
-        lerString(buffer, 15); // Usa lerString (tamanho 15)
+        lerString(buffer, 15);
+        if (verificarCancelamento(buffer))
+        {
+            pressioneEnterParaContinuar();
+            return;
+        }
     } while (!validarTelefone(buffer));
-    strcpy(novo_cliente.telefone, buffer); // Copia o dado validado
+    strcpy(novo_cliente.telefone, buffer);
 
     // Loop de validação para Email
     do
     {
         printf("Informe o email do cliente: ");
-        lerString(buffer, 50); // Usa lerString (tamanho 50)
+        lerString(buffer, 50);
+        if (verificarCancelamento(buffer))
+        {
+            pressioneEnterParaContinuar();
+            return;
+        }
     } while (!validarEmail(buffer));
-    strcpy(novo_cliente.email, buffer); // Copia o dado validado
+    strcpy(novo_cliente.email, buffer);
 
-    novo_cliente.ativo = 1; // define um cliente novo como "ativo" (existente)
+    novo_cliente.ativo = 1;
 
     // abre o arquivo em modo "ab" (append binary) ---> é add no final
     arq_clientes = fopen(CLIENTES_FILE, "ab");
@@ -122,10 +142,23 @@ void pesquisar_cliente(void)
     printf("╔════════════════════════════════════════╗\n");
     printf("║           Pesquisar Cliente            ║\n");
     printf("╚════════════════════════════════════════╝\n");
+    printf("(Digite 0 para cancelar)\n");
 
-    // Validação do CPF de pesquisa (opcional, mas bom)
-    printf("Informe o CPF do cliente para pesquisa: ");
-    lerString(cpf_pesquisa, 15);
+    // Validação do CPF de pesquisa
+    do
+    {
+        printf("Informe o CPF do cliente para pesquisa: ");
+        lerString(cpf_pesquisa, 15);
+        if (verificarCancelamento(cpf_pesquisa))
+        {
+            pressioneEnterParaContinuar();
+            return;
+        }
+        if (!validarCPF(cpf_pesquisa))
+        {
+            printf("! CPF invalido. Tente novamente.\n");
+        }
+    } while (!validarCPF(cpf_pesquisa));
 
     // abre o arquivo em read binary
     arq_clientes = fopen(CLIENTES_FILE, "rb");
@@ -178,10 +211,23 @@ void alterar_cliente(void)
     printf("╔════════════════════════════════════════╗\n");
     printf("║        Alterar Dados do Cliente        ║\n");
     printf("╚════════════════════════════════════════╝\n");
+    printf("(Digite 0 para cancelar)\n");
 
     // Validação do CPF de alteração
-    printf("Informe o CPF do cliente que deseja alterar: ");
-    lerString(cpf_alteracao, 15);
+    do
+    {
+        printf("Informe o CPF do cliente que deseja alterar: ");
+        lerString(cpf_alteracao, 15);
+        if (verificarCancelamento(cpf_alteracao))
+        {
+            pressioneEnterParaContinuar();
+            return;
+        }
+        if (!validarCPF(cpf_alteracao))
+        {
+            printf("! CPF invalido. Tente novamente.\n");
+        }
+    } while (!validarCPF(cpf_alteracao));
 
     // abre leitura e escrita binária
     arq_clientes = fopen(CLIENTES_FILE, "r+b");
@@ -258,9 +304,22 @@ void excluir_cliente(void)
     printf("╔════════════════════════════════════════╗\n");
     printf("║             Excluir Cliente            ║\n");
     printf("╚════════════════════════════════════════╝\n");
+    printf("(Digite 0 para cancelar)\n");
 
-    printf("Informe o CPF do cliente que deseja excluir: ");
-    lerString(cpf_exclusao, 15);
+    do
+    {
+        printf("Informe o CPF do cliente que deseja excluir: ");
+        lerString(cpf_exclusao, 15);
+        if (verificarCancelamento(cpf_exclusao))
+        {
+            pressioneEnterParaContinuar();
+            return;
+        }
+        if (!validarCPF(cpf_exclusao))
+        {
+            printf("! CPF invalido. Tente novamente.\n");
+        }
+    } while (!validarCPF(cpf_exclusao));
 
     arq_clientes = fopen(CLIENTES_FILE, "r+b");
     if (arq_clientes == NULL)

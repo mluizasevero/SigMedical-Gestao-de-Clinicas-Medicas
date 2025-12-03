@@ -22,12 +22,18 @@ void agendar_consulta(void)
     printf("╔════════════════════════════════════════╗\n");
     printf("║         Agendar Nova Consulta          ║\n");
     printf("╚════════════════════════════════════════╝\n");
+    printf("(Digite 0 a qualquer momento para cancelar)\n");
 
     // Loop de validação para Nome do Paciente
     do
     {
         printf("\nInforme o nome do paciente: ");
         lerString(buffer, 50);
+        if (verificarCancelamento(buffer))
+        {
+            pressioneEnterParaContinuar();
+            return;
+        }
     } while (!validarNome(buffer));
     strcpy(nova_consulta.nome_paciente, buffer);
 
@@ -36,6 +42,11 @@ void agendar_consulta(void)
     {
         printf("Informe o CPF do paciente: ");
         lerString(buffer, 15);
+        if (verificarCancelamento(buffer))
+        {
+            pressioneEnterParaContinuar();
+            return;
+        }
         if (!validarCPF(buffer))
         {
             printf("! CPF invalido. Tente novamente.\n");
@@ -48,6 +59,11 @@ void agendar_consulta(void)
     {
         printf("Informe a data da consulta (dd/mm/aaaa): ");
         lerString(buffer, 11);
+        if (verificarCancelamento(buffer))
+        {
+            pressioneEnterParaContinuar();
+            return;
+        }
     } while (!validarData(buffer));
     strcpy(nova_consulta.data, buffer);
 
@@ -56,6 +72,11 @@ void agendar_consulta(void)
     {
         printf("Informe a hora da consulta (hh:mm): ");
         lerString(buffer, 6);
+        if (verificarCancelamento(buffer))
+        {
+            pressioneEnterParaContinuar();
+            return;
+        }
     } while (!validarHora(buffer));
     strcpy(nova_consulta.hora, buffer);
 
@@ -65,6 +86,11 @@ void agendar_consulta(void)
     {
         printf("Informe o nome do medico: ");
         lerString(buffer, 50);
+        if (verificarCancelamento(buffer))
+        {
+            pressioneEnterParaContinuar();
+            return;
+        }
         if (!validarNome(buffer))
         {
             continue;
@@ -165,12 +191,18 @@ void alterar_consulta(void)
     printf("╔════════════════════════════════════════╗\n");
     printf("║            Alterar Consulta            ║\n");
     printf("╚════════════════════════════════════════╝\n");
+    printf("(Digite 0 a qualquer momento para cancelar)\n");
 
     // Validação do CPF
     do
     {
         printf("Informe o CPF do paciente: ");
         lerString(cpf_busca, 15);
+        if (verificarCancelamento(cpf_busca))
+        {
+            pressioneEnterParaContinuar();
+            return;
+        }
         if (!validarCPF(cpf_busca))
         {
             printf("! CPF invalido. Tente novamente.\n");
@@ -182,6 +214,11 @@ void alterar_consulta(void)
     {
         printf("Informe a DATA da consulta a alterar (dd/mm/aaaa): ");
         lerString(data_busca, 11);
+        if (verificarCancelamento(data_busca))
+        {
+            pressioneEnterParaContinuar();
+            return;
+        }
         if (!validarData(data_busca))
         {
             printf("! Data invalida. Use o formato dd/mm/aaaa.\n");
@@ -253,12 +290,18 @@ void excluir_consulta(void)
     printf("╔════════════════════════════════════════╗\n");
     printf("║       Cancelar/Excluir Consulta        ║\n");
     printf("╚════════════════════════════════════════╝\n");
+    printf("(Digite 0 a qualquer momento para cancelar)\n");
 
     // Validação do CPF
     do
     {
         printf("Informe o CPF do paciente: ");
         lerString(cpf_busca, 15);
+        if (verificarCancelamento(cpf_busca))
+        {
+            pressioneEnterParaContinuar();
+            return;
+        }
         if (!validarCPF(cpf_busca))
         {
             printf("! CPF invalido. Tente novamente.\n");
@@ -270,6 +313,11 @@ void excluir_consulta(void)
     {
         printf("Informe a DATA da consulta a excluir (dd/mm/aaaa): ");
         lerString(data_busca, 11);
+        if (verificarCancelamento(data_busca))
+        {
+            pressioneEnterParaContinuar();
+            return;
+        }
         if (!validarData(data_busca))
         {
             printf("! Data invalida. Use o formato dd/mm/aaaa.\n");
@@ -350,12 +398,18 @@ void confirmar_presenca(void)
     printf("╔════════════════════════════════════════╗\n");
     printf("║           Confirmar Presença           ║\n");
     printf("╚════════════════════════════════════════╝\n");
+    printf("(Digite 0 a qualquer momento para cancelar)\n");
 
     // Validação do CPF
     do
     {
         printf("Informe o CPF do paciente: ");
         lerString(cpf_busca, 15);
+        if (verificarCancelamento(cpf_busca))
+        {
+            pressioneEnterParaContinuar();
+            return;
+        }
         if (!validarCPF(cpf_busca))
         {
             printf("! CPF invalido. Tente novamente.\n");
@@ -367,6 +421,11 @@ void confirmar_presenca(void)
     {
         printf("Informe a data da consulta (dd/mm/aaaa): ");
         lerString(data_busca, 11);
+        if (verificarCancelamento(data_busca))
+        {
+            pressioneEnterParaContinuar();
+            return;
+        }
         if (!validarData(data_busca))
         {
             printf("! Data invalida. Use o formato dd/mm/aaaa.\n");
