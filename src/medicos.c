@@ -47,6 +47,37 @@ int medico_existe(const char *cpf, int id_a_ignorar)
     return 0; // Não encontrado
 }
 
+/**
+ * Busca um médico pelo nome no arquivo.
+ * Retorna 1 se encontrado (ativo), 0 se não encontrado.
+ * Se especialidade_retorno não for NULL, copia a especialidade do médico encontrado.
+ */
+int buscar_medico_por_nome(const char *nome, char *especialidade_retorno)
+{
+    Medico medico_lido;
+    FILE *arq_medicos = fopen(MEDICOS_FILE, "rb");
+
+    if (arq_medicos == NULL)
+    {
+        return 0; // Se o arquivo não existe, médico não está cadastrado
+    }
+
+    while (fread(&medico_lido, sizeof(Medico), 1, arq_medicos))
+    {
+        if (medico_lido.ativo == 1 && strcmp(medico_lido.nome, nome) == 0)
+        {
+            if (especialidade_retorno != NULL)
+            {
+                strcpy(especialidade_retorno, medico_lido.especialidade);
+            }
+            fclose(arq_medicos);
+            return 1; // Médico encontrado
+        }
+    }
+    fclose(arq_medicos);
+    return 0; // Não encontrado
+}
+
 // Estrutura para lista dinâmica
 typedef struct No
 {

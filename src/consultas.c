@@ -6,6 +6,7 @@
 #include "utils.h"
 #include "validador.h"
 #include "consultas_relatorios.h"
+#include "medicos.h"
 
 #define CONSULTAS_FILE DATA_DIR PATH_SEPARATOR "consultas.dat"
 
@@ -58,21 +59,25 @@ void agendar_consulta(void)
     } while (!validarHora(buffer));
     strcpy(nova_consulta.hora, buffer);
 
-    // Loop de validação para Nome do Médico
+    // Loop de validação para Nome do Médico - verifica se está cadastrado
+    char especialidade_medico[50];
     do
     {
         printf("Informe o nome do medico: ");
         lerString(buffer, 50);
-    } while (!validarNome(buffer));
+        if (!validarNome(buffer))
+        {
+            continue;
+        }
+        if (!buscar_medico_por_nome(buffer, especialidade_medico))
+        {
+            printf("! Medico '%s' nao esta cadastrado no sistema. Tente novamente.\n", buffer);
+        }
+    } while (!validarNome(buffer) || !buscar_medico_por_nome(buffer, especialidade_medico));
     strcpy(nova_consulta.nome_medico, buffer);
+    strcpy(nova_consulta.especialidade, especialidade_medico);
 
-    // Loop de validação para Especialidade (usando validarNome)
-    do
-    {
-        printf("Informe a especialidade do medico: ");
-        lerString(buffer, 50);
-    } while (!validarNome(buffer)); // Reutilizando validarNome (mín 3 letras, sem num)
-    strcpy(nova_consulta.especialidade, buffer);
+    printf("Especialidade do medico: %s\n", nova_consulta.especialidade);
 
     strcpy(nova_consulta.status, "agendada");
     nova_consulta.ativo = 1;

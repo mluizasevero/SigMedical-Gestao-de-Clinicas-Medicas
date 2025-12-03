@@ -18,7 +18,8 @@ void alterar_medico(void);
 void excluir_medico(void);
 void listar_medicos(void);
 
-// Função auxiliar (Para uso interno)
+// Funções auxiliares (Para uso interno e externo)
 int medico_existe(const char *cpf, int id_a_ignorar);
+int buscar_medico_por_nome(const char *nome, char *especialidade_retorno);
 
 #endif
