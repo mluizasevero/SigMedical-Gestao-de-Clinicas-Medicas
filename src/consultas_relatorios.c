@@ -193,6 +193,10 @@ void relatorio_consultas_por_paciente(void)
         {
             printf("\nInforme o CPF do paciente: ");
             lerString(termo_busca, 15);
+            if (!validarCPF(termo_busca))
+            {
+                printf("! CPF invalido. Tente novamente.\n");
+            }
         } while (!validarCPF(termo_busca));
         printf("\n═══ Consultas encontradas para o CPF: %s ═══\n", termo_busca);
     }

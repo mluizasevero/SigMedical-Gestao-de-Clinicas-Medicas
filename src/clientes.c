@@ -322,16 +322,19 @@ void listar_clientes(void)
     printf("║ Nome do Cliente          ║ CPF           ║ Telefone      ║ Email           ║\n");
     printf("╠══════════════════════════╬═══════════════╬═══════════════╬═════════════════╣\n");
 
-    // Leitura dos clientes
+    // Leitura dos clientes (apenas ativos)
     while (fread(&cliente_lido, sizeof(Cliente), 1, arq_clientes) == 1)
     {
-        nenhum_cliente = 0;
+        if (cliente_lido.ativo == 1)
+        {
+            nenhum_cliente = 0;
 
-        printf("║ %-24s ║ %-13s ║ %-13s ║ %-17s ║\n",
-               cliente_lido.nome,
-               cliente_lido.cpf,
-               cliente_lido.telefone,
-               cliente_lido.email);
+            printf("║ %-24s ║ %-13s ║ %-13s ║ %-17s ║\n",
+                   cliente_lido.nome,
+                   cliente_lido.cpf,
+                   cliente_lido.telefone,
+                   cliente_lido.email);
+        }
     }
     printf("╚══════════════════════════╩═══════════════╩═══════════════╩═════════════════╝\n");
     fclose(arq_clientes);

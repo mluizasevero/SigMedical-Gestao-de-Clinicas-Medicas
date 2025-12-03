@@ -166,14 +166,26 @@ void alterar_consulta(void)
     printf("║            Alterar Consulta            ║\n");
     printf("╚════════════════════════════════════════╝\n");
 
-    printf("Informe o CPF do paciente: ");
-    lerString(cpf_busca, 15);
+    // Validação do CPF
+    do
+    {
+        printf("Informe o CPF do paciente: ");
+        lerString(cpf_busca, 15);
+        if (!validarCPF(cpf_busca))
+        {
+            printf("! CPF invalido. Tente novamente.\n");
+        }
+    } while (!validarCPF(cpf_busca));
 
     // Validação da Data
     do
     {
         printf("Informe a DATA da consulta a alterar (dd/mm/aaaa): ");
         lerString(data_busca, 11);
+        if (!validarData(data_busca))
+        {
+            printf("! Data invalida. Use o formato dd/mm/aaaa.\n");
+        }
     } while (!validarData(data_busca));
 
     arq_consultas = fopen(CONSULTAS_FILE, "r+b");
@@ -242,13 +254,26 @@ void excluir_consulta(void)
     printf("║       Cancelar/Excluir Consulta        ║\n");
     printf("╚════════════════════════════════════════╝\n");
 
-    printf("Informe o CPF do paciente: ");
-    lerString(cpf_busca, 15);
+    // Validação do CPF
+    do
+    {
+        printf("Informe o CPF do paciente: ");
+        lerString(cpf_busca, 15);
+        if (!validarCPF(cpf_busca))
+        {
+            printf("! CPF invalido. Tente novamente.\n");
+        }
+    } while (!validarCPF(cpf_busca));
+
     // Validação da Data
     do
     {
         printf("Informe a DATA da consulta a excluir (dd/mm/aaaa): ");
         lerString(data_busca, 11);
+        if (!validarData(data_busca))
+        {
+            printf("! Data invalida. Use o formato dd/mm/aaaa.\n");
+        }
     } while (!validarData(data_busca));
 
     arq_consultas = fopen(CONSULTAS_FILE, "r+b");
@@ -331,6 +356,10 @@ void confirmar_presenca(void)
     {
         printf("Informe o CPF do paciente: ");
         lerString(cpf_busca, 15);
+        if (!validarCPF(cpf_busca))
+        {
+            printf("! CPF invalido. Tente novamente.\n");
+        }
     } while (!validarCPF(cpf_busca));
 
     // Validação da Data
@@ -338,6 +367,10 @@ void confirmar_presenca(void)
     {
         printf("Informe a data da consulta (dd/mm/aaaa): ");
         lerString(data_busca, 11);
+        if (!validarData(data_busca))
+        {
+            printf("! Data invalida. Use o formato dd/mm/aaaa.\n");
+        }
     } while (!validarData(data_busca));
 
     arq_consultas = fopen(CONSULTAS_FILE, "r+b");
@@ -448,9 +481,8 @@ void modulo_consultas(void)
         printf("║          Módulo de Consultas           ║\n");
         printf("╠════════════════════════════════════════╣\n");
         printf("║ 1. Agendar Consulta                    ║\n");
-        printf("║ 2. Pesquisar Consultas do Paciente     ║\n");
-        printf("║ 3. Gerenciar Agendamentos              ║\n");
-        printf("║ 4. Gerar Relatórios                    ║\n");
+        printf("║ 2. Gerenciar Agendamentos              ║\n");
+        printf("║ 3. Gerar Relatórios                    ║\n");
         printf("║ 0. Voltar ao menu principal            ║\n");
         printf("╚════════════════════════════════════════╝\n");
 
@@ -465,7 +497,7 @@ void modulo_consultas(void)
             {
                 opcao = -1;
             }
-        } while (!validarOpcaoMenu(opcao, 0, 4));
+        } while (!validarOpcaoMenu(opcao, 0, 3));
 
         switch (opcao)
         {
@@ -473,12 +505,9 @@ void modulo_consultas(void)
             agendar_consulta();
             break;
         case 2:
-            pesquisar_consulta();
-            break;
-        case 3:
             gerenciar_agendamentos();
             break;
-        case 4:
+        case 3:
             gerar_relatorios_consultas();
             break;
         case 0:

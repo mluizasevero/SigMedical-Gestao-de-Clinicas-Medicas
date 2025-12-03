@@ -15,7 +15,6 @@ typedef struct
 
 void modulo_consultas(void);
 void agendar_consulta(void);
-void pesquisar_consulta(void);
 
 void gerenciar_agendamentos(void);
 void alterar_consulta(void);
