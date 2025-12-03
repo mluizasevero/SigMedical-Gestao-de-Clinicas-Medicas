@@ -67,7 +67,6 @@ char *lerString(char *str, int size);
 void pressioneEnterParaContinuar(void);
 void criarPastaData(void);
 void limparTela(void);
-void transformarEmMaiusculas(char *texto);
 
 /**
  * Converte uma data "dd/mm/aaaa" para um inteiro no formato YYYYMMDD.

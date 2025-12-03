@@ -68,14 +68,6 @@ void pressioneEnterParaContinuar(void)
     limpar_buffer();
 }
 
-void transformarEmMaiusculas(char *texto)
-{
-    for (int i = 0; texto[i] != '\0'; i++)
-    {
-        texto[i] = (char)toupper((unsigned char)texto[i]);
-    }
-}
-
 long converterDataParaInt(const char *dataStr)
 /**
  * Converte uma data "dd/mm/aaaa" para um int YYYYMMDD.
