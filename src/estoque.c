@@ -314,6 +314,175 @@ void listar_produtos(void)
     pressioneEnterParaContinuar();
 }
 
+// ===============================================
+// LISTAGEM ORDENADA DE PRODUTOS
+// ===============================================
+
+// Funções de comparação para produtos
+static int comparar_produtos_nome_az(const void *a, const void *b)
+{
+    Produto *produtoA = (Produto *)a;
+    Produto *produtoB = (Produto *)b;
+    return strcasecmp(produtoA->nome, produtoB->nome);
+}
+
+static int comparar_produtos_nome_za(const void *a, const void *b)
+{
+    Produto *produtoA = (Produto *)a;
+    Produto *produtoB = (Produto *)b;
+    return strcasecmp(produtoB->nome, produtoA->nome);
+}
+
+static int comparar_produtos_quantidade_desc(const void *a, const void *b)
+{
+    Produto *produtoA = (Produto *)a;
+    Produto *produtoB = (Produto *)b;
+    return produtoB->quantidade - produtoA->quantidade;
+}
+
+static int comparar_produtos_quantidade_asc(const void *a, const void *b)
+{
+    Produto *produtoA = (Produto *)a;
+    Produto *produtoB = (Produto *)b;
+    return produtoA->quantidade - produtoB->quantidade;
+}
+
+void listar_produtos_ordenado(void)
+{
+    FILE *arq_produtos;
+    Produto *produtos = NULL;
+    int contador = 0;
+    int capacidade = 10;
+    int opcao;
+    char bufferOpcao[5];
+
+    limparTela();
+    printf("╔═════════════════════════════════════════════╗\n");
+    printf("║      Listagem Ordenada de Produtos          ║\n");
+    printf("╠═════════════════════════════════════════════╣\n");
+    printf("║ 1. Ordenar por Nome A-Z (crescente)         ║\n");
+    printf("║ 2. Ordenar por Nome Z-A (decrescente)       ║\n");
+    printf("║ 3. Ordenar por Quantidade (maior→menor)     ║\n");
+    printf("║ 4. Ordenar por Quantidade (menor→maior)     ║\n");
+    printf("║ 0. Voltar                                   ║\n");
+    printf("╚═════════════════════════════════════════════╝\n");
+
+    do
+    {
+        printf(">>> Escolha a opcao: ");
+        lerString(bufferOpcao, 5);
+        char *endptr;
+        opcao = strtol(bufferOpcao, &endptr, 10);
+        if (endptr == bufferOpcao || *endptr != '\0')
+        {
+            opcao = -1;
+        }
+    } while (!validarOpcaoMenu(opcao, 0, 4));
+
+    if (opcao == 0)
+    {
+        return;
+    }
+
+    // Alocar memória inicial
+    produtos = (Produto *)malloc(capacidade * sizeof(Produto));
+    if (produtos == NULL)
+    {
+        printf("\nErro ao alocar memoria!\n");
+        pressioneEnterParaContinuar();
+        return;
+    }
+
+    // Carregar produtos do arquivo
+    arq_produtos = fopen(PRODUTOS_FILE, "rb");
+    if (arq_produtos == NULL)
+    {
+        printf("\nNenhum produto cadastrado.\n");
+        free(produtos);
+        pressioneEnterParaContinuar();
+        return;
+    }
+
+    Produto produto_lido;
+    while (fread(&produto_lido, sizeof(Produto), 1, arq_produtos) == 1)
+    {
+        if (produto_lido.ativo == 1)
+        {
+            // Expandir array se necessário
+            if (contador == capacidade)
+            {
+                capacidade *= 2;
+                produtos = (Produto *)realloc(produtos, capacidade * sizeof(Produto));
+                if (produtos == NULL)
+                {
+                    printf("\nErro ao realocar memoria!\n");
+                    fclose(arq_produtos);
+                    pressioneEnterParaContinuar();
+                    return;
+                }
+            }
+            produtos[contador++] = produto_lido;
+        }
+    }
+    fclose(arq_produtos);
+
+    if (contador == 0)
+    {
+        printf("\nNenhum produto ativo para exibir.\n");
+        free(produtos);
+        pressioneEnterParaContinuar();
+        return;
+    }
+
+    // Ordenar conforme escolha
+    limparTela();
+    switch (opcao)
+    {
+    case 1:
+        qsort(produtos, contador, sizeof(Produto), comparar_produtos_nome_az);
+        printf("╔═════════════════════════════════════════════╗\n");
+        printf("║    Produtos Ordenados por Nome A-Z          ║\n");
+        printf("╚═════════════════════════════════════════════╝\n");
+        break;
+    case 2:
+        qsort(produtos, contador, sizeof(Produto), comparar_produtos_nome_za);
+        printf("╔═════════════════════════════════════════════╗\n");
+        printf("║    Produtos Ordenados por Nome Z-A          ║\n");
+        printf("╚═════════════════════════════════════════════╝\n");
+        break;
+    case 3:
+        qsort(produtos, contador, sizeof(Produto), comparar_produtos_quantidade_desc);
+        printf("╔═════════════════════════════════════════════╗\n");
+        printf("║  Produtos por Quantidade (Maior → Menor)    ║\n");
+        printf("╚═════════════════════════════════════════════╝\n");
+        break;
+    case 4:
+        qsort(produtos, contador, sizeof(Produto), comparar_produtos_quantidade_asc);
+        printf("╔═════════════════════════════════════════════╗\n");
+        printf("║  Produtos por Quantidade (Menor → Maior)    ║\n");
+        printf("╚═════════════════════════════════════════════╝\n");
+        break;
+    }
+
+    // Exibir produtos ordenados
+    printf("╔════╦════════════════════════╦════════════╦════════════╗\n");
+    printf("║ ID ║ Nome do Produto        ║ Quantidade ║ Validade   ║\n");
+    printf("╠════╬════════════════════════╬════════════╬════════════╣\n");
+
+    for (int i = 0; i < contador; i++)
+    {
+        printf("║ %-2d ║ %-22s ║ %-10d ║ %-10s ║\n",
+               produtos[i].id,
+               produtos[i].nome,
+               produtos[i].quantidade,
+               produtos[i].validade);
+    }
+    printf("╚════╩════════════════════════╩════════════╩════════════╝\n");
+
+    free(produtos);
+    pressioneEnterParaContinuar();
+}
+
 void relatorio_itens_falta(void)
 {
     relatorio_estoque_itens_falta();
@@ -369,8 +538,9 @@ void modulo_estoque(void)
         printf("║ 1. Cadastrar Produto                        ║\n");
         printf("║ 2. Pesquisar Produto (por ID)               ║\n");
         printf("║ 3. Listar Produtos                          ║\n");
-        printf("║ 4. Movimentar Estoque (Entrada/Saída)       ║\n");
-        printf("║ 5. Gerar Relatórios                         ║\n");
+        printf("║ 4. Listar Produtos Ordenado                 ║\n");
+        printf("║ 5. Movimentar Estoque (Entrada/Saída)       ║\n");
+        printf("║ 6. Gerar Relatórios                         ║\n");
         printf("║ 0. Voltar ao menu principal                 ║\n");
         printf("╚═════════════════════════════════════════════╝\n");
 
@@ -385,7 +555,7 @@ void modulo_estoque(void)
             {
                 opcao = -1;
             }
-        } while (!validarOpcaoMenu(opcao, 0, 5));
+        } while (!validarOpcaoMenu(opcao, 0, 6));
 
         switch (opcao)
         {
@@ -399,10 +569,13 @@ void modulo_estoque(void)
             listar_produtos();
             break;
         case 4:
+            listar_produtos_ordenado();
+            break;
+        case 5:
             movimentar_estoque();
             break;
         // Chamando o novo submenu
-        case 5:
+        case 6:
             submenu_relatorios_estoque();
             break;
         case 0:

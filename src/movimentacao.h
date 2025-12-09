@@ -17,5 +17,6 @@ typedef struct
 void registrar_movimentacao(int id_produto, const char *tipo_mov, int quantidade);
 
 void exibir_historico_movimentacoes(void);
+void exibir_historico_movimentacoes_ordenado(void);
 
 #endif

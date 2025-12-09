@@ -555,6 +555,149 @@ void listar_medicos(void)
     pressioneEnterParaContinuar();
 }
 
+// ===============================================
+// LISTAGEM ORDENADA DE MÉDICOS
+// ===============================================
+
+// Função de comparação para ordenação A-Z
+static int comparar_medicos_az(const void *a, const void *b)
+{
+    Medico *medicoA = (Medico *)a;
+    Medico *medicoB = (Medico *)b;
+    return strcasecmp(medicoA->nome, medicoB->nome);
+}
+
+// Função de comparação para ordenação Z-A
+static int comparar_medicos_za(const void *a, const void *b)
+{
+    Medico *medicoA = (Medico *)a;
+    Medico *medicoB = (Medico *)b;
+    return strcasecmp(medicoB->nome, medicoA->nome);
+}
+
+void listar_medicos_ordenado(void)
+{
+    FILE *arq_medicos;
+    Medico *medicos = NULL;
+    int contador = 0;
+    int capacidade = 10;
+    int opcao;
+    char bufferOpcao[5];
+
+    limparTela();
+    printf("╔════════════════════════════════════════╗\n");
+    printf("║     Listagem Ordenada de Medicos       ║\n");
+    printf("╠════════════════════════════════════════╣\n");
+    printf("║ 1. Ordenar A-Z (crescente)             ║\n");
+    printf("║ 2. Ordenar Z-A (decrescente)           ║\n");
+    printf("║ 0. Voltar                              ║\n");
+    printf("╚════════════════════════════════════════╝\n");
+
+    do
+    {
+        printf(">>> Escolha a opcao: ");
+        lerString(bufferOpcao, 5);
+        char *endptr;
+        opcao = strtol(bufferOpcao, &endptr, 10);
+        if (endptr == bufferOpcao || *endptr != '\0')
+        {
+            opcao = -1;
+        }
+    } while (!validarOpcaoMenu(opcao, 0, 2));
+
+    if (opcao == 0)
+    {
+        return;
+    }
+
+    // Alocar memória inicial
+    medicos = (Medico *)malloc(capacidade * sizeof(Medico));
+    if (medicos == NULL)
+    {
+        printf("\nErro ao alocar memoria!\n");
+        pressioneEnterParaContinuar();
+        return;
+    }
+
+    // Carregar médicos do arquivo
+    arq_medicos = fopen(MEDICOS_FILE, "rb");
+    if (arq_medicos == NULL)
+    {
+        printf("\nNenhum medico cadastrado.\n");
+        free(medicos);
+        pressioneEnterParaContinuar();
+        return;
+    }
+
+    Medico medico_lido;
+    while (fread(&medico_lido, sizeof(Medico), 1, arq_medicos) == 1)
+    {
+        if (medico_lido.ativo == 1)
+        {
+            // Expandir array se necessário
+            if (contador == capacidade)
+            {
+                capacidade *= 2;
+                medicos = (Medico *)realloc(medicos, capacidade * sizeof(Medico));
+                if (medicos == NULL)
+                {
+                    printf("\nErro ao realocar memoria!\n");
+                    fclose(arq_medicos);
+                    pressioneEnterParaContinuar();
+                    return;
+                }
+            }
+            medicos[contador++] = medico_lido;
+        }
+    }
+    fclose(arq_medicos);
+
+    if (contador == 0)
+    {
+        printf("\nNenhum medico ativo para exibir.\n");
+        free(medicos);
+        pressioneEnterParaContinuar();
+        return;
+    }
+
+    // Ordenar conforme escolha
+    if (opcao == 1)
+    {
+        qsort(medicos, contador, sizeof(Medico), comparar_medicos_az);
+        limparTela();
+        printf("╔════════════════════════════════════════╗\n");
+        printf("║    Medicos Ordenados A-Z (Crescente)   ║\n");
+        printf("╚════════════════════════════════════════╝\n");
+    }
+    else
+    {
+        qsort(medicos, contador, sizeof(Medico), comparar_medicos_za);
+        limparTela();
+        printf("╔════════════════════════════════════════╗\n");
+        printf("║   Medicos Ordenados Z-A (Decrescente)  ║\n");
+        printf("╚════════════════════════════════════════╝\n");
+    }
+
+    // Exibir médicos ordenados
+    printf("╔════╦════════════════════════╦═══════════════╦══════════════════════════╦═══════════════╗\n");
+    printf("║ ID ║ Nome do Medico         ║ CPF           ║ Especialidade            ║ Telefone      ║\n");
+    printf("╠════╬════════════════════════╬═══════════════╬══════════════════════════╬═══════════════╣\n");
+
+    for (int i = 0; i < contador; i++)
+    {
+        printf("║ %-2d ║ %-22s ║ %-13s ║ %-24s ║ %-13s ║\n",
+               medicos[i].id,
+               medicos[i].nome,
+               medicos[i].cpf,
+               medicos[i].especialidade,
+               medicos[i].telefone);
+    }
+    printf("╚════╩════════════════════════╩═══════════════╩══════════════════════════╩═══════════════╝\n");
+
+    free(medicos);
+    pressioneEnterParaContinuar();
+}
+
 // ---------------------------------------
 // RELATÓRIOS                            |
 // ---------------------------------------
@@ -586,7 +729,8 @@ void modulo_medicos(void)
         printf("║ 3. Alterar Medico                      ║\n");
         printf("║ 4. Excluir Medico                      ║\n");
         printf("║ 5. Listar Medicos                      ║\n");
-        printf("║ 6. Relatórios                          ║\n");
+        printf("║ 6. Listar Medicos Ordenado             ║\n");
+        printf("║ 7. Relatórios                          ║\n");
         printf("║ 0. Voltar ao menu principal            ║\n");
         printf("╚════════════════════════════════════════╝\n");
 
@@ -601,7 +745,7 @@ void modulo_medicos(void)
             {
                 opcao = -1;
             }
-        } while (!validarOpcaoMenu(opcao, 0, 6));
+        } while (!validarOpcaoMenu(opcao, 0, 7));
 
         switch (opcao)
         {
@@ -620,8 +764,11 @@ void modulo_medicos(void)
         case 5:
             listar_medicos();
             break;
-        // Chama o submenu de relatórios
         case 6:
+            listar_medicos_ordenado();
+            break;
+        // Chama o submenu de relatórios
+        case 7:
             submenu_relatorios();
             break;
         case 0:

@@ -6,6 +6,7 @@
 #include "utils.h"
 #include "validador.h"
 #include "estoque_relatorios.h"
+#include "movimentacao.h"
 
 #define PRODUTOS_FILE DATA_DIR PATH_SEPARATOR "produtos.dat"
 
@@ -427,6 +428,8 @@ void relatorio_estoque_submenu(void)
         printf("║ 4. Itens em Falta (Estoque Baixo)           ║\n");
         printf("║ 5. Produtos com Validade Proxima            ║\n");
         printf("║ 6. Produtos Vencidos                        ║\n");
+        printf("║ 7. Historico de Movimentacoes               ║\n");
+        printf("║ 8. Historico de Movimentacoes Ordenado      ║\n");
         printf("║ 0. Voltar ao menu principal de estoque      ║\n");
         printf("╚═════════════════════════════════════════════╝\n");
 
@@ -441,7 +444,7 @@ void relatorio_estoque_submenu(void)
             {
                 opcao_relatorio = -1;
             }
-        } while (!validarOpcaoMenu(opcao_relatorio, 0, 6));
+        } while (!validarOpcaoMenu(opcao_relatorio, 0, 8));
 
         switch (opcao_relatorio)
         {
@@ -462,6 +465,12 @@ void relatorio_estoque_submenu(void)
             break;
         case 6:
             relatorio_estoque_produtos_vencidos();
+            break;
+        case 7:
+            exibir_historico_movimentacoes();
+            break;
+        case 8:
+            exibir_historico_movimentacoes_ordenado();
             break;
         case 0:
             break;

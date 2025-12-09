@@ -16,6 +16,7 @@ void cadastrar_produto(void);
 void pesquisar_produto(void);
 void gerenciar_lotes(void);
 void movimentar_estoque(void);
+void listar_produtos_ordenado(void);
 
 // Função auxiliar (Para uso interno)
 int id_produto_existe(int id);

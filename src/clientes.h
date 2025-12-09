@@ -17,5 +17,6 @@ void pesquisar_cliente(void);
 void alterar_cliente(void);
 void excluir_cliente(void);
 void listar_clientes(void);
+void listar_clientes_ordenado(void);
 
 #endif

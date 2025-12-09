@@ -406,6 +406,148 @@ void listar_clientes(void)
     pressioneEnterParaContinuar();
 }
 
+// ===============================================
+// LISTAGEM ORDENADA DE CLIENTES
+// ===============================================
+
+// Função de comparação para ordenação A-Z
+static int comparar_clientes_az(const void *a, const void *b)
+{
+    Cliente *clienteA = (Cliente *)a;
+    Cliente *clienteB = (Cliente *)b;
+    return strcasecmp(clienteA->nome, clienteB->nome);
+}
+
+// Função de comparação para ordenação Z-A
+static int comparar_clientes_za(const void *a, const void *b)
+{
+    Cliente *clienteA = (Cliente *)a;
+    Cliente *clienteB = (Cliente *)b;
+    return strcasecmp(clienteB->nome, clienteA->nome);
+}
+
+void listar_clientes_ordenado(void)
+{
+    FILE *arq_clientes;
+    Cliente *clientes = NULL;
+    int contador = 0;
+    int capacidade = 10;
+    int opcao;
+    char bufferOpcao[5];
+
+    limparTela();
+    printf("╔════════════════════════════════════════╗\n");
+    printf("║    Listagem Ordenada de Clientes      ║\n");
+    printf("╠════════════════════════════════════════╣\n");
+    printf("║ 1. Ordenar A-Z (crescente)             ║\n");
+    printf("║ 2. Ordenar Z-A (decrescente)           ║\n");
+    printf("║ 0. Voltar                              ║\n");
+    printf("╚════════════════════════════════════════╝\n");
+
+    do
+    {
+        printf(">>> Escolha a opcao: ");
+        lerString(bufferOpcao, 5);
+        char *endptr;
+        opcao = strtol(bufferOpcao, &endptr, 10);
+        if (endptr == bufferOpcao || *endptr != '\0')
+        {
+            opcao = -1;
+        }
+    } while (!validarOpcaoMenu(opcao, 0, 2));
+
+    if (opcao == 0)
+    {
+        return;
+    }
+
+    // Alocar memória inicial
+    clientes = (Cliente *)malloc(capacidade * sizeof(Cliente));
+    if (clientes == NULL)
+    {
+        printf("\nErro ao alocar memoria!\n");
+        pressioneEnterParaContinuar();
+        return;
+    }
+
+    // Carregar clientes do arquivo
+    arq_clientes = fopen(CLIENTES_FILE, "rb");
+    if (arq_clientes == NULL)
+    {
+        printf("\nNenhum cliente cadastrado.\n");
+        free(clientes);
+        pressioneEnterParaContinuar();
+        return;
+    }
+
+    Cliente cliente_lido;
+    while (fread(&cliente_lido, sizeof(Cliente), 1, arq_clientes) == 1)
+    {
+        if (cliente_lido.ativo == 1)
+        {
+            // Expandir array se necessário
+            if (contador == capacidade)
+            {
+                capacidade *= 2;
+                clientes = (Cliente *)realloc(clientes, capacidade * sizeof(Cliente));
+                if (clientes == NULL)
+                {
+                    printf("\nErro ao realocar memoria!\n");
+                    fclose(arq_clientes);
+                    pressioneEnterParaContinuar();
+                    return;
+                }
+            }
+            clientes[contador++] = cliente_lido;
+        }
+    }
+    fclose(arq_clientes);
+
+    if (contador == 0)
+    {
+        printf("\nNenhum cliente ativo para exibir.\n");
+        free(clientes);
+        pressioneEnterParaContinuar();
+        return;
+    }
+
+    // Ordenar conforme escolha
+    if (opcao == 1)
+    {
+        qsort(clientes, contador, sizeof(Cliente), comparar_clientes_az);
+        limparTela();
+        printf("╔════════════════════════════════════════╗\n");
+        printf("║   Clientes Ordenados A-Z (Crescente)  ║\n");
+        printf("╚════════════════════════════════════════╝\n");
+    }
+    else
+    {
+        qsort(clientes, contador, sizeof(Cliente), comparar_clientes_za);
+        limparTela();
+        printf("╔════════════════════════════════════════╗\n");
+        printf("║  Clientes Ordenados Z-A (Decrescente) ║\n");
+        printf("╚════════════════════════════════════════╝\n");
+    }
+
+    // Exibir clientes ordenados
+    printf("╔══════════════════════════╦═══════════════╦═══════════════╦═════════════════╗\n");
+    printf("║ Nome do Cliente          ║ CPF           ║ Telefone      ║ Email           ║\n");
+    printf("╠══════════════════════════╬═══════════════╬═══════════════╬═════════════════╣\n");
+
+    for (int i = 0; i < contador; i++)
+    {
+        printf("║ %-24s ║ %-13s ║ %-13s ║ %-15s ║\n",
+               clientes[i].nome,
+               clientes[i].cpf,
+               clientes[i].telefone,
+               clientes[i].email);
+    }
+    printf("╚══════════════════════════╩═══════════════╩═══════════════╩═════════════════╝\n");
+
+    free(clientes);
+    pressioneEnterParaContinuar();
+}
+
 // -------
 // MENU  |
 // -------
@@ -428,7 +570,8 @@ void modulo_clientes(void)
         printf("║ 3. Alterar Cliente                     ║\n");
         printf("║ 4. Excluir Cliente                     ║\n");
         printf("║ 5. Listar Clientes                     ║\n");
-        printf("║ 6. Relatórios                          ║\n");
+        printf("║ 6. Listar Clientes Ordenado            ║\n");
+        printf("║ 7. Relatórios                          ║\n");
         printf("║ 0. Voltar ao menu principal            ║\n");
         printf("╚════════════════════════════════════════╝\n");
 
@@ -449,7 +592,7 @@ void modulo_clientes(void)
                 opcao = -1; // Seta uma opção inválida para forçar o erro
             }
 
-        } while (!validarOpcaoMenu(opcao, 0, 6)); // Ajustando o valor máximo
+        } while (!validarOpcaoMenu(opcao, 0, 7)); // Ajustando o valor máximo
 
         switch (opcao)
         {
@@ -468,8 +611,11 @@ void modulo_clientes(void)
         case 5:
             listar_clientes();
             break;
-        // Adicionando o case para o submenu de relatórios
         case 6:
+            listar_clientes_ordenado();
+            break;
+        // Adicionando o case para o submenu de relatórios
+        case 7:
             relatorio_clientes_submenu();
             break;
         case 0:
